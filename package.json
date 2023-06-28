@@ -4,13 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cd frontend && npm run build",
-    "install-frontend": "cd frontend && npm install",
-    "heroku-postbuild": "npm run install-frontend && npm run build",
-    "server": "nodemon server.js",
-    "dev": "nodemon server.js",
+    "dev": "node killProcesses.js 4000 && nodemon server.js",
+    "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\""
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run heroku-postbuild\""
   },
   "keywords": [],
   "type": "module",
