@@ -32,22 +32,19 @@ const url = process.env.MONGODB_URI
 mongoose.connect(
     url,
     {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
     }
-  )
-  .then(() => console.log("MongoDB has been connected"))
-  .catch((err) => console.log(err))
+)
+    .then(() => console.log("MongoDB has been connected"))
+    .catch((err) => console.log(err))
+
+
+app.use(express.static('frontend/build'))
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+})
 
 app.listen(PORT, () => {
     console.log('Server listening on port ' + PORT);
 })
-
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('frontend/build'));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-    });
-}
-
-
