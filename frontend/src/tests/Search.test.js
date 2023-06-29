@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import Search from './screens/Search';
-import Router from './screens/Router';
+import Search from '../screens/Search';
+import Router from '../router/Router';
 
 import './sample_shows.json'
 import './sample_user.json'

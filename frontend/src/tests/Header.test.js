@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import Header from './screens/Header';
-import Router from './screens/Router';
+import Header from '../screens/Header';
+import Router from '../router/Router';
 
 import sampleShows from './sample_shows.json'
 import sampleUser from './sample_user.json'

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import Signup from './screens/Signup';
-import Router from './screens/Router';
+import {SignUp as Signup} from '../screens/SignUp';
+import Router from '../router/Router';
 
 test('renders signup form', () => {
   render(<Signup />);

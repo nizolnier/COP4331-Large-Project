@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import Login from './screens/Login';
-import Router from './screens/Router';
+import Login from '../screens/Login';
+import Router from '../router/Router';
 
 import sampleUser from './sample_user.json'
 
 test('renders login form', () => {
   render(<Login />);
-  const element = screen.getByText(/Login/i);
+  const element = screen.getByText("we loging in");
   expect(element).toBeInTheDocument();
 });
 
