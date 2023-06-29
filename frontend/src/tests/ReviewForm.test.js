@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import ReviewForm from './screens/ReviewForm';
-import Router from './screens/Router';
+import ReviewForm from '../screens/ReviewForm';
+import Router from '../router/Router';
 
 import sampleShows from './sample_shows.json'
 import sampleUser from './sample_user.json'
