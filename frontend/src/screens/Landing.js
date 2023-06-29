@@ -1,13 +1,13 @@
-import {goToLogin} from '../router/coordinator'
-import { useHistory } from 'react-router-dom'
+import {goToLogin, goToSignUp} from '../router/coordinator'
+import { useNavigate } from 'react-router-dom'
 
 
 const Landing = () => {
-    const history = useHistory()
+    const navigate = useNavigate()
 
     return <div>
-        <button onClick={() => goToLogin(history)}>login</button>
-        <button onClick={() => goToSignUp(history)}>signup</button>
+        <button onClick={() => goToLogin(navigate)}>login</button>
+        <button onClick={() => goToSignUp(navigate)}>signup</button>
     </div>
 }
 

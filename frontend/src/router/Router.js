@@ -1,40 +1,28 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import LogIn from '../screens/Login'
 import SignUp from '../screens/SignUp'
 import Home from '../screens/Home'
 import Cartoon from '../screens/Cartoon'
-import Home from '../screens/Home'
 import Search from '../screens/Search'
 import Profile from '../screens/Profile'
 import Landing from '../screens/Landing'
+import Error from '../screens/Error'
 
 const Router = () => {
     return (
         <BrowserRouter>
-            <Switch>
-                <Route exact path="/login">
-                    <LogIn />
-                </Route>
-                <Route exact path="/signup">
-                    <SignUp />
-                </Route>
-                <Route exact path={["/cartoons", "/home"]}>
-                    <Home />
-                </Route>
-                <Route exact path="/cartoons/:id">
-                    <Cartoon />
-                </Route>
-                <Route exact path="/user/:id">
-                    <Profile />
-                </Route>
-                <Route exact path="/">
-                    <Landing />
-                </Route>
-                <Route exact path="/cartoons/search">
-                    <Search />
-                </Route>
-            </Switch>
+            <Routes>
+                <Route exact path="/" element={<Landing />}></Route>
+                <Route exact path="/login" element={<LogIn />}></Route>
+                <Route exact path="/signup" element={<SignUp />}></Route>
+                <Route exact path="/cartoons" element={<Home />}></Route>
+                <Route exact path="/home" element={<Home />}></Route>
+                <Route exact path="/cartoons/:id" element={<Cartoon />}></Route>
+                <Route exact path="/user/:id" element={<Profile />}></Route>
+                <Route path="/cartoons/search" element={<Search />}></Route>
+                <Route path="*" element={<Error />}></Route>
+            </Routes>
         </BrowserRouter>
     )
 }

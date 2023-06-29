@@ -1,18 +1,18 @@
-export const goToSignUp = (history) => {
-    history.push("/signup")
+export const goToSignUp = (nav) => {
+    nav("/signup")
 }
 
-export const goToLogin = (history) => {
-    history.push("/login")
+export const goToLogin = (nav) => {
+    nav("/login")
 }
 
-export const goToSearch = (history) => {
-    history.push("/cartoons/search")
+export const goToSearch = (nav) => {
+    nav("/cartoons/search")
 }
-export const goToHome = (history) => {
-    history.push("/cartoons")
+export const goToHome = (nav) => {
+    nav("/cartoons")
 }
 
-export const goToCartoon = (history, id) => {
-    history.push(`/cartoons/${id}`)
+export const goToCartoon = (nav, id) => {
+    nav(`/cartoons/${id}`)
 }
