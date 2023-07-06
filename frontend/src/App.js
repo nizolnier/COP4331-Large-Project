@@ -1,7 +1,9 @@
+import Router from './router/Router'
+
 const App = () => {
   return (
     <div>
-      howdy partners!
+      <Router />
     </div>
   )
 }
