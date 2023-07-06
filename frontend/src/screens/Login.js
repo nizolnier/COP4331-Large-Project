@@ -1,14 +1,17 @@
 import { useForm } from '../hooks/useForm'
-import backg from '../assets/background.png'
+import bgw from '../assets/bg-test.png'
+import bgm from '../assets/bg-mobile.png'
 import { goToSignUp, goToHome } from '../router/coordinator'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useMediaQuery } from 'react-responsive';
 
 
 const LogIn = () => {
     const navigate = useNavigate()
     const { form, onChange, reset } = useForm({ username: "", password: "" })
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
     const doLogIn = (e) => {
         e.preventDefault()
@@ -28,10 +31,9 @@ const LogIn = () => {
 
 
 
-    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36]">
-        <div className="w-screen h-[35%]">
-            image
-        </div>
+    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile? bgm : bgw})` }} >
+    <div className="w-screen h-[35%]">
+    </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
             <div className="h-[30%]">
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Log In</h1>

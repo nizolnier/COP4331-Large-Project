@@ -1,14 +1,16 @@
 import { useForm } from '../hooks/useForm'
-import backg from '../assets/background.png'
+import bgw from '../assets/bg-test.png'
+import bgm from '../assets/bg-mobile.png'
 import { goToLogin } from '../router/coordinator'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-
+import { useMediaQuery } from 'react-responsive';
 
 const SignUp = () => {
     const navigate = useNavigate()
     const { form, onChange, reset } = useForm({ email: "", password: "", username: "" })
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
     const doSignUp = (e) => {
         e.preventDefault()
@@ -27,13 +29,10 @@ const SignUp = () => {
         reset()
     }
 
-
-
-    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36]">
+    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile? bgm : bgw})` }} >
         <div className="w-screen h-[35%]">
-            <div className="w-screen h-[100%] rotate-[-22deg] bg-fill" style={{ backgroundImage:  `url(${backg})` />
         </div>
-        <div className="flex flex-col justify-around items-center h-[65%]">
+        <div className="flex flex-col justify-around items-center w-screen h-[65%]">
             <div className="h-[30%]">
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Sign Up</h1>
                 <p className="text-center text-white text-md font-normal">Create an account to continue</p>
