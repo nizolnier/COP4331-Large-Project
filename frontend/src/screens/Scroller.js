@@ -7,23 +7,66 @@ const Scroller = ({...props}) => {
     const [cartoonsPerPage, setCartoonsPerPage] = useState(5);
     const [currentCartoons, setCurrentCartoons] = useState([]);
     const [maxPages, setMaxPages] = useState();
+    const [animationClass, setAnimationClass] = useState('');
 
     useEffect(() => {
+        // Add event listener
+        window.addEventListener("resize", handleResize);
+        // Call handler right away so state gets updated with initial window size
+        handleResize();
+        // Remove event listener on cleanup
+        return () => window.removeEventListener("resize", handleResize);
+    }, [])
+
+    // Change number of cartoons in scroller depending on window width
+    const handleResize = () => {
+        let innerWidth = window.innerWidth;
+        if (innerWidth > 1280)
+        {
+            setCartoonsPerPage(6);
+        }
+        else if (innerWidth > 720)
+        {
+            setCartoonsPerPage(5);
+        }
+        else
+        {
+            setCartoonsPerPage(3);
+        }
+    }
+
+    useEffect(() => {
+        // Update current cartoons when page or number of cartoons per page changes
         let lastIndex = currentPage * cartoonsPerPage;
         let firstIndex = lastIndex - cartoonsPerPage;
         setMaxPages(Math.ceil((cartoons.length / cartoonsPerPage)));
         setCurrentCartoons(cartoons.slice(firstIndex, lastIndex));
-    }, [currentPage])
+    }, [currentPage, cartoonsPerPage])
 
     const paginateLeft = () => {
-        if (currentPage > 1)
-            setCurrentPage(currentPage - 1);
-        else
-            setCurrentPage(maxPages)
+        setAnimationClass("invisible translate-x-[120%]")
+        setTimeout(() => {
+            setAnimationClass("invisible translate-x-[-120%]")
+            if (currentPage > 1)
+                setCurrentPage(currentPage - 1);
+            else
+                setCurrentPage(maxPages);
+
+            setTimeout(() => {
+                setAnimationClass("translate-x-[0]")
+            }, 200)
+        }, 300)
     }
 
     const paginateRight = () => {
-        setCurrentPage((currentPage % maxPages) + 1);
+        setAnimationClass("invisible translate-x-[-120%]")
+        setTimeout(() => {
+            setAnimationClass("invisible translate-x-[120%]")
+            setCurrentPage((currentPage % maxPages) + 1);
+            setTimeout(() => {
+                setAnimationClass("translate-x-[0]")
+            }, 200)
+        }, 300)
     }
 
     let cartoonRender = currentCartoons.map((cartoon, index) => {
@@ -34,23 +77,21 @@ const Scroller = ({...props}) => {
     })
 
     return (
-        <div className="flex flex-row gap-5 h-72 place-space-between">
+        <div className="flex flex-row gap-5 h-72 place-space-between overflow-hidden">
             <div className="flex flex-column justify-center">
                 <button onClick={paginateLeft} className='h-12 w-12 m-auto hover:bg-gray-100 rounded-full'>
-                    <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="m-auto">
-                        <path d="M1.70711 8.26522C1.31659 7.87469 0.683424 7.87469 0.2929 8.26522C-0.0976246 8.65574 -0.0976247 9.28891 0.2929 9.67943L1.70711 8.26522ZM9.73479 16.2929L1.70711 8.26522L0.2929 9.67943L8.32057 17.7071L9.73479 16.2929Z" fill="#5E5B81"/>
-                        <path d="M0.292898 8.32057C-0.097626 8.71109 -0.097626 9.34426 0.292898 9.73478C0.683423 10.1253 1.31659 10.1253 1.70711 9.73478L0.292898 8.32057ZM8.32057 0.292893L0.292898 8.32057L1.70711 9.73478L9.73479 1.70711L8.32057 0.292893Z" fill="#5E5B81"/>
-                    </svg>
+                <svg className="w-6 h-6 text-gray-800 dark:text-white m-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"/>
+                </svg>
                 </button>
             </div>
-            <div className="w-full flex flex-row gap-4 h-72">
+            <div className={"w-full flex flex-row gap-4 h-72 transition-{translate} duration-300 ease-in-out " + animationClass}>
                 { cartoonRender }
             </div>
             <div className="flex flex-column justify-center">
                 <button onClick={paginateRight} className='h-12 w-12 m-auto hover:bg-gray-100 rounded-full'>
-                    <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="m-auto">
-                        <path d="M8.32057 9.73478C8.71109 10.1253 9.34426 10.1253 9.73478 9.73478C10.1253 9.34426 10.1253 8.71109 9.73478 8.32057L8.32057 9.73478ZM0.292893 1.70711L8.32057 9.73478L9.73478 8.32057L1.70711 0.292893L0.292893 1.70711Z" fill="#5E5B81"/>
-                        <path d="M9.73478 9.67943C10.1253 9.28891 10.1253 8.65574 9.73478 8.26522C9.34426 7.87469 8.71109 7.87469 8.32057 8.26522L9.73478 9.67943ZM1.70711 17.7071L9.73478 9.67943L8.32057 8.26522L0.292893 16.2929L1.70711 17.7071Z" fill="#5E5B81"/>
+                    <svg className="w-6 h-6 text-gray-800 dark:text-white m-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"/>
                     </svg>
                 </button>
             </div>
