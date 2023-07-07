@@ -1,8 +1,15 @@
+import { useState } from 'react'
+import Router from './router/Router'
+import ToggleSBContext from './context/ToggleSBContext';
+
 const App = () => {
+  const [toggle, setToggle] = useState(false)
+
+  const input = { toggle, setToggle }
   return (
-    <div>
-      howdy partners!
-    </div>
+    <ToggleSBContext.Provider value={input}>
+      <Router />
+    </ToggleSBContext.Provider>
   )
 }
 
