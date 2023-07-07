@@ -1,5 +1,9 @@
+import Scroller from "./Scroller"
+
+import sampleShows from '../tests/sample_shows.json'
+
 const Home = () => {
-    return <div>Home component</div>
+    return <Scroller cartoons={sampleShows}></Scroller>
 }
 
 export default Home
