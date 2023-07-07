@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import NavBar from '../components/NavBar'
 import Sidebar from '../components/Sidebar'
 import { useProtectedPage } from '../hooks/useProtectedPage'
@@ -17,7 +17,7 @@ const Home = () => {
         <div className="w-screen h-screen bg-[#1F1D36] text-white" >
         
         <div>
-            {toggle || !isMobile ? <Sidebar username="zain" name="Zain" /> : <></>}
+            {toggle || !isMobile ? <Sidebar username="zain" name="Zain" userid="1" /> : <></>}
         </div>
         <Header username="zain" />
         <footer className="flex flex-end bg-[#1F1D36]">

@@ -8,13 +8,25 @@ import watchlist from '../assets/watchlist.svg'
 import side from '../assets/side.svg'
 import { useContext } from 'react'
 import ToggleSBContext from '../context/ToggleSBContext'
+import { useNavigate } from 'react-router-dom'
+import { goToLogin, goToProfile, goToSearch } from '../router/coordinator'
 
 
-const Sidebar = ({ username, name }) => {
+const Sidebar = ({ username, name, userid }) => {
+    const navigate = useNavigate()
     const {toggle, setToggle} = useContext(ToggleSBContext)
 
     const click = () => {
         setToggle(!toggle)
+    }
+
+    const doLogout = () => {
+        //remove token here
+
+        goToLogin(navigate)
+    }
+    const refreshPage = () => {
+        window.location.reload(false);
     }
 
     return (<div className="bg-[#1F1D36] lg:w-1/6 w-[55%] h-screen z-100 p-4 fixed shadow-slay-sm">
@@ -29,15 +41,15 @@ const Sidebar = ({ username, name }) => {
             </div>
         </div>
         <div className="py-4 pt-8">
-            <MenuItem image={home} title="Home" />
-            <MenuItem image={cartoon} title="Cartoons" />
-            <MenuItem image={review} title="Reviews" />
-            <MenuItem image={watchlist} title="Watchlist" />
-            <MenuItem image={heart} title="Likes" />
+            <MenuItem image={home} title="Home" goto={refreshPage} />
+            <MenuItem image={cartoon} title="Cartoons" goto={() => goToSearch(navigate)} />
+            <MenuItem image={review} title="Reviews"  goto={() => goToProfile(navigate, userid)} />
+            <MenuItem image={watchlist} title="Watchlist" goto={() => goToProfile(navigate, userid)} />
+            <MenuItem image={heart} title="Likes" goto={() => goToProfile(navigate, userid)} />
         </div>
 
  
-        <MenuItem image={logout} title="Logout" />
+        <MenuItem image={logout} title="Logout" goto={doLogout} />
     </div>)
 }
 

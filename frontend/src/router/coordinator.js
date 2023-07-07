@@ -16,3 +16,7 @@ export const goToHome = (nav) => {
 export const goToCartoon = (nav, id) => {
     nav(`/cartoons/${id}`)
 }
+
+export const goToProfile = (nav, id) => {
+    nav(`/user/${id}`)
+}
