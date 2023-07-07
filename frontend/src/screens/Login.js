@@ -29,8 +29,6 @@ const LogIn = () => {
         reset()
     }
 
-
-
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile? bgm : bgw})` }} >
     <div className="w-screen h-[35%]">
     </div>
