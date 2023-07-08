@@ -7,7 +7,7 @@ const Card = ({...props}) => {
 
     useEffect(() => {
         // Set width of card depending on # of cartoons in scroller
-        setClassName('w-1/' + props.cartoonsPerPage);
+        setClassName("w-[" + 100*(1/props.cartoonsPerPage) + "%]");
     }, [props.cartoonsPerPage])
 
     useEffect(() => {
@@ -15,12 +15,12 @@ const Card = ({...props}) => {
     }, [props.cartoon])
 
     return (
-        <div className={className}>
+        <div className={"flex flex-col " + className}>
             <Link 
                 id={cartoon._id} 
                 title={cartoon.title}
                 to={"/cartoons/" + cartoon.id}
-                className={className}>
+                className={"flex-grow"}>
                 <img src={cartoon.picture} className={'w-full h-full rounded-md hover:shadow-lg hover:shadow-rose-200 object-cover'}/>
             </Link>
             <p className="flex flex-row p-1 gap-1" >

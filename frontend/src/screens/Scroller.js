@@ -77,7 +77,7 @@ const Scroller = ({...props}) => {
     })
 
     return (
-        <div className="flex flex-row gap-5 h-72 place-space-between overflow-hidden">
+        <div className="flex flex-row gap-5 h-72 place-space-between overflow-x-hidden">
             <div className="flex flex-column justify-center">
                 <button onClick={paginateLeft} className='h-12 w-12 m-auto hover:bg-gray-100 rounded-full'>
                 <svg className="w-6 h-6 text-gray-800 dark:text-white m-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
@@ -85,7 +85,7 @@ const Scroller = ({...props}) => {
                 </svg>
                 </button>
             </div>
-            <div className={"w-full flex flex-row gap-4 h-72 transition-{translate} duration-300 ease-in-out " + animationClass}>
+            <div className={"w-full flex flex-row gap-4 h-72 transition-{translate} duration-300 " + animationClass}>
                 { cartoonRender }
             </div>
             <div className="flex flex-column justify-center">
