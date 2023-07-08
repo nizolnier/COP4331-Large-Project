@@ -7,6 +7,11 @@ import Header from '../components/Header'
 import ToggleSBContext from '../context/ToggleSBContext'
 
 const Home = () => {
+    const user = {
+        username: "zain",
+        name: "Zain",
+        userid: "1"
+    }
     const {toggle} = useContext(ToggleSBContext)
 
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -17,11 +22,11 @@ const Home = () => {
         <div className="w-screen h-screen bg-[#1F1D36] text-white" >
         
         <div>
-            {toggle || !isMobile ? <Sidebar username="zain" name="Zain" userid="1" /> : <></>}
+            {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
         </div>
-        <Header username="zain" />
+        <Header username={user.username} />
         <footer className="flex flex-end bg-[#1F1D36]">
-            {isMobile? <NavBar /> : <></>}
+            {isMobile? <NavBar userid={user.userid} screen="home" /> : <></>}
         </footer>
     </div>
     )

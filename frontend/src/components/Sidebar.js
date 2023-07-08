@@ -5,11 +5,18 @@ import home from '../assets/home.svg'
 import logout from '../assets/logout.svg'
 import review from '../assets/review.svg'
 import watchlist from '../assets/watchlist.svg'
+import bcartoon from '../assets/bcartoon.svg'
+import bheart from '../assets/bheart.svg'
+import bhome from '../assets/bhome.svg'
+import blogout from '../assets/blogout.svg'
+import breview from '../assets/breview.svg'
+import bwatchlist from '../assets/bwatchlist.svg'
+
 import side from '../assets/side.svg'
 import { useContext } from 'react'
 import ToggleSBContext from '../context/ToggleSBContext'
 import { useNavigate } from 'react-router-dom'
-import { goToLogin, goToProfile, goToSearch } from '../router/coordinator'
+import { goToHome, goToLogin, goToProfile, goToSearch } from '../router/coordinator'
 
 
 const Sidebar = ({ username, name, userid }) => {
@@ -25,9 +32,6 @@ const Sidebar = ({ username, name, userid }) => {
 
         goToLogin(navigate)
     }
-    const refreshPage = () => {
-        window.location.reload(false);
-    }
 
     return (<div className="bg-[#1F1D36] lg:w-1/6 w-[55%] h-screen z-100 p-4 fixed shadow-slay-sm">
         <div className="pt-8 p-6 pl-2">
@@ -41,15 +45,15 @@ const Sidebar = ({ username, name, userid }) => {
             </div>
         </div>
         <div className="py-4 pt-8">
-            <MenuItem image={home} title="Home" goto={refreshPage} />
-            <MenuItem image={cartoon} title="Cartoons" goto={() => goToSearch(navigate)} />
-            <MenuItem image={review} title="Reviews"  goto={() => goToProfile(navigate, userid)} />
-            <MenuItem image={watchlist} title="Watchlist" goto={() => goToProfile(navigate, userid)} />
-            <MenuItem image={heart} title="Likes" goto={() => goToProfile(navigate, userid)} />
+            <MenuItem rimage={bhome} image={home} title="Home" goto={() => goToHome(navigate)} />
+            <MenuItem rimage={bcartoon} image={cartoon} title="Cartoons" goto={() => goToSearch(navigate)} />
+            <MenuItem rimage={breview} image={review} title="Reviews"  goto={() => goToProfile(navigate, userid)} />
+            <MenuItem rimage={bwatchlist} image={watchlist} title="Watchlist" goto={() => goToProfile(navigate, userid)} />
+            <MenuItem rimage={bheart} image={heart} title="Likes" goto={() => goToProfile(navigate, userid)} />
         </div>
 
  
-        <MenuItem image={logout} title="Logout" goto={doLogout} />
+        <MenuItem rimage={blogout} image={logout} title="Logout" goto={doLogout} />
     </div>)
 }
 
