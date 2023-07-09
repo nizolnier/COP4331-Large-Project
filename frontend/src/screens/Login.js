@@ -1,11 +1,11 @@
 import { useForm } from '../hooks/useForm'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
-import { goToSignUp, goToHome } from '../router/coordinator'
+import { goToSignUp, goToHome, goToForgot } from '../router/coordinator'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from 'react-responsive'
 
 
 const LogIn = () => {
@@ -54,7 +54,7 @@ const LogIn = () => {
                     </div>
                     <input required placeholder="Type a password" type={"password"} value={form.password} onChange={onChange} name="password" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
                 </div>
-                <p className="self-end text-right text-red-300 text-[0.6em] font-normal">Forgot email</p>
+                <p onClick={() => goToForgot(navigate)} className="cursor-pointer self-end text-right text-red-300 text-[0.6em] font-normal">Forgot email</p>
                 <button type="submit" className="w-[95px] h-[35px] bg-red-300 rounded-[30px] text-center text-gray-800 text-[13px] font-bold tracking-wide">Log In</button>
                 <p className=" cursor-default text-red-300 text-[9px] font-normal">Don't have an account? Please <b onClick={() => goToSignUp(navigate)} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Sign Up</b> first.</p>
             </form>
