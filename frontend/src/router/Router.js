@@ -20,7 +20,7 @@ const Router = () => {
                 <Route exact path="/home" element={<Home />}></Route>
                 <Route exact path="/cartoons/:id" element={<Cartoon />}></Route>
                 <Route exact path="/user/:id" element={<Profile />}></Route>
-                <Route path="/cartoons/search" element={<Search />}></Route>
+                <Route exact path="/cartoons/search" element={<Search />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </BrowserRouter>

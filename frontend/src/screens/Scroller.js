@@ -1,56 +1,17 @@
 import Card from './Card'
 import { useState, useEffect } from 'react'
 
+import useCardResize from '../hooks/useCardResize.js'
+
 const Scroller = ({...props}) => {
     const [cartoons, setCartoons] = useState(props.cartoons);
     const [currentPage, setCurrentPage] = useState(1);
-    const [cartoonsPerPage, setCartoonsPerPage] = useState(5);
     const [currentCartoons, setCurrentCartoons] = useState([]);
     const [maxPages, setMaxPages] = useState();
     const [animationClass, setAnimationClass] = useState('');
+    const [cardWidth, setCardWidth] = useState('');
 
-    useEffect(() => {
-        // Add event listener
-        window.addEventListener("resize", handleResize);
-        // Call handler right away so state gets updated with initial window size
-        handleResize();
-        // Remove event listener on cleanup
-        return () => window.removeEventListener("resize", handleResize);
-    }, [])
-
-    // Change number of cartoons in scroller depending on window width
-    const handleResize = () => {
-        let innerWidth = window.innerWidth;
-        if (innerWidth > 1920)
-        {
-            setCartoonsPerPage(15);
-        }
-        else if (innerWidth > 1480)
-        {
-            setCartoonsPerPage(9);
-        }
-        else if (innerWidth > 1280)
-        {
-            setCartoonsPerPage(7);
-        }
-        else if (innerWidth > 1080)
-        {
-            setCartoonsPerPage(6);
-        }
-        else if (innerWidth > 720)
-        {
-            setCartoonsPerPage(5);
-        }
-        else if (innerWidth > 400)
-        {
-            setCartoonsPerPage(3);
-        }
-        else
-        {
-            setCartoonsPerPage(1);
-        }
-    }
-
+    const { cartoonsPerPage } = useCardResize(5);
     useEffect(() => {
         // Update current cartoons when number of cartoons per page changes
         let page = currentPage;
@@ -64,6 +25,9 @@ const Scroller = ({...props}) => {
         setMaxPages(max);
 
         updateCartoons()
+
+        // Update card widths
+        setCardWidth(Math.floor(100*(1/props.cartoonsPerPage)) + '%');
     }, [cartoonsPerPage])
 
     useEffect(() => {
@@ -107,7 +71,7 @@ const Scroller = ({...props}) => {
         return <Card 
             cartoon={cartoon} 
             key={cartoon.id}
-            cartoonsPerPage={cartoonsPerPage}></Card>
+            width={cardWidth}></Card>
     })
 
     return (

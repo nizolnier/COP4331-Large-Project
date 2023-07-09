@@ -1,21 +1,39 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, memo } from 'react'
 import { Link } from 'react-router-dom'
 
-const Card = ({...props}) => {
+const Card = React.forwardRef(({...props}, ref) => {
     const [cartoon, setCartoon] = useState(props.cartoon);
-    const [className, setClassName] = useState('');
+    const [cardWidth, setCardWidth] = useState('');
+    const [cardHeight, setCardHeight] = useState('');
 
     useEffect(() => {
-        // Set width of card depending on # of cartoons in scroller
-        setClassName(Math.floor(100*(1/props.cartoonsPerPage)));
-    }, [props.cartoonsPerPage])
+        if (props.width)
+        {
+            setCardWidth(props.width);
+        }
+        else
+        {
+            setCardWidth('auto')
+        }
+    }, [props.width])
+
+    useEffect(() => {
+        if (props.height)
+        {
+            setCardHeight(props.height)
+        }
+        else
+        {
+            setCardHeight('auto')
+        }
+    }, [props.height])
 
     useEffect(() => {
         setCartoon(props.cartoon)
     }, [props.cartoon])
 
     return (
-        <div style={{width: className + '%'}}>
+        <div style={{width: cardWidth, height: cardHeight}} className={props.className} ref={ref}>
             <Link 
                 id={cartoon._id} 
                 title={cartoon.title}
@@ -39,6 +57,6 @@ const Card = ({...props}) => {
             </div>
         </div>
     )
-}
+})
 
 export default Card
