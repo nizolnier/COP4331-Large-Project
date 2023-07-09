@@ -8,6 +8,7 @@ import { goToReset } from '../router/coordinator'
 import VerificationInput from 'react-verification-input'
 import './index.css'
 import { useState } from 'react'
+import Button from '../components/Button.js'
 
 
 const VerificationCode = () => {
@@ -41,7 +42,7 @@ const VerificationCode = () => {
             </div>
             <form onSubmit={doVerify} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%]">
                 <VerificationInput value={code} onChange={setCode} classNames={{character: "character"}} length={5} validChars="0-9" inputProps={{ inputMode: "numeric" }} />
-                <button type="submit" className="w-[95px] h-[35px] bg-red-300 rounded-[30px] text-center text-gray-800 text-[13px] font-bold tracking-wide">Verify</button>
+                <Button title="Verify" type="submit" />
                 <p className=" cursor-default text-red-300 text-[9px] font-normal"><b onClick={sendCode} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Send code again</b> 20 seconds.</p>
             </form>
             <div className="h-[20%]"></div>

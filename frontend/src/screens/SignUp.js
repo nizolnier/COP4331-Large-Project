@@ -6,6 +6,7 @@ import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useMediaQuery } from 'react-responsive';
+import Button from '../components/Button'
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -72,7 +73,7 @@ const SignUp = () => {
                     </div>
                     <input required placeholder="Enter a password" type={"password"} value={form.password} onChange={onChange} name="password" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
                 </div>
-                <button type="submit" className="w-[95px] h-[35px] bg-red-300 rounded-[30px] text-center text-gray-800 text-[13px] font-bold tracking-wide">Sign Up</button>
+                <Button title="Sign up" type="submit" />
                 <p className=" cursor-default text-red-300 text-[9px] font-normal">Already have an account? Go to the <b onClick={() => goToLogin(navigate)} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Login Page</b>.</p>
             </form>
 

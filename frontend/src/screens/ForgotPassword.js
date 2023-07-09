@@ -6,6 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
 import { goToLogin, goToVerify } from '../router/coordinator'
+import Button from '../components/Button'
 
 
 const ForgotPassword = () => {
@@ -43,7 +44,7 @@ Please enter the email associated with your account.</p>
                     </div>
                     <input required placeholder="Enter your email" type="email" onChange={onChange} value={form.email} name="email" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
                 </div>
-                <button type="submit" className="w-[95px] h-[35px] bg-red-300 rounded-[30px] text-center text-gray-800 text-[13px] font-bold tracking-wide">Verify</button>
+                <Button title="Send Code" type="submit"/>
                 <p className=" cursor-default text-red-300 text-[9px] font-normal">Remember password? <b onClick={() => goToLogin(navigate)} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Login</b>.</p>
             </form>
             <div className="h-[20%]"></div>
