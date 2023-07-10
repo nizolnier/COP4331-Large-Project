@@ -8,6 +8,7 @@ import Search from '../screens/Search'
 import Profile from '../screens/Profile'
 import Landing from '../screens/Landing'
 import Error from '../screens/Error'
+import Review from '../screens/Review'
 
 const Router = () => {
     return (
@@ -21,6 +22,7 @@ const Router = () => {
                 <Route exact path="/cartoons/:id" element={<Cartoon />}></Route>
                 <Route exact path="/user/:id" element={<Profile />}></Route>
                 <Route path="/cartoons/search" element={<Search />}></Route>
+                <Route exact path="/cartoons/:id/review" element={<Review />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </BrowserRouter>
