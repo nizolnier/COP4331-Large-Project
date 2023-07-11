@@ -21,7 +21,7 @@ const Search = () => {
     const queryClient = useQueryClient()
 
     // Search query, update this value with input
-    const [query, setQuery] = useState('the');
+    const [query, setQuery] = useState('show');
 
     // To see if last cartoon is in viewport
     const [ref, inView, entry] = useInView();

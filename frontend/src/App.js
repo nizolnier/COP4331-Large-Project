@@ -1,3 +1,7 @@
+
+import { useState } from 'react'
+import Router from './router/Router'
+import ToggleSBContext from './context/ToggleSBContext';
 import Router from './router/Router'
 
 // React Query setup
@@ -9,9 +13,14 @@ import {
 const queryClient = new QueryClient()
 
 const App = () => {
+  const [toggle, setToggle] = useState(false)
+
+  const input = { toggle, setToggle }
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
+      <ToggleSBContext.Provider value={input}>
+        <Router />
+      </ToggleSBContext.Provider>
     </QueryClientProvider>
   )
 }
