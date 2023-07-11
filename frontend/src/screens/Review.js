@@ -8,6 +8,7 @@ const Review = () => {
     const [fav, setFav] = useState(0)
     const [date, setDate] = useState("")
     const [show, setShow] = useState(false)
+    const [comment, setComment] = useState("")
 
     const handleChange = (selectedDate) => {
         setDate(selectedDate)
@@ -16,32 +17,55 @@ const Review = () => {
         setShow(state)
     }
 
+    const onChange = (event) => {
+        setComment(event.target.value)
+    }
 
+    const doReview = () => {
+        const body = {
+            date: date,
+            fav: fav,
+            rating: rating,
+            comment: comment
+        }
+
+        console.log(body)
+
+        setDate("")
+        setComment("")
+        setFav(0)
+        setRating(0)
+
+        // axios
+    }
+
+    
+
+    // this is for the datepicker
     const options = {
         autoHide: true,
         todayBtn: false,
         clearBtn: false,
-
+        maxDate: new Date(),
         theme: {
             background: "dark:bg-[#3D3B53] bg-[#3D3B53]",
             icons: "text-white text-xs dark:bg-red-300 bg-red-300 hover:bg-fuchsia-800 dark:hover:bg-fuchsia-800 hover:text-white dark:hover:text-white",
             input: "lg:w-[200%] w-[110%] border border-stone-600  border-opacity-30 dark:border-opacity-30 dark:border dark:border-stone-600 dark:bg-[#3D3B53] bg-[#3D3B53] text-white text-[9px] dark:text-white dark:text-[9px]",
             inputIcon: "dark:text-white text-white",
             text: "hover:bg-red-300 dark:hover:bg-red-300",
-            disabledText: "bg-blue hover:bg-red-300 dark:hover:bg-red-300",
+            disabledText: "bg-[#323044] dark:bg-[#323044] hover:bg-red-300 dark:hover:bg-red-300",
             selected: "bg-fuchsia-800 dark:hover:bg-red-300",
         },
     }
 
     return (<div className="text-white items-center flex flex-col w-screen h-screen bg-[#1F1D36]">
-        <div className="lg:h-[10%] h-[5%]"></div>
+        <div className="h-[5%]"></div>
         <div className="flex flex-col lg:w-1/2 w-[90%] h-[40%]">
             <div className="flex">
                 <img src={back} />
                 <h1 className="pl-6 text-sm font-semibold" >Write your review</h1>
             </div>
             <div className="pt-10 flex items-center justify-between w-[100%]">
-
                 <div className="flex flex-col justify-between">
                     <h2 className="pb-4 text-lg font-bold">movie title</h2>
                     <div>
@@ -74,9 +98,10 @@ const Review = () => {
             </div>
 
         </div>
-        <textarea placeholder="Write down your review..." className="block p-2.5 lg:w-1/2 w-[90%] h-[40%] text-sm rounded-lg bg-[#3D3B53] border-opacity-30 border border-stone-600 text-white text-opacity-50 font-semibold focus:ring-blue-500 focus:border-blue-500">
+        <textarea onChange={onChange} value={comment} placeholder="Write down your review..." className="block p-2.5 lg:w-1/2 w-[90%] h-[40%] text-sm rounded-lg bg-[#3D3B53] border-opacity-30 border border-stone-600 text-white text-opacity-50 font-semibold focus:ring-blue-500 focus:border-blue-500">
         </textarea>
-        <div className="h-[10%]"></div>
+        <div className="self-end my-4 w-[32.5%]"><button onClick={doReview} className="text-gray-800 text-[13px] font-semibold w-[104px] h-9 bg-red-300 rounded-[20px]">Publish</button></div>
+        <div className="h-[5%]"></div>
     </div >)
 }
 
