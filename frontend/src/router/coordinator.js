@@ -17,6 +17,10 @@ export const goToCartoon = (nav, id) => {
     nav(`/cartoons/${id}`)
 }
 
+export const goToProfile = (nav, id) => {
+    nav(`/user/${id}`)
+}
+
 export const goToForgot = (nav) => {
     nav("/forgot-password")
 }
@@ -27,3 +31,4 @@ export const goToVerify = (nav) => {
 export const goToReset = (nav) => {
     nav("/reset-password")
 }
+
