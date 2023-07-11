@@ -75,23 +75,28 @@ const Scroller = ({...props}) => {
     })
 
     return (
-        <div className="flex flex-row gap-5 h-72 overflow-x-hidden p-4">
-            <div className="flex flex-column justify-center">
-                <button onClick={paginateLeft} className='h-12 w-12 m-auto hover:bg-gray-100 rounded-full'>
-                <svg className="w-6 h-6 text-gray-800 dark:text-white m-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"/>
-                </svg>
-                </button>
-            </div>
-            <div className={"w-full flex flex-row justify-start gap-4 h-full transition-{translate} duration-100 " + animationClass}>
-                { cartoonRender }
-            </div>
-            <div className="flex flex-column justify-center">
-                <button onClick={paginateRight} className='h-12 w-12 m-auto hover:bg-gray-100 rounded-full'>
-                    <svg className="w-6 h-6 text-gray-800 dark:text-white m-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"/>
+        <div>
+            <div className="flex flex-row gap-5 h-fit overflow-x-hidden p-4">
+                <div className="flex flex-column justify-center">
+                    <button onClick={paginateLeft} className='h-12 w-12 m-auto hover:bg-gray-700 rounded-full'>
+                    <svg className="w-6 h-6 text-gray-400 dark:text-white m-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"/>
                     </svg>
-                </button>
+                    </button>
+                </div>
+                <div className='h-full'>
+                    <h2 className={'text-lg pb-4'}>{props.heading}</h2>
+                    <div className={"w-full flex flex-row justify-start gap-4 h-full transition-{translate} duration-100 " + animationClass}>
+                        { cartoonRender }
+                    </div>
+                </div>
+                <div className="flex flex-column justify-center">
+                    <button onClick={paginateRight} className='h-12 w-12 m-auto hover:bg-gray-700 rounded-full'>
+                        <svg className="w-6 h-6 text-gray-400 dark:text-white m-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     )

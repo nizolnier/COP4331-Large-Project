@@ -28,9 +28,9 @@ const Home = () => {
             </div>
             <Header username={user.username} />
             <div>
-                <Scroller cartoons={sampleCartoons}></Scroller>
-                <Scroller cartoons={sampleCartoons}></Scroller>
-                <Scroller cartoons={sampleCartoons}></Scroller>
+                <Scroller cartoons={sampleCartoons} heading="Popular"></Scroller>
+                <Scroller cartoons={sampleCartoons} heading="Watchlist"></Scroller>
+                <Scroller cartoons={sampleCartoons} heading="Have Watched"></Scroller>
             </div>
             <footer className="flex flex-end bg-[#1F1D36]">
                 {isMobile? <NavBar userid={user.userid} screen="home" /> : <></>}
