@@ -22,18 +22,20 @@ const Home = () => {
     useProtectedPage()
 
     return (
-        <div className="w-screen h-screen bg-[#1F1D36] text-white" >
-        <div>
-            {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
+        <div className="w-screen bg-[#1F1D36] text-white" >
+            <div>
+                {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
+            </div>
+            <Header username={user.username} />
+            <footer className="flex flex-end bg-[#1F1D36]">
+                {isMobile? <NavBar userid={user.userid} screen="home" /> : <></>}
+            </footer>
+            <div>
+                <Scroller cartoons={sampleCartoons}></Scroller>
+                <Scroller cartoons={sampleCartoons}></Scroller>
+                <Scroller cartoons={sampleCartoons}></Scroller>
+            </div>
         </div>
-        <Header username={user.username} />
-        <footer className="flex flex-end bg-[#1F1D36]">
-            {isMobile? <NavBar userid={user.userid} screen="home" /> : <></>}
-        </footer>
-        <div>
-            <Scroller cartoons={sampleCartoons}></Scroller>
-        </div>
-    </div>
     )
 }
 
