@@ -5,6 +5,9 @@ import { useProtectedPage } from '../hooks/useProtectedPage'
 import { useMediaQuery } from 'react-responsive'
 import Header from '../components/Header'
 import ToggleSBContext from '../context/ToggleSBContext'
+import Scroller from '../components/Scroller'
+
+import sampleCartoons from '../tests/sample_shows.json'
 
 const Home = () => {
     const user = {
@@ -20,7 +23,6 @@ const Home = () => {
 
     return (
         <div className="w-screen h-screen bg-[#1F1D36] text-white" >
-        
         <div>
             {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
         </div>
@@ -28,6 +30,9 @@ const Home = () => {
         <footer className="flex flex-end bg-[#1F1D36]">
             {isMobile? <NavBar userid={user.userid} screen="home" /> : <></>}
         </footer>
+        <div>
+            <Scroller cartoons={sampleCartoons}></Scroller>
+        </div>
     </div>
     )
 }

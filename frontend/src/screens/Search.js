@@ -4,7 +4,7 @@ import sampleShows from '../tests/sample_shows.json'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import Card from './Card'
+import Card from '../components/Card'
 
 import useResize from '../hooks/useCardResize.js'
 

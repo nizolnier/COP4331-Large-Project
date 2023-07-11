@@ -27,7 +27,7 @@ const Scroller = ({...props}) => {
         updateCartoons()
 
         // Update card widths
-        setCardWidth(Math.floor(100*(1/props.cartoonsPerPage)) + '%');
+        setCardWidth(Math.floor(100*(1/cartoonsPerPage)) + '%');
     }, [cartoonsPerPage])
 
     useEffect(() => {
