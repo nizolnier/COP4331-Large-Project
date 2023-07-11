@@ -9,8 +9,10 @@ export function useProtectedPage() {
     const token = 'idk what we are using for token lol'
 
     if (!token) {
+
       navigate.push("/login")
     }
 
-  }, [navigate]);
+  }, [navigate])
+
 }

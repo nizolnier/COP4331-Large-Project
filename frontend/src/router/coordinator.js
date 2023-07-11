@@ -20,3 +20,15 @@ export const goToCartoon = (nav, id) => {
 export const goToProfile = (nav, id) => {
     nav(`/user/${id}`)
 }
+
+export const goToForgot = (nav) => {
+    nav("/forgot-password")
+}
+export const goToVerify = (nav) => {
+    nav("/verification-code")
+}
+
+export const goToReset = (nav) => {
+    nav("/reset-password")
+}
+

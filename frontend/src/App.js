@@ -1,6 +1,8 @@
+
 import { useState } from 'react'
 import Router from './router/Router'
 import ToggleSBContext from './context/ToggleSBContext';
+import Router from './router/Router'
 
 const App = () => {
   const [toggle, setToggle] = useState(false)
