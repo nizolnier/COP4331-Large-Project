@@ -101,6 +101,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
 
     const userCur = await User.findOne({ email });
+    const verificationCur = await verification.findOne({email});
 
 
     if (!userCur) {
@@ -110,7 +111,16 @@ const forgotPassword = asyncHandler(async (req, res) => {
       return;
     }
 
+    if(verificationCur.expiredAt > Date.now()){
+      res.json({
+        error: "Code already sent, check your email inbox"
+      })
+      
+      return;
+    }
+    
     await verification.deleteMany({email});
+    
 
     const newVerification = await verification.create({
       username: req.body.username,
