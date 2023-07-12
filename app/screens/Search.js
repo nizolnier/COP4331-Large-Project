@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Button, SafeAreaView, StyleSheet, TextInput  } from 'react-native';
+import { View, Text, SafeAreaView, TextInput  } from 'react-native';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -9,10 +9,9 @@ const Search = ({navigation}) => {
         // Search bar
         navigation.setOptions({
             headerRight: ({ navigation, route, options }) => {
-              return <SafeAreaView style={styles.container}>
+              return <SafeAreaView>
                     <TextInput
                         placeholder="Type Here..."
-                        style={styles.input}
                     />
                 </SafeAreaView>
             },
@@ -25,19 +24,5 @@ const Search = ({navigation}) => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-    },
-    input: {
-        height: 40,
-        margin: 12,
-        width: '100%',
-        borderWidth: 0,
-        padding: 10,
-    },
-});
-
 
 export default Search;
