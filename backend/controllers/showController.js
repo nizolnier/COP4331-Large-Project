@@ -2,7 +2,7 @@ const Show = require("../models/showModel");
 const asyncHandler = require("express-async-handler");
 
 const GetShow = asyncHandler(async (req, res) => {
-  const { showid } = req.headers;
+  const { showid } = req.body;
 
   if (!showid) {
     res.status(400);
@@ -47,7 +47,7 @@ const updateShow = asyncHandler(async (req, res) => {
     total_ratings,
     average_ratings,
     num_of_favorites,
-  } = req.headers;
+  } = req.body;
 
   if (!showid) {
     res.status(400);
@@ -76,7 +76,7 @@ const updateShow = asyncHandler(async (req, res) => {
         : showCur.num_of_favorites,
     });
   } else {
-    res.status(200).json({ Error: "showid doesn't exist (most likely), or database error" });
+    res.status(200).json({ Error: "showid not exist (most likely), or database error" });
   }
 });
 

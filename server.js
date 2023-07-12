@@ -13,10 +13,7 @@ const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
-app.use('/Users', require('./backend/routes/userRoutes'))
-app.use('/Shows', require('./backend/routes/showRoutes'))
 
-//bypass cors protocol
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -29,6 +26,7 @@ app.use((req, res, next) => {
     )
     next();
 })
+
 
 
 app.use(express.static('frontend/build'))
@@ -58,3 +56,9 @@ const connectDB = async () => {
 }
 
 connectDB();
+
+// app.use(express.json())
+// app.use(express.urlencoded({extended: false}))
+
+app.use('', require('./backend/routes/userRoutes'))
+app.use('/', require('./backend/routes/showRoutes'))
