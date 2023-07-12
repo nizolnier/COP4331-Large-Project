@@ -36,7 +36,7 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props}/>
       <DrawerItem
-        label="Kanji"
+        label="Zain"
         icon={() => <Ionicons name="person-circle" size={72}/>}
         onPress={() => props.navigation.navigate("Home")}
       />

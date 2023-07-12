@@ -4,7 +4,6 @@ import { View, Text, Button, SafeAreaView, StyleSheet, TextInput  } from 'react-
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Search = ({navigation}) => {
-    const [search, updateSearch] = useState('');
 
     useEffect(() => {
         // Search bar
@@ -14,8 +13,6 @@ const Search = ({navigation}) => {
                     <TextInput
                         placeholder="Type Here..."
                         style={styles.input}
-                        onChangeText={updateSearch}
-                        value={search}
                     />
                 </SafeAreaView>
             },
