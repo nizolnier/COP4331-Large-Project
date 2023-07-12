@@ -7,11 +7,9 @@ import {
   createDrawerNavigator
 } from '@react-navigation/drawer';
 
-
 import { Button, Icon } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
-
 
 /* Screens */
 import Landing from './screens/Landing.js'
@@ -24,6 +22,7 @@ import Watchlist from './screens/Watchlist'
 import Reviews from './screens/Reviews'
 import VerificationCode from './screens/VerificationCode.js';
 import Cartoon from './screens/Cartoon.js';
+import Error from './screens/Error.js';
 
 /* Components */
 import LogoTitle from './components/LogoTitle'
@@ -144,6 +143,13 @@ const App = () => {
         <Drawer.Screen
             name="Verify"
             component={VerificationCode}
+            options={{
+              drawerItemStyle: { display: 'none' }
+            }}
+        />
+        <Drawer.Screen
+            name="Error"
+            component={Error}
             options={{
               drawerItemStyle: { display: 'none' }
             }}
