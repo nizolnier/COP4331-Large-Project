@@ -13,7 +13,6 @@ const showSchema = mongoose.Schema(
     total_ratings: {type: Number, require: [false, "please embedded a total ratings"]},
     average_ratings: {type: Number, require: [false, "please embedded avg rating"]},
     num_of_favorites: {type: Number, require: [false, "please embedded number of fav"]}},
-
   { timestamps: true }
 );
 
