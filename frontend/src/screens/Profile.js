@@ -18,8 +18,8 @@ const Profile = () => {
         userid: "1",
         numWatchlist: "244",
         numReviews: "67"
-
     }
+    
     const navigate = useNavigate()
     const { toggle } = useContext(ToggleSBContext)
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -27,13 +27,13 @@ const Profile = () => {
 
     return (
 
-        <div className="flex w-screen h-auto bg-[#1F1D36]">
+        <div className="flex bg-[#1F1D36] overflow-hidden">
             <div className="flex flex-col">
                 {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
             </div>
             
             <div className="w-1/6"></div>
-            <div className={`justify-center ${!isMobile ? 'w-5/6 ' : 'w-6/6'}`}>
+            <div className={`justify-center h-[100%] ${!isMobile ? 'w-5/6 ' : 'w-6/6'}`}>
                 
                 <div className="w-[100] h-[300px] bg-cover z-0"
                     style={{ backgroundImage: `linear-gradient(180deg, transparent 0%, #1F1D36 97%), url(${isMobile ? pm : pw})` }}>
