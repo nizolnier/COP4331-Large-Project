@@ -2,6 +2,9 @@ import { useRequestData } from '../hooks/useRequestData'
 import { useInView } from 'react-intersection-observer'
 import sampleShows from '../tests/sample_shows.json'
 import { useState, useEffect } from 'react'
+import SearchBar from '../components/Searchbar'
+import SideBar from '../components/Sidebar'
+import NavBar from '../components/NavBar'
 import axios from 'axios'
 
 import Card from '../components/Card'
@@ -89,11 +92,19 @@ const Search = () => {
     }
 
     return (
-        <div>
-            <div className='flex flex-row flex-wrap gap-4 p-4 justify-start'>
-                { results }
+        <div className='w-screen bg-[#1F1D36] text-white'>
+            <SideBar></SideBar>
+            <div className='container mx-auto lg:w-4/6 w-[55%]'>
+                <h1 className='py-5'>Search</h1>
+                <SearchBar></SearchBar>
+                <div className='flex flex-row flex-wrap gap-4 p-4 justify-start'>
+                    { results }
+                </div>
+                { isFetchingNextPage && <h3>Loading...</h3> }
+
+
             </div>
-            { isFetchingNextPage && <h3>Loading...</h3> }
+            <NavBar></NavBar>
         </div>
     )
 }
