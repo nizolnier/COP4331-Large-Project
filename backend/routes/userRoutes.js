@@ -4,9 +4,13 @@ const router = express.Router();
 const {
   AddUser,
   updateUser,
-  GetUser
+  GetUser,
+  UserVerify,
+  sendVerification,
+  forgotPassword
   } = require('../controllers/userControllers');
 
-  router.post("/AddUser", AddUser).post('/GetUser', GetUser).post('/forgotPassword', updateUser)
+  router.post("/signup", AddUser).post('/login', GetUser).post('/updateuser', updateUser).post('/verifyemail', UserVerify).post('/resendcode', sendVerification)
+  .post('/forgot-password', forgotPassword)
 
   module.exports = router;
