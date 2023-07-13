@@ -92,18 +92,24 @@ const Search = () => {
     }
 
     return (
-        <div className='w-screen bg-[#1F1D36] text-white'>
-            <SideBar></SideBar>
-            <div className='container mx-auto lg:w-4/6 w-[55%]'>
-                <h1 className='py-5'>Search</h1>
-                <SearchBar></SearchBar>
-                <div className='flex flex-row flex-wrap gap-4 p-4 justify-start'>
-                    { results }
-                </div>
-                { isFetchingNextPage && <h3>Loading...</h3> }
+        <div className='w-full bg-[#1F1D36] text-white'>
+            <div className='flex flex-row '>
 
+                <SideBar></SideBar> 
+                <div className='w-1/6'></div>
+                <div className='ml-5 w-5/6'>
+                    <h1 className='py-5'>Search</h1>
+                    <SearchBar></SearchBar>
+                    <div className='flex flex-row flex-wrap gap-4 p-4 justify-start'>
+                        { results }
+                    </div>
+                    { isFetchingNextPage && <h3>Loading...</h3> }
+
+
+                </div>
 
             </div>
+
             <NavBar></NavBar>
         </div>
     )
