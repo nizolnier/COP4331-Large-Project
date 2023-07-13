@@ -1,0 +1,7 @@
+.character {
+    background-color: rgb(196,196,196, 0.35);
+    border-radius: 30px;
+    color: white;
+    font-size: 0.875rem;
+    border-color: rgb(196,196,196, 0.35);
+}
