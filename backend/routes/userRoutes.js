@@ -7,10 +7,19 @@ const {
   GetUser,
   UserVerify,
   sendVerification,
-  forgotPassword
-  } = require('../controllers/userControllers');
+  forgotPassword,
+  addFavorite,
+  addWatchList,
+} = require("../controllers/userControllers");
 
-  router.post("/signup", AddUser).post('/login', GetUser).post('/updateuser', updateUser).post('/verifyemail', UserVerify).post('/resendcode', sendVerification)
-  .post('/forgot-password', forgotPassword)
+router
+  .post("/signup", AddUser)
+  .post("/login", GetUser)
+  .post("/updateuser", updateUser)
+  .post("/verifyemail", UserVerify)
+  .post("/resendcode", sendVerification)
+  .post("/forgot-password", forgotPassword)
+  .post("/addfavorite", addFavorite)
+  .post("/addwatchlist", addWatchList);
 
-  module.exports = router;
+module.exports = router;

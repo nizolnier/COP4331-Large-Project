@@ -1,9 +1,109 @@
 const User = require("../models/userModel");
+const Show = require("../models/showModel");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const verification = require("../models/verificationModel");
+const { json } = require("body-parser");
+
+const addFavorite = asyncHandler(async (req, res) => {
+  const { showid, username } = req.body;
+
+  try {
+    if (!username || !showid) {
+      res.status(400).json({
+        error: "please provide required fields",
+        username: username,
+        showid: showid,
+      });
+      return;
+    }
+    const userCur = await User.findOne({ username });
+
+    if (!userCur) {
+      res.status(400).json({
+        error: "user with " + username + " not found",
+      });
+
+      return;
+    }
+
+    const ifUpdated = await userCur.updateOne({
+      fav_cartoon: [...userCur.fav_cartoon, showid],
+    });
+
+    if(ifUpdated){
+      res.status(200).json({
+        updated_status: true,
+        update_field: "favorite_list",
+      });
+    }
+    else{
+      res.json({
+        error: `unable to update favorite_list for ${username}, internal server error`,
+        update_status: false
+      })
+
+      return;
+    }
+    
+  } catch (err) {
+    res.status(400).json({
+      error: err.message,
+    });
+  }
+});
+
+
+const addWatchList = asyncHandler(async (req, res) => {
+  const { showid, username } = req.body;
+
+  try {
+    if (!username || !showid) {
+      res.status(400).json({
+        error: "please provide required fields",
+        username: username,
+        showid: showid,
+      });
+      return;
+    }
+    const userCur = await User.findOne({ username });
+
+    if (!userCur) {
+      res.status(400).json({
+        error: "user with " + username + " not found",
+      });
+
+      return;
+    }
+
+    const ifUpdated = await userCur.updateOne({
+      watch_list: [...userCur.watch_list, showid],
+    });
+
+    if(ifUpdated){
+      res.status(200).json({
+        updated_status: true,
+        update_field: "favorite_list",
+      });
+    }
+    else{
+      res.json({
+        error: `unable to update favorite_list for ${username}, internal server error`,
+        update_status: false
+      })
+
+      return;
+    }
+  } catch (err) {
+    res.status(400).json({
+      error: err.message,
+    });
+  }
+});
+
+
 
 const AddUser = asyncHandler(async (req, res) => {
   const { username, password, email } = req.body;
@@ -52,12 +152,9 @@ const GetUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    res
-      .status(400)
-      .json({
-        Error:
-          "please provide required all fields (username, password)",
-      });
+    res.status(400).json({
+      Error: "please provide required all fields (username, password)",
+    });
     return;
   }
 
@@ -69,8 +166,6 @@ const GetUser = asyncHandler(async (req, res) => {
     });
     return;
   }
-
-  
 
   if (await bcrypt.compare(password, userCur.password)) {
     res.status(200).json({
@@ -101,8 +196,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
 
     const userCur = await User.findOne({ email });
-    const verificationCur = await verification.findOne({email});
-
+    const verificationCur = await verification.findOne({ email });
 
     if (!userCur) {
       res.json({
@@ -111,16 +205,15 @@ const forgotPassword = asyncHandler(async (req, res) => {
       return;
     }
 
-    if(verificationCur.expiredAt > Date.now()){
+    if (verificationCur.expiredAt > Date.now()) {
       res.json({
-        error: "Code already sent, check your email inbox"
-      })
-      
+        error: "Code already sent, check your email inbox",
+      });
+
       return;
     }
-    
-    await verification.deleteMany({email});
-    
+
+    await verification.deleteMany({ email });
 
     const newVerification = await verification.create({
       username: req.body.username,
@@ -139,7 +232,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
       return;
     }
-
 
     let transporter = nodemailer.createTransport({
       host: "smtp-mail.outlook.com",
@@ -167,18 +259,17 @@ const forgotPassword = asyncHandler(async (req, res) => {
         email: req.body.email,
         verified: userCur.verified,
         password: userCur.password,
-      }
+      },
     });
-
   } catch (err) {
     res.json({
-      error: err.message
-    })
+      error: err.message,
+    });
   }
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  const { username } = req.body;
+  const { username, email } = req.body;
 
   if (!username) {
     res
@@ -188,6 +279,7 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   const userCur = await User.findOne({ username });
+  
 
   if (userCur) {
     res.status(200).json({
@@ -336,4 +428,13 @@ const UserVerify = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { AddUser, GetUser, updateUser, UserVerify, sendVerification, forgotPassword };
+module.exports = {
+  AddUser,
+  GetUser,
+  updateUser,
+  UserVerify,
+  sendVerification,
+  forgotPassword,
+  addFavorite,
+  addWatchList
+};
