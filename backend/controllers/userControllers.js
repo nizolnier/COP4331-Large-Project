@@ -7,6 +7,142 @@ const nodemailer = require("nodemailer");
 const verification = require("../models/verificationModel");
 const { json } = require("body-parser");
 
+const deleteFavorite = asyncHandler(async (req, res) => {
+  const { showid, username } = req.body;
+
+  try {
+    if (!username || !showid) {
+      res.status(400).json({
+        error: "please provide required fields",
+        username: username,
+        showid: showid,
+      });
+      return;
+    }
+    const userCur = await User.findOne({ username });
+
+    if (!userCur) {
+      res.status(400).json({
+        error: "user with " + username + " not found",
+      });
+
+      return;
+    }
+
+    let curFavList = userCur.fav_cartoon;
+    const index = await curFavList.indexOf(showid.toString());
+
+    if (index < 0) {
+      res.json({
+        error: "selected item not found in the favorite_list",
+        username: username,
+        showid: showid,
+      });
+
+      return;
+    }
+
+    curFavList.splice(index, 1);
+
+    const ifUpdated = await User.findOneAndUpdate(
+      { username },
+      {
+        $set: {
+          fav_cartoon: curFavList,
+        },
+      }
+    );
+
+    if (ifUpdated) {
+      res.status(200).json({
+        updated_status: true,
+        update_field: "favorite_list",
+        username: username,
+        fav_cartoon: curFavList,
+      });
+    } else {
+      res.json({
+        error: `unable to update favorite_list for ${username} / Internal server error`,
+        update_status: false,
+      });
+
+      return;
+    }
+  } catch (err) {
+    res.status(400).json({
+      error: err.message,
+    });
+  }
+});
+
+const deleteWatchList = asyncHandler(async (req, res) => {
+  const { showid, username } = req.body;
+
+  try {
+    if (!username || !showid) {
+      res.status(400).json({
+        error: "please provide required fields",
+        username: username,
+        showid: showid,
+      });
+      return;
+    }
+    const userCur = await User.findOne({ username });
+
+    if (!userCur) {
+      res.status(400).json({
+        error: "user with " + username + " not found",
+      });
+
+      return;
+    }
+
+    let curWatchList = userCur.watch_list;
+    const index = curWatchList.indexOf(showid.toString());
+
+    if (index < 0) {
+      res.json({
+        error: "selected item not found in the watch_list",
+        username: username,
+        showid: showid,
+      });
+
+      return;
+    }
+
+    curWatchList.splice(index, 1);
+
+    const ifUpdated = await User.findOneAndUpdate(
+      { username },
+      {
+        $set: {
+          watch_list: curWatchList,
+        },
+      }
+    );
+
+    if (ifUpdated) {
+      res.status(200).json({
+        updated_status: true,
+        update_field: "watch_list",
+        username: username,
+        watch_list: curWatchList,
+      });
+    } else {
+      res.json({
+        error: `unable to update watch_list for ${username} / Internal server error`,
+        update_status: false,
+      });
+
+      return;
+    }
+  } catch (err) {
+    res.status(400).json({
+      error: err.message,
+    });
+  }
+});
+
 const addFavorite = asyncHandler(async (req, res) => {
   const { showid, username } = req.body;
 
@@ -33,28 +169,27 @@ const addFavorite = asyncHandler(async (req, res) => {
       fav_cartoon: [...userCur.fav_cartoon, showid],
     });
 
-    if(ifUpdated){
+    if (ifUpdated) {
       res.status(200).json({
         updated_status: true,
         update_field: "favorite_list",
+        username: username,
+        fav_cartoon: [...userCur.fav_cartoon, showid],
       });
-    }
-    else{
+    } else {
       res.json({
         error: `unable to update favorite_list for ${username}, internal server error`,
-        update_status: false
-      })
+        update_status: false,
+      });
 
       return;
     }
-    
   } catch (err) {
     res.status(400).json({
       error: err.message,
     });
   }
 });
-
 
 const addWatchList = asyncHandler(async (req, res) => {
   const { showid, username } = req.body;
@@ -82,17 +217,18 @@ const addWatchList = asyncHandler(async (req, res) => {
       watch_list: [...userCur.watch_list, showid],
     });
 
-    if(ifUpdated){
+    if (ifUpdated) {
       res.status(200).json({
         updated_status: true,
-        update_field: "favorite_list",
+        update_field: "watch_list",
+        username: username,
+        watch_list: [...userCur.watch_list, showid],
       });
-    }
-    else{
+    } else {
       res.json({
         error: `unable to update favorite_list for ${username}, internal server error`,
-        update_status: false
-      })
+        update_status: false,
+      });
 
       return;
     }
@@ -102,8 +238,6 @@ const addWatchList = asyncHandler(async (req, res) => {
     });
   }
 });
-
-
 
 const AddUser = asyncHandler(async (req, res) => {
   const { username, password, email } = req.body;
@@ -129,7 +263,6 @@ const AddUser = asyncHandler(async (req, res) => {
 
   //create user
   const newuser = await User.create({
-    //userid: req.body.userid,
     username: req.body.username,
     email: req.body.email,
     password: hashedpw,
@@ -269,32 +402,48 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  const { username, email } = req.body;
+  const { username, email, password } = req.body;
 
   if (!username) {
-    res
-      .status(400)
-      .json({ Error: "please provide required all fields (username)" });
+    res.status(400).json({ Error: "please provide required field (username)" });
     return;
   }
 
   const userCur = await User.findOne({ username });
-  
 
-  if (userCur) {
-    res.status(200).json({
-      message: "successfully updated user " + userCur.username,
-      email: req.body.email ? req.body.email : userCur.email,
-      password: req.body.password ? req.body.password : userCur.password,
-      userType: req.body.userType ? req.body.userType : userCur.userType,
-      fav_cartoon: [...req.body.fav_cartoon],
-      watch_list: [...req.body.watch_list],
+  if (!userCur) {
+    res.json({
+      error: `could not find ${username} / not exist`,
+      username: username,
+    });
+
+    return;
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedpw = await bcrypt.hash(password, salt);
+
+  const ifUpdated = await User.findOneAndUpdate(
+    { username },
+    {
+      $set: {
+        email: email ? email : userCur.email,
+        password: password ? hashedpw : userCur.password,
+      },
+    }
+  );
+
+  if (ifUpdated) {
+    res.json({
+      update_status: true,
+      username: username,
+      email: email ? email : userCur.email,
+      password: password ? hashedpw : userCur.password,
     });
   } else {
-    res
-      .status(200)
-      .json({ Error: "User not exist (most likely), or database error" });
-    return;
+    res.json({
+      error: "Unable to update database / Internal server error",
+    });
   }
 });
 
@@ -436,5 +585,7 @@ module.exports = {
   sendVerification,
   forgotPassword,
   addFavorite,
-  addWatchList
+  addWatchList,
+  deleteFavorite,
+  deleteWatchList
 };

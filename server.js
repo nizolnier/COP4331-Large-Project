@@ -61,4 +61,4 @@ connectDB();
 // app.use(express.urlencoded({extended: false}))
 
 app.use('', require('./backend/routes/userRoutes'))
-app.use('/', require('./backend/routes/showRoutes'))
+app.use('', require('./backend/routes/showRoutes'))

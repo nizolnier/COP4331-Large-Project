@@ -10,6 +10,8 @@ const {
   forgotPassword,
   addFavorite,
   addWatchList,
+  deleteFavorite,
+  deleteWatchList
 } = require("../controllers/userControllers");
 
 router
@@ -20,6 +22,8 @@ router
   .post("/resendcode", sendVerification)
   .post("/forgot-password", forgotPassword)
   .post("/addfavorite", addFavorite)
-  .post("/addwatchlist", addWatchList);
+  .post("/addwatchlist", addWatchList)
+  .post("/deletefavoritelist", deleteFavorite)
+  .post("/deletewatchlist", deleteWatchList);
 
 module.exports = router;
