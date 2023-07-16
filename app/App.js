@@ -24,6 +24,7 @@ import VerificationCode from './screens/VerificationCode.js';
 import Cartoon from './screens/Cartoon.js';
 import Error from './screens/Error.js';
 import ForgotPassword from './screens/ForgotPassword'
+import ResetPassword from './screens/ResetPassword.js';
 
 /* Components */
 import LogoTitle from './components/LogoTitle'
@@ -70,6 +71,11 @@ function CustomDrawerContent(props) {
         label="Login"
         icon={() => <Ionicons name="person-outline" />}
         onPress={() => props.navigation.navigate("Login")}
+      />
+      <DrawerItem
+        label="Reset Password (temporary)"
+        icon={() => <Ionicons name="lock-closed-outline" />}
+        onPress={() => props.navigation.navigate("ResetPassword")}
       />
     </DrawerContentScrollView>
   );
@@ -164,6 +170,13 @@ const App = () => {
         <Drawer.Screen
             name="ForgotPassword"
             component={ForgotPassword}
+            options={{
+              drawerItemStyle: { display: 'none' }
+            }}
+        />
+        <Drawer.Screen
+            name="ResetPassword"
+            component={ResetPassword}
             options={{
               drawerItemStyle: { display: 'none' }
             }}

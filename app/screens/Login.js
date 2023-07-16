@@ -40,15 +40,15 @@ const Login = () => {
                 <View className={'mx-auto'}>
                     <LogoSVG/>
                 </View>
-                <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl'}>Login</Text>
+                <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl font-bold '}>Login</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>Please sign in to continue.</Text>
                 <View className={'h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 '}>
                     <Ionicons name="person" color={'white'}></Ionicons>
-                    <TextInput onChangeText={onChangeLogin} value={login} placeholder={'Login'} className={'px-4 text-textDark'}/>
+                    <TextInput onChangeText={onChangeLogin} value={login} placeholder={'Login'} className={'w-full px-4 pr-12 text-textDark'}/>
                 </View>
                 <View className={'h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-4 mb-8'}>
                     <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
-                    <TextInput secureTextEntry={!isPasswordVisible} nChangeText={onChangePassword} placeholder={'Password'} className={'px-4 text-textDark'}/>
+                    <TextInput secureTextEntry={!isPasswordVisible} nChangeText={onChangePassword} placeholder={'Password'} className={'w-full px-4 text-textDark pr-12'}/>
                     <View className={'absolute right-4'}>
                         <Ionicons color="white" onPress={togglePasswordVisibility} name={isPasswordVisible ? 'eye-outline' : 'eye-off-outline'}></Ionicons>
                     </View>

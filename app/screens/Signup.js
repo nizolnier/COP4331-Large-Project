@@ -10,7 +10,7 @@ import { Link } from '@react-navigation/native';
 
 const bgColor = '#1F1D36'
 
-const Signup = () => {
+const Signup = ({navigation}) => {
     const [login, onChangeSignup] = useState('')
     const [email, onChangeEmail] = useState('')
     const [password, onChangePassword] = useState('')
@@ -27,7 +27,7 @@ const Signup = () => {
     }, [login])
 
     const onPressSignup = () => {
-
+        navigation.navigate('Verify')
     }
 
     return (
@@ -38,23 +38,23 @@ const Signup = () => {
                 <View className={'mx-auto'}>
                     <LogoSVG/>
                 </View>
-                <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl'}>Signup</Text>
+                <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl font-bold'}>Signup</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>Create an account to continue.</Text>
                 <View className={'h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-1'}>
                     <Ionicons name="person" color={'white'}></Ionicons>
-                    <TextInput onChangeText={onChangeSignup} value={login} placeholder={'Signup'} className={'px-4 text-textLight'}/>
+                    <TextInput onChangeText={onChangeSignup} value={login} placeholder={'Signup'} className={'w-full px-4 pr-12 text-textLight'}/>
                 </View>
                 <View className={'h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-1 text-textLight'}>
                     <Ionicons name="mail-outline" color={'white'}></Ionicons>
-                    <TextInput onChangeText={onChangeEmail} value={email} placeholder={'Email'} className={'px-4 text-textLight'}/>
+                    <TextInput onChangeText={onChangeEmail} value={email} placeholder={'Email'} className={'w-full px-4 pr-12 text-textLight'}/>
                 </View>
                 <View className={'h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-1 text-textLight'}>
                     <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
-                    <TextInput secureTextEntry={true} onChangeText={onChangePassword} value={password} placeholder={'Password'} className={'px-4 text-textLight'}/>
+                    <TextInput secureTextEntry={true} onChangeText={onChangePassword} value={password} placeholder={'Password'} className={'w-full px-4 pr-12 text-textLight'}/>
                 </View>
                 <View className={'h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-1 text-textLight'}>
                     <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
-                    <TextInput secureTextEntry={true} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder={'Confirm Password'} className={'px-4 text-textLight'}/>
+                    <TextInput secureTextEntry={true} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder={'Confirm Password'} className={'w-full px-4 pr-12 text-textLight'}/>
                 </View>
                 <Pressable title="Signup" onPress={onPressSignup} className={'w-1/3 bg-pinkLight rounded-full p-2 my-1 mt-4 text-center mx-auto text-xl'}>
                     <Text className={'text-center  text-lg font-bold'}>Signup</Text>
