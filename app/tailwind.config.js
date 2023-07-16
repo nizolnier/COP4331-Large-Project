@@ -9,9 +9,6 @@ module.exports = {
         'pinkLight': '#E9A6A6',
         'pinkDark': '#9C4A8B',
         'textLight': '#FFF'
-      },
-      fontFamily: {
-        'sans': ['Open Sans']
       }
     },
   },
