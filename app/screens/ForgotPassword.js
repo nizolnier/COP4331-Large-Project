@@ -26,7 +26,7 @@ const ForgotPassword = () => {
         <View>
             <Image source={require('../assets/bg-mobile.png')} className='h-full w-full bg-gradient-to-b from-bgDark z-1 absolute top-0'/>
             <LinearGradient colors={['transparent', bgColor]} locations={[0.1, 0.6]}className='absolute h-full w-full z-2'/>
-            <View className={'flex flex-column justify-center h-full w-full mx-auto mt-10'}>
+            <View className={'flex flex-column justify-end h-full w-full mx-auto  pb-12'}>
                 <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl font-bold'}>Forgot Password?</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>Don't worry! It happens.</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>Please enter the email associated with your account.</Text>

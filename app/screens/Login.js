@@ -36,7 +36,7 @@ const Login = () => {
         <View>
             <Image source={require('../assets/bg-mobile.png')} className='h-full w-full bg-gradient-to-b from-bgDark z-1 absolute top-0'/>
             <LinearGradient colors={['transparent', bgColor]} locations={[0.1, 0.6]}className='absolute h-full w-full z-2'/>
-            <View className={'flex flex-column justify-center h-full w-full mx-auto mt-10'}>
+            <View className={'flex flex-column justify-end h-full w-full mx-auto pb-12'}>
                 <View className={'mx-auto'}>
                     <LogoSVG/>
                 </View>
