@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Home = ({navigation}) => {
 
-    React.useEffect(() => {
+    useEffect(() => {
         // Use `setOptions` to update the button that we previously specified
         navigation.setOptions({
             headerRight: () => (
@@ -12,6 +12,8 @@ const Home = ({navigation}) => {
             ),
         });
     }, [navigation]);
+
+
 }
 
 export default Home;

@@ -78,6 +78,7 @@ const App = () => {
             component={Landing}
             options={{
               headerShown: false,
+              swipeEnabled: false,
               drawerItemStyle: { display: 'none' }
             }}
         />
