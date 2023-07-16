@@ -23,6 +23,7 @@ import Reviews from './screens/Reviews'
 import VerificationCode from './screens/VerificationCode.js';
 import Cartoon from './screens/Cartoon.js';
 import Error from './screens/Error.js';
+import ForgotPassword from './screens/ForgotPassword'
 
 /* Components */
 import LogoTitle from './components/LogoTitle'
@@ -64,6 +65,11 @@ function CustomDrawerContent(props) {
         label="Reviews"
         icon={() => <Feather name="align-left" />}
         onPress={() => props.navigation.navigate("Reviews")}
+      />
+      <DrawerItem
+        label="Login"
+        icon={() => <Ionicons name="person-outline" />}
+        onPress={() => props.navigation.navigate("Login")}
       />
     </DrawerContentScrollView>
   );
@@ -151,6 +157,13 @@ const App = () => {
         <Drawer.Screen
             name="Error"
             component={Error}
+            options={{
+              drawerItemStyle: { display: 'none' }
+            }}
+        />
+        <Drawer.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
             options={{
               drawerItemStyle: { display: 'none' }
             }}

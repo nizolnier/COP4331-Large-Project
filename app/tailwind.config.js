@@ -8,7 +8,8 @@ module.exports = {
         'bgLight': '#3D3B54',
         'pinkLight': '#E9A6A6',
         'pinkDark': '#9C4A8B',
-        'textLight': '#FFF'
+        'textLight': '#FFFFFF',
+        'textDark': 'rgba(255,255,255,0.6)'
       }
     },
   },

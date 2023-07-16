@@ -15,9 +15,9 @@ const Landing = ({navigation}) => {
                 <View className={'mx-auto'}>
                     <LogoSVG/>
                 </View>
-                <Text className={'text-textLight text-center w-3/5 mx-auto pb-12 pt-4 font-sans text-xl'}>Track cartoons you've watched. Save those you want to see. Tell your friends what's fire.</Text>
+                <Text className={'text-textLight text-center w-3/5 mx-auto pb-12 pt-4 text-xl'}>Track cartoons you've watched. Save those you want to see. Tell your friends what's fire.</Text>
                 <Pressable title="Get Started" onPress={() => navigation.navigate('Signup')} className={'w-1/3 bg-pinkLight rounded-full p-2 text-center mx-auto  text-xl'}>
-                    <Text className={'text-center  text-lg font-bold'}>Get Started</Text>
+                    <Text className={'text-center  text-lg font-bold text-bgDark'}>Get Started</Text>
                 </Pressable>
             </View>
         </View>
