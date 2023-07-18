@@ -282,7 +282,7 @@ const AddUser = asyncHandler(async (req, res) => {
 });
 
 const GetUser = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, authUser } = req.body;
 
   if (!username || !password) {
     res.status(400).json({
@@ -293,7 +293,25 @@ const GetUser = asyncHandler(async (req, res) => {
 
   const userCur = await User.findOne({ username });
 
-  if (userCur && !userCur.verified) {
+  if (!userCur) {
+    res.json({
+      error: username + " not found / not exist",
+    });
+
+    return;
+  }
+
+  // if(authUser.username != username)     //bypass token checking, uncomment to make it work
+  // {
+  //   res.json({
+  //     error: "Wrong token for user " + username + ", please double check"
+
+  //   })
+
+  //   return;
+  // }
+
+  if (!userCur.verified) {
     res.json({
       error: `${username} not verified, please check your email inbox and complete the verification process`,
     });
@@ -309,6 +327,7 @@ const GetUser = asyncHandler(async (req, res) => {
       userType: userCur.userType,
       fav_cartoon: userCur.fav_cartoon,
       watch_list: userCur.watch_list,
+      token: userCur.token,
     });
   } else {
     res.status(400).json({ Error: "invalid credentials/user not exist" });
@@ -506,6 +525,7 @@ const sendVerification = asyncHandler(async (req, res) => {
         email: req.body.email,
         verified: false,
       },
+      token: userCur.token,
     });
   } catch (err) {
     res.json({
@@ -559,7 +579,17 @@ const UserVerify = asyncHandler(async (req, res) => {
 
       return;
     } else {
-      await User.updateOne({ username: username }, { verified: true });
+      const usercur = await User.findOne({ username });
+
+      await User.updateOne(
+        { username: username },
+        {
+          $set: {
+            verified: true,
+            token: genereteToken(usercur),
+          },
+        }
+      );
       await verification.deleteMany({ username });
 
       res.json({
@@ -577,6 +607,10 @@ const UserVerify = asyncHandler(async (req, res) => {
   }
 });
 
+const genereteToken = (user) => {
+  return jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+};
+
 module.exports = {
   AddUser,
   GetUser,
@@ -587,5 +621,5 @@ module.exports = {
   addFavorite,
   addWatchList,
   deleteFavorite,
-  deleteWatchList
+  deleteWatchList,
 };

@@ -102,6 +102,4 @@ const updateShow = asyncHandler(async (req, res) => {
 });
 
 
-
-
 module.exports = { GetShow, updateShow };
