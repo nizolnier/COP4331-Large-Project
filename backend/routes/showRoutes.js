@@ -8,6 +8,6 @@ const {
   } = require('../controllers/showController');
 
   router.post("/GetShow", GetShow).post('/UpdateShow', updateShow)
-  router.get("/Search", SearchShows)
+  router.post("/search", SearchShows)
 
   module.exports = router;

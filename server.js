@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require("cors")
 const dotenv = require("dotenv")
 const mongoose = require('mongoose')
+const path = require('path')
 
 dotenv.config()
 
@@ -27,16 +28,17 @@ app.use((req, res, next) => {
     next();
 })
 
-
-
 app.use(express.static('frontend/build'))
+
+app.get('/search', require('./backend/controllers/searchShows'))
+
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 })
 
 //listening on port
-app.listen(PORT, () => {
-    console.log('Server listening on port ' + PORT);
+app.listen(PORT || 3000, () => {
+    console.log('Server listening on port ' + (PORT || 3000));
 })
 
 
@@ -55,7 +57,7 @@ const connectDB = async () => {
     }
 }
 
-connectDB();
+// connectDB();
 
 // app.use(express.json())
 // app.use(express.urlencoded({extended: false}))
