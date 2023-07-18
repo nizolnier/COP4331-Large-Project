@@ -32,4 +32,4 @@ const SearchShows = asyncHandler(async (req, res) => {
   }
 });
 
-export default SearchShows;
+module.exports = SearchShows;
