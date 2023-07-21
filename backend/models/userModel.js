@@ -8,7 +8,8 @@ const userSchema = mongoose.Schema({
   userType: {type: Number, default: 1, require: [true, "please add a userType(1-regular, 2-admin)"]},
   fav_cartoon: {type : Array , default : [] },
   watch_list: {type : Array , default : [] },
-  verified: {type: Boolean, default : false}
+  verified: {type: Boolean, default : false},
+  token: {type: String, default: ""}
 }, {timestamps: true});
 
 
