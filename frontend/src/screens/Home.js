@@ -22,7 +22,7 @@ const Home = () => {
     useProtectedPage()
 
     return (
-        <div className="w-screen bg-[#1F1D36] text-white" >
+        <div className="w-screen bg-[#1F1D36] min-h-screen text-white" >
             <div>
                 {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
             </div>
