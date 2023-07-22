@@ -1,8 +1,9 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Button, SafeAreaView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import CartoonScroller from '../components/CartoonScroller';
+import ReviewList from '../components/ReviewList';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const DATA = [
@@ -21,6 +22,22 @@ const DATA = [
         "avgrating": 0,
         "nfavorites": 0,
         "description": "A square yellow sponge named SpongeBob SquarePants lives in a pineapple with his pet snail, Gary, in the city of Bikini Bottom on the floor of the Pacific Ocean."
+    },
+    {
+        "_id": "64a744d662d4733a9c26c612",
+        "title": "Bojack Horseman",
+        "picture": "https://m.media-amazon.com/images/M/MV5BYWQwMDNkM2MtODU4OS00OTY3LTgwOTItNjE2Yzc0MzRkMDllXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SY1000_CR0,0,675,1000_AL_.jpg",
+        "director": "Raphael Bob-Waksberg",
+        "genre": [
+            "Drama",
+            "Comedy"
+        ],
+        "year": 2014,
+        "nrating": 0,
+        "trating": 0,
+        "avgrating": 0,
+        "nfavorites": 0,
+        "description": "A humanoid horse, BoJack Horseman -- lost in a sea of self-loathing and booze -- decides it's time for a comeback. Once the star of a '90s sitcom, in which he was the adoptive father of three orphaned kids (two girls and a boy)."
     },
     {
         "_id": "64a7442062d4733a9c26c60f",
@@ -68,22 +85,6 @@ const DATA = [
         "avgrating": 0,
         "nfavorites": 0,
         "description": "Twins Dipper and Mabel Pines are sent to spend the summer with their great-uncle, Grunkle Stan, in the mysterious town of Gravity Falls, Ore."
-    },
-    {
-        "_id": "64a744d662d4733a9c26c612",
-        "title": "Bojack Horseman",
-        "picture": "https://m.media-amazon.com/images/M/MV5BYWQwMDNkM2MtODU4OS00OTY3LTgwOTItNjE2Yzc0MzRkMDllXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SY1000_CR0,0,675,1000_AL_.jpg",
-        "director": "Raphael Bob-Waksberg",
-        "genre": [
-            "Drama",
-            "Comedy"
-        ],
-        "year": 2014,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "A humanoid horse, BoJack Horseman -- lost in a sea of self-loathing and booze -- decides it's time for a comeback. Once the star of a '90s sitcom, in which he was the adoptive father of three orphaned kids (two girls and a boy)."
     },{
         "_id": "64a7437b62d4ASfaASc26c60e",
         "title": "Spongebob Squarepants",
@@ -165,9 +166,43 @@ const DATA = [
     },
 ]
 
-const Home = ({navigation}) => {
+const sampleReviews = [
+    {
+        "_id": "1",
+        "cartoon_id": "1",
+        "user_id": "1",
+        "comment": "huge slay",
+        "rating": "4",
+        "fav": "true"
+    }, 
+    {
+        "_id": "2",
+        "cartoon_id": "1",
+        "user_id": "1",
+        "comment": "huge slay",
+        "rating": "4",
+        "fav": "true"
+    }, 
+    {
+        "_id": "3",
+        "cartoon_id": "1",
+        "user_id": "1",
+        "comment": "huge slay",
+        "rating": "4",
+        "fav": "true"
+    }
+]
 
-    React.useEffect(() => {
+const Home = ({navigation}) => {
+    // TESTING PURPOSES ONLY
+    const [user, setUser] = useState({
+        username: "Zain",
+        email: "zain@gmail.com",
+        fav_cartoon: DATA,
+        watch_list: DATA,
+    })
+
+    useEffect(() => {
         // Use `setOptions` to update the button that we previously specified
         navigation.setOptions({
             headerRight: () => (
@@ -177,11 +212,13 @@ const Home = ({navigation}) => {
     }, [navigation]);
 
     return (
-        <SafeAreaView className="flex-1 bg-[#1F1D36]">
+        <SafeAreaView className="flex-1 bg-[#1F1D36] p-4">
             <ScrollView>
-                <CartoonScroller cartoons={DATA} title="Most Popular"/>
-                <CartoonScroller cartoons={DATA} title="Watchlist"/>
-                <CartoonScroller cartoons={DATA} title="Recently Reviewed"/>
+                <Text className="text-white font-bold text-lg">Hello, <Text className="text-rose-300">{user.username}</Text>!</Text>
+                <Text className="text-white">Review or track cartoons you've watched...</Text>
+                <CartoonScroller cartoons={DATA} title="Popular Cartoons This Month"/>
+                <CartoonScroller cartoons={DATA} title="My Watchlist"/>
+                <ReviewList reviews={sampleReviews} title="Recent Reviews"/> 
             </ScrollView>
         </SafeAreaView>
     )

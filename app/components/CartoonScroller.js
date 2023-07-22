@@ -6,10 +6,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 const Card = (props) => {
     const cartoon = props.cartoon;
 
+    // change this to change card size
+    const cardWidth = 24;
+    // image aspect ratio is currently 2:3
+    const imageAspectRatio = '2/3';
+
     return (
-        <View className={"w-32 mx-1"}>
-            <Image src={cartoon.picture} className="h-5/6 rounded-xl" onPress={props.onPress} resizeMode="contain"/>
-            <View className="flex flex-row my-1 justify-center items-center">
+        <View className={`mx-2 w-${cardWidth} flex flex-col`}>
+            <Image src={cartoon.picture} className={`rounded-xl w-full h-auto aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
+            <View className="flex flex-row mt-1 justify-center items-center grow">
                 <Text className="text-white pl-2 pr-1">{cartoon.nfavorites}</Text>
                 <Ionicons name="heart" color="red"></Ionicons>
                 <Text className="text-white pl-2 pr-1">{cartoon.nrating}</Text>
@@ -29,16 +34,20 @@ const CartoonScroller = (props) => {
 
     const renderItem = ({item}) => {
         return (
-          <Card
+            <Card
             cartoon={item}
             onPress={() => setSelectedCartoon(item)}
-          />
+            />
         );
-      };
+    };
+
+    const title = () => {
+        return <Text className="text-white pb-4 font-bold">{props.title}</Text>
+    }
 
     return (
-        <SafeAreaView className={"flex flex-1 h-64"}>
-            <Text className="text-white">{props.title}</Text>
+        <SafeAreaView className={"flex flex-1"}>
+            {props.cartoons.length ? <Text className="text-white pb-4 font-bold">{props.title}</Text> : null}
             <FlatList
                 data={props.cartoons}
                 renderItem={renderItem}
