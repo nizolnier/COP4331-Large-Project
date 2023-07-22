@@ -3,7 +3,9 @@ import { View, Text, Image, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const Card = (props) => {
+import CardRating from './CardRating';
+
+const Card = ({navigation, ...props}) => {
     const cartoon = props.cartoon;
 
     // change this to change card size
@@ -14,13 +16,7 @@ const Card = (props) => {
     return (
         <View className={`mx-2 w-${cardWidth} flex flex-col`}>
             <Image src={cartoon.picture} className={`rounded-xl w-${cardWidth} h-auto aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
-            <View className="flex flex-row mt-1 justify-center items-center grow">
-                <Text className="text-white pl-2 pr-1">{cartoon.nfavorites}</Text>
-                <Ionicons name="heart" color="red"></Ionicons>
-                <Text className="text-white pl-2 pr-1">{cartoon.nrating}</Text>
-                <Ionicons name="star" color="yellow"></Ionicons>
-                <Text className="text-white pl-2 pr-1">{cartoon.avgrating} %</Text>
-            </View>
+            <CardRating avgRating={cartoon.avgrating} numRatings={cartoon.nrating}/>
         </View>
     )
 }
