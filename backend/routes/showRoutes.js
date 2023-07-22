@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const SearchShows = require('../controllers/searchShows')
+const SearchCartoons = require('../controllers/searchCartoons')
 
 const {
   GetShow,
@@ -8,6 +8,6 @@ const {
   } = require('../controllers/showController');
 
   router.post("/GetShow", GetShow).post('/UpdateShow', updateShow)
-  router.post("/search", SearchShows)
+  router.post("/search", SearchCartoons)
 
   module.exports = router;

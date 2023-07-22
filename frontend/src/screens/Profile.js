@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useMediaQuery } from 'react-responsive';
 import Scroller from '../components/Scroller'
-import sampleCartoons from '../tests/sample_shows.json'
+import sampleCartoons from '../tests/sample_cartoons.json'
 import Header from '../components/Header'
 
 const Profile = () => {

@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 
 app.use(express.static('frontend/build'))
 
-app.get('/search', require('./backend/controllers/searchShows'))
+app.get('/search', require('./backend/controllers/searchCartoons'))
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
