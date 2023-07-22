@@ -27,22 +27,22 @@ const ReviewCard = (props) => {
     const user = props.user;
     const cartoon = props.cartoon;
 
-    // change this to change card size
-    const cardHeight = 2;
+    // change this to change image size
+    const imageWidth = 12;
     // image aspect ratio is currently 2:3
     // we'll also need to change this to user picture i think
     const imageAspectRatio = '2/3';
 
     return (
-        <View className={`my-2 w-full h-${cardHeight} flex flex-row bg-[#E9A6A60D] rounded-xl p-4`}>
-            <Image src={cartoon.picture} className={`rounded-xl h-full w-auto aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
-            <View className={'flex flex-col pl-2'}>
+        <View className={`my-2 w-full flex flex-row bg-[#E9A6A60D] rounded-xl p-4`} key={review._id}>
+            <Image src={cartoon.picture} className={`rounded-xl h-auto w-${imageWidth} aspect-[${imageAspectRatio}]`} onPress={props.onPress} resizeMode="contain"/>
+            <View className={`flex flex-col pl-2 shrink`}>
                 <Text className="text-white font-bold">{cartoon.title}</Text>
                 <View className={"flex flex-row"}>
                     <Text className="text-gray-500 pr-2">Review by <Text className="text-rose-300">{user.username}</Text></Text>
                     <Rating/>
                 </View>
-                <Text className="text-white pt-2">{review.comment}</Text>
+                <Text className={`text-white pt-2`}>{review.comment}</Text>
             </View>
         </View>
     )
@@ -63,14 +63,27 @@ const ReviewList = (props) => {
 
     const renderItem = ({item}) => {
         return (
-          <ReviewCard
-            review={item}
-            cartoon={cartoon}
-            user={user}
-            onPress={() => setSelected(item)}
-          />
+            <ReviewCard
+                review={item}
+                cartoon={cartoon}
+                user={user}
+                onPress={() => setSelected(item)}
+            />
         );
       };
+
+    const Reviews = () => {
+        return props.reviews.map((review) => {
+            return (
+                <ReviewCard
+                    review={review}
+                    cartoon={cartoon}
+                    user={user}
+                    onPress={() => setSelected(item)}
+                />
+            );
+        })
+    }
     
     const Header = () => {
         return <Text className="text-white pb-4 font-bold">{props.title}</Text>
@@ -78,14 +91,10 @@ const ReviewList = (props) => {
 
     return (
         <SafeAreaView className={"flex flex-1"}>
-            {props.reviews.length ? <Header/> : null}
-            <FlatList
-                data={props.reviews}
-                renderItem={renderItem}
-                keyExtractor={item => item._id}
-                extraData={selected}
-                indicatorStyle="white"
-            />
+            <Header/>
+            <View className="flex flex-col">
+                <Reviews/>
+            </View>
         </SafeAreaView>
     )
 }

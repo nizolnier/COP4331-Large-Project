@@ -171,7 +171,7 @@ const sampleReviews = [
         "_id": "1",
         "cartoon_id": "1",
         "user_id": "1",
-        "comment": "huge slay",
+        "comment": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         "rating": "4",
         "fav": "true"
     }, 
@@ -213,7 +213,7 @@ const Home = ({navigation}) => {
 
     return (
         <SafeAreaView className="flex-1 bg-[#1F1D36] p-4">
-            <ScrollView>
+            <ScrollView scrollEnabled={true}>
                 <Text className="text-white font-bold text-lg">Hello, <Text className="text-rose-300">{user.username}</Text>!</Text>
                 <Text className="text-white">Review or track cartoons you've watched...</Text>
                 <CartoonScroller cartoons={DATA} title="Popular Cartoons This Month"/>

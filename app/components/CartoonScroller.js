@@ -13,7 +13,7 @@ const Card = (props) => {
 
     return (
         <View className={`mx-2 w-${cardWidth} flex flex-col`}>
-            <Image src={cartoon.picture} className={`rounded-xl w-full h-auto aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
+            <Image src={cartoon.picture} className={`rounded-xl w-${cardWidth} h-auto aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
             <View className="flex flex-row mt-1 justify-center items-center grow">
                 <Text className="text-white pl-2 pr-1">{cartoon.nfavorites}</Text>
                 <Ionicons name="heart" color="red"></Ionicons>
@@ -41,13 +41,13 @@ const CartoonScroller = (props) => {
         );
     };
 
-    const title = () => {
+    const Header = () => {
         return <Text className="text-white pb-4 font-bold">{props.title}</Text>
     }
 
     return (
         <SafeAreaView className={"flex flex-1"}>
-            {props.cartoons.length ? <Text className="text-white pb-4 font-bold">{props.title}</Text> : null}
+            <Header/>
             <FlatList
                 data={props.cartoons}
                 renderItem={renderItem}
