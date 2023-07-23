@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 
 
-const getTokenData = token => jwt.verify(token, process.env.JWT_KEY)
+export const getTokenData = token => jwt.verify(token, process.env.JWT_KEY)
 
 export const generateToken = (username, id) => {
     const token = jwt.sign(
