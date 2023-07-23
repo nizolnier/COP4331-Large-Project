@@ -122,7 +122,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/username`, authMiddleware, async (req, res) => {
+    app.get(`${routeBase}/oneuser`, authMiddleware, async (req, res) => {
         const expectedParamKeys = [
             "username"
         ]
@@ -160,7 +160,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/email`, async (req, res) => {
+    app.get(`${routeBase}/oneemail`, async (req, res) => {
         const expectedParamKeys = [
             "email"
         ]
