@@ -27,20 +27,6 @@ app.use((req, res, next) => {
     next();
 })
 
-
-
-app.use(express.static('frontend/build'))
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-})
-
-//listening on port
-app.listen(PORT, () => {
-    console.log('Server listening on port ' + PORT);
-})
-
-
-//connect DB
 const connectDB = async () => {
     try{
         const conn = await mongoose.connect(URL, {
@@ -55,4 +41,18 @@ const connectDB = async () => {
     }
 }
 
-connectDB();
+connectDB()
+
+
+app.use(express.static('frontend/build'))
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+})
+
+//listening on port
+app.listen(PORT, () => {
+    console.log('Server listening on port ' + PORT);
+})
+
+let api = require('./api.js')
+api.setApp( app, client )
