@@ -2,6 +2,7 @@ const requestUtilities = require("../utilities/requestUtilities")
 const jwtUtilities = require("../utilities/jwtUtilities")
 const User = require("../models/userModel")
 const Verification = require("../models/verificationModel")
+const authMiddleware = require("../middlewares/auth")
 
 export default (app, routeBase) => {
 
@@ -121,45 +122,39 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/username`, async (req, res, next) => {
-        if (!jwtUtilities.verifyAuthorizationRequest(req.headers)) {
-            res.status(401).send({
-                error: "Invalid authorization headers, invalid / non existing token data."
+    app.get(`${routeBase}/username`, authMiddleware, async (req, res, next) => {
+        const expectedParamKeys = [
+            "username"
+        ]
+
+        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
             })
         } else {
-            const expectedParamKeys = [
-                "username"
-            ]
+            const {
+                username
+            } = req.params
 
-            const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+            const userExists = User.findOne({ username })
 
-            if (missingParameterKeys.length > 0) {
-                res.status(422).send({
-                    error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+            if (!userExists) {
+                res.status(404).send({
+                    error: 'The user does not exist',
                     found: false
                 })
             } else {
-                const {
-                    username
-                } = req.params
-
-                const userExists = User.findOne({ username })
-
-                if (!userExists) {
-                    res.status(404).send({
-                        error: 'The user does not exist',
-                        found: false
-                    })
-                } else {
-                    res.status(200).send({
-                        found: true,
-                        username: userExists.username,
-                        name: userExists.name,
-                        favcartoons: userExists.favcartoons,
-                        watchlist: userExists.watchlist,
-                        twatched: userExists.twatched
-                    })
-                }
+                res.status(200).send({
+                    found: true,
+                    username: userExists.username,
+                    name: userExists.name,
+                    favcartoons: userExists.favcartoons,
+                    watchlist: userExists.watchlist,
+                    twatched: userExists.twatched
+                })
             }
         }
     })
