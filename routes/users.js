@@ -18,7 +18,7 @@ export default (app, routeBase) => {
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
-                error: `Please provide all fields (${missingBodyKeys.join(',')})`,
+                error: `There are missing fields: (${missingBodyKeys.join(',')})`,
                 created: false
             })
         } else {
@@ -81,7 +81,7 @@ export default (app, routeBase) => {
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
-                error: `Please provide all fields (${missingBodyKeys.join(',')})`,
+                error: `There are missing fields: (${missingBodyKeys.join(',')})`,
                 created: false
             })
         } else {
