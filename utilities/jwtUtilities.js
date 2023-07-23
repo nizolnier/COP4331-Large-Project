@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken")
 
-exports.generateToken = (username) => {
+
+const getTokenData = token => jwt.verify(token, process.env.JWT_KEY)
+
+export const generateToken = (username) => {
     const token = jwt.sign(
         { username },
         process.env.JWT_SECRET,
@@ -10,8 +13,16 @@ exports.generateToken = (username) => {
     return token
 }
 
-exports.getTokenData = (token) => {
-    const payload = jwt.verify(token, process.env.JWT_KEY);
+export const verifyAuthorizationRequest = (headers) => {
+    if (!headers.auth) {
+        return false
+    }
 
-    return payload
+    const tokenData = getTokenData(headers.auth)
+
+    if (!tokenData) {
+        return false
+    }
+
+    return true
 }
