@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {protect} = require('../middleware/auth')
+const { protect } = require("../middleware/auth");
 
 const {
   AddUser,
@@ -12,7 +12,7 @@ const {
   addFavorite,
   addWatchList,
   deleteFavorite,
-  deleteWatchList
+  deleteWatchList,
 } = require("../controllers/userControllers");
 
 router
@@ -23,8 +23,8 @@ router
   .post("/resendcode", sendVerification)
   .post("/forgot-password", forgotPassword)
   .post("/addfavorite", addFavorite)
-  .post("/addwatchlist",addWatchList)
-  .post("/deletefavoritelist",deleteFavorite)
+  .post("/addwatchlist", addWatchList)
+  .post("/deletefavoritelist", deleteFavorite)
   .post("/deletewatchlist", deleteWatchList);
 
 module.exports = router;

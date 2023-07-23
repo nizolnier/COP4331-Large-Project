@@ -139,4 +139,80 @@ const updateShow = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { GetShow, updateShow };
+
+const addShow = asyncHandler(async (req, res) => {
+  const {
+    showid,
+    picture,
+    title,
+    genre,
+    description,
+    year,
+    director,
+    nrating,
+    trating,
+    avgrating,
+    nfavorites,
+  } = req.body;
+
+  if (!showid) {
+    res.status(400);
+    throw new Error("please provide required all fields (showid)");
+  }
+
+  const existOne = await shows.findOne({showid});
+
+  if(existOne)
+    res.json({
+      error: "showid " + showid + " already exist"
+    })
+
+  const showCur = await shows.create({
+    picture: picture,
+        title: title,
+        genre: genre,
+        description: description,
+        year: year,
+        director: director,
+        nrating: nrating,
+        trating: trating,
+        avgrating: avgrating,
+        nfavorites: nfavorites,
+  })
+
+  if (showCur) {
+    res.status(200).json({
+      message: "successfully created shows" + showCur.title,
+      showCur
+    });
+  } else {
+    res
+      .status(200)
+      .json({ Error: "Internal error fail to create show" });
+  }
+
+})
+
+
+
+const deleteShow = asyncHandler(async (req, res) => {
+  const {showid} = req.body;
+
+  if(!showid)
+  {
+    res.json({error: "showid can not be empty"});
+    return;
+  }
+
+  const deletedShow = await shows.deleteMany({showid});
+
+  if(deletedShow)
+  {
+    res.json({status: "successfully deleted show " + showid});
+  }
+  else{
+    res.json({error: "Internal error failed to delete show " + showid});
+  }
+})
+
+module.exports = { GetShow, updateShow,addShow, deleteShow };
