@@ -3,6 +3,7 @@ const jwtUtilities = require("../utilities/jwtUtilities")
 
 export default (app, routeBase) => {
 
+
     app.post(`${routeBase}/signup`, async (req, res, next) => {
         // "name" : "Zain",
         // 	"username" : "zainh",
@@ -14,7 +15,7 @@ export default (app, routeBase) => {
             "password"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestBody(req.body, expectedBodyKeys)
+        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
@@ -77,12 +78,12 @@ export default (app, routeBase) => {
             "password"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestBody(req.body, expectedBodyKeys)
+        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
                 error: `There are missing fields: (${missingBodyKeys.join(',')})`,
-                created: false
+                found: false
             })
         } else {
             const { username, password } = req.body
@@ -122,5 +123,84 @@ export default (app, routeBase) => {
             }
         }
     })
+
+
+    app.get(`${routeBase}/username`, async (req, res, next) => {
+        if (!jwtUtilities.verifyAuthorizationRequest(req.headers)) {
+            res.status(401).send({
+                error: "Invalid authorization headers, invalid / non existing token data."
+            })
+        } else {
+            const expectedParamKeys = [
+                "username"
+            ]
+
+            const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+            if (missingParameterKeys.length > 0) {
+                res.status(422).send({
+                    error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                    found: false
+                })
+            } else {
+                const {
+                    username
+                } = req.params
+
+                const userExists = User.findOne({ username })
+
+                if (!userExists) {
+                    res.status(404).send({
+                        error: 'The user does not exist',
+                        found: false
+                    })
+                } else {
+                    res.status(200).send({
+                        found: true,
+                        username: userExists.username,
+                        name: userExists.name,
+                        favcartoons: userExists.favcartoons,
+                        watchlist: userExists.watchlist,
+                        twatched: userExists.twatched
+                    })
+                }
+            }
+        }
+    })
+
+
+    app.get(`${routeBase}/email`, async (req, res, next) => {
+        const expectedParamKeys = [
+            "email"
+        ]
+
+        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const {
+                email
+            } = req.params
+
+            const userExists = User.findOne({ email })
+
+            if (!userExists) {
+                res.status(404).send({
+                    error: 'The user does not exist',
+                    found: false
+                })
+            } else {
+                res.status(200).send({
+                    found: true
+                })
+            }
+        }
+    
+    })
+
 
 }
