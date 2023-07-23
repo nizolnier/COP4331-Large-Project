@@ -6,6 +6,6 @@ const {
   updateShow
   } = require('../controllers/showController');
 
-  router.post("/GetShow", GetShow).post('/UpdateShow', updateShow)
+  router.post("/getshow", GetShow).post('/updateshow', updateShow)
 
   module.exports = router;
