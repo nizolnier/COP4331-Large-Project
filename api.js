@@ -2,7 +2,6 @@ require('express');
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const Show = require("../models/showModel");
-const asyncHandler = require("express-async-handler");
 
 exports.setApp = function (app, client) {
     app.post('/api/signup', async (req, res, next) => {
@@ -63,13 +62,13 @@ exports.setApp = function (app, client) {
         if (!userCur.verified) {
             res.status(401).json({
                 error: `${username} not verified, please check your email inbox and complete the verification process`,
-            });
-            return;
+            })
+            return
         }
 
 
         if (await bcrypt.compare(password, userCur.password)) {
-            const token = require("./token.js")
+            const token = require("./utils/token.js")
             tk = token.generateToken(username)
 
             res.status(200).json({
@@ -77,14 +76,16 @@ exports.setApp = function (app, client) {
                 username: userCur.username,
                 name: userCur.name,
                 token: tk,
-            });
+            })
         } else {
-            res.status(400).json({ error: "invalid credentials" });
+            res.status(400).json({ error: "invalid credentials" })
             return;
         }
 
 
     })
+
+
 
 
 }
