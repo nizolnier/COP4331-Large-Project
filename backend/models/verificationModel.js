@@ -9,4 +9,4 @@ const verificationSchema = mongoose.Schema({
 }, {timestamps: true});
 
 
-module.exports = mongoose.model("verification", verificationSchema)
+module.exports = mongoose.model("Verification", verificationSchema)

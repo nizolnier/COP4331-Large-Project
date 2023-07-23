@@ -1,5 +1,5 @@
 // Pull out command line executor
-import { exec } from "child_process"
+const { exec } = require("child_process");
 
 // Get command line arguments
 const args = process.argv;
