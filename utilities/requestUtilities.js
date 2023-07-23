@@ -1,4 +1,4 @@
-exports.validatedRequestBody = (requestBody, expectedKeys) => {
+exports.validatedRequestObjectKeys = (requestBody, expectedKeys) => {
     const keysNotFound = []
 
     for (const key of expectedKeys) {
