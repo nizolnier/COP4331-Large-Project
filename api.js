@@ -1,5 +1,3 @@
-const User = require("../models/userModel")
-const Show = require("../models/showModel")
 const UsersRoutes = require("./routes/users")
 const ShowsRoutes = require("./routes/shows")
 
