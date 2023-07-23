@@ -7,9 +7,6 @@ export default (app, routeBase) => {
 
 
     app.post(`${routeBase}/signup`, async (req, res, next) => {
-        // "name" : "Zain",
-        // 	"username" : "zainh",
-        // 	"password" : "qwerty123"
         const expectedBodyKeys = [
             "name",
             "username",
@@ -72,9 +69,6 @@ export default (app, routeBase) => {
 
 
     app.post(`${routeBase}/login`, async (req, res, next) => {
-        // "username" : "zainh",
-        // "password" : "qwerty"
-
         const expectedBodyKeys = [
             "username",
             "password"
@@ -108,7 +102,7 @@ export default (app, routeBase) => {
                 const passwordsMatch = await bcrypt.compare(password, userExists.password)
 
                 if (passwordsMatch) {
-                    token = jwtUtilities.generateToken(username)
+                    token = jwtUtilities.generateToken(username, userExists._id.toString())
 
                     res.status(200).send({
                         message: "successfully login for " + username,

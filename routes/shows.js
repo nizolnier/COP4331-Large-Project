@@ -2,12 +2,13 @@ const requestUtilities = require("../utilities/requestUtilities")
 const Show = require("../models/showModel")
 
 export default (app, routeBase) => {
-    app.get(`${routeBase}`, async (req, res, next) => {
+    app.get(`${routeBase}/all`, async (req, res, next) => {
         if (!jwtUtilities.verifyAuthorizationRequest(req.headers)) {
             res.status(401).send({
                 error: "Invalid authorization headers, invalid / non existing token data."
             })
         } else {
+            const shows = Show.find()
             res.status(200).send(shows)
         }
 
@@ -32,7 +33,7 @@ export default (app, routeBase) => {
                 })
             } else {
                 const {
-                    email
+                    id
                 } = req.params
     
                 const showExists = Show.findOne({ _id: mongoose.Types.ObjectId(id) })
