@@ -6,8 +6,10 @@ const UsersRoutes = require("./routes/users")
 
 exports.setApp = function (app, client) {
     const routeBases = {
-        "users": "api/users"
+        "users": "api/users",
+        "shows": "api/shows"
     }
 
     UsersRoutes(app, routeBases.users)
+    ShowsRoutes(app, routeBases.shows)
 }
