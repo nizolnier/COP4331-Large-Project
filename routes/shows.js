@@ -2,7 +2,7 @@ const requestUtilities = require("../utilities/requestUtilities")
 const Show = require("../models/showModel")
 
 export default (app, routeBase) => {
-    app.get(`${routeBase}/all`, async (req, res, next) => {
+    app.get(`${routeBase}/all`, async (req, res) => {
         if (!jwtUtilities.verifyAuthorizationRequest(req.headers)) {
             res.status(401).send({
                 error: "Invalid authorization headers, invalid / non existing token data."
@@ -14,7 +14,7 @@ export default (app, routeBase) => {
 
     })
 
-    app.get(`${routeBase}/id`, async (req, res, next) => {
+    app.get(`${routeBase}/id`, async (req, res) => {
         if (!jwtUtilities.verifyAuthorizationRequest(req.headers)) {
             res.status(401).send({
                 error: "Invalid authorization headers, invalid / non existing token data."

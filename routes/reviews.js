@@ -6,7 +6,7 @@ const authMiddleware = require("../middlewares/auth")
 export default (app, routeBase) => {
 
 
-    app.post(`${routeBase}`, authMiddleware, async (req, res, next) => {
+    app.post(`${routeBase}`, authMiddleware, async (req, res) => {
         const expectedBodyKeys = [
             "showid",
             "stars",
@@ -55,7 +55,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/show`, authMiddleware, async (req, res, next) => {
+    app.get(`${routeBase}/show`, authMiddleware, async (req, res) => {
         const expectedParamKeys = [
             "showid"
         ]
@@ -89,7 +89,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/user`, authMiddleware, async (req, res, next) => {
+    app.get(`${routeBase}/user`, authMiddleware, async (req, res) => {
         const expectedParamKeys = [
             "userid"
         ]

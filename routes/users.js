@@ -7,7 +7,7 @@ const authMiddleware = require("../middlewares/auth")
 export default (app, routeBase) => {
 
 
-    app.post(`${routeBase}/signup`, async (req, res, next) => {
+    app.post(`${routeBase}/signup`, async (req, res) => {
         const expectedBodyKeys = [
             "name",
             "username",
@@ -69,7 +69,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.post(`${routeBase}/login`, async (req, res, next) => {
+    app.post(`${routeBase}/login`, async (req, res) => {
         const expectedBodyKeys = [
             "username",
             "password"
@@ -122,7 +122,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/username`, authMiddleware, async (req, res, next) => {
+    app.get(`${routeBase}/username`, authMiddleware, async (req, res) => {
         const expectedParamKeys = [
             "username"
         ]
@@ -160,7 +160,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/email`, async (req, res, next) => {
+    app.get(`${routeBase}/email`, async (req, res) => {
         const expectedParamKeys = [
             "email"
         ]
@@ -193,7 +193,7 @@ export default (app, routeBase) => {
 
     })
 
-    app.post(`${routeBase}/send-email`, async (req, res, next) => {
+    app.post(`${routeBase}/send-email`, async (req, res) => {
 
         const expectedBodyKeys = [
             "email",
@@ -236,7 +236,7 @@ export default (app, routeBase) => {
 
     })
 
-    app.post(`${routeBase}/verify`, async (req, res, next) => {
+    app.post(`${routeBase}/verify`, async (req, res) => {
         const expectedBodyKeys = [
             "email",
             "code"
@@ -296,7 +296,7 @@ export default (app, routeBase) => {
     })
 
 
-    app.post(`${routeBase}/password`, async (req, res, next) => {
+    app.post(`${routeBase}/password`, async (req, res) => {
         const expectedBodyKeys = [
             "email",
             "password"
