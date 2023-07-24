@@ -5,6 +5,8 @@ const jwtUtilities = require("../utilities/jwtUtilities")
 
 export default (app, routeBase) => {
     app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
+        logUtilities.log(routeBase, req)
+        
         const expectedBodyKeys = [
             "stars",
             "favorite"

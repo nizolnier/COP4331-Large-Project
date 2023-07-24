@@ -168,6 +168,8 @@ export default (app, routeBase) => {
     })
 
     app.patch(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
+        logUtilities.log(routeBase, req)
+
         const expectedParamKeys = [
             "showid"
         ]
@@ -211,6 +213,8 @@ export default (app, routeBase) => {
     })
 
     app.delete(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
+        logUtilities.log(routeBase, req)
+
         const expectedParamKeys = [
             "showid"
         ]
@@ -246,6 +250,8 @@ export default (app, routeBase) => {
     })
 
     app.patch(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
+        logUtilities.log(routeBase, req)
+
         const expectedParamKeys = [
             "showid"
         ]
@@ -290,6 +296,8 @@ export default (app, routeBase) => {
 
 
     app.delete(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
+        logUtilities.log(routeBase, req)
+        
         const expectedParamKeys = [
             "showid"
         ]
