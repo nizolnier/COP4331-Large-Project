@@ -8,9 +8,9 @@ const showSchema = mongoose.Schema(
     description: { type: String, require: [false, "please add a description "] },
     year: { type: Number, require: [false, "please add a year "] },
     director: { type: String, require: [false, "please add a director"] },
-    nratings: { type: Number, require: [false, "please add ratings count"] },
-    tratings: { type: Number, require: [false, "please add a total ratings"] },
-    avgratings: { type: Number, require: [false, "please add avg rating"] },
+    nrating: { type: Number, require: [false, "please add ratings count"] },
+    trating: { type: Number, require: [false, "please add a total ratings"] },
+    avgrating: { type: Number, require: [false, "please add avg rating"] },
     nfavorites: { type: Number, require: [false, "please add number of fav"] }
   },
   { timestamps: true }

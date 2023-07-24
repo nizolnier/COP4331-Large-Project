@@ -23,12 +23,13 @@ const Router = () => {
                 <Route exact path="/cartoons" element={<Home />}></Route>
                 <Route exact path="/home" element={<Home />}></Route>
                 <Route exact path="/cartoons/:id" element={<Cartoon />}></Route>
-                <Route exact path="/user/:id" element={<Profile />}></Route>
+                <Route exact path="/user/:username" element={<Profile />}></Route>
                 <Route exact path="/cartoons/search" element={<Search />}></Route>
                 <Route exact path="/cartoons/:id/review" element={<Review />}></Route>
                 <Route exact path="/cartoons/search" element={<Search />}></Route>
                 <Route exact path="/forgot-password" element={<ForgotPassword />}></Route>
                 <Route exact path="/verification-code" element={<VerificationCode />}></Route>
+                <Route exact path="/verification-code-password" element={<VerificationCode />}></Route>
                 <Route exact path="/reset-password" element={<ResetPassword />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>

@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
 
 const verificationSchema = mongoose.Schema({
-  username: { type: String, require: [false, "please add a username"], unique: true },
   email: { type: String, require: [false, "please add an email"]},
   code: { type: String, require: false},
   createdAt: {type: Date, require: false},

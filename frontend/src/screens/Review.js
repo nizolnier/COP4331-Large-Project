@@ -3,6 +3,7 @@ import back from '../assets/back.svg'
 import Datepicker from 'tailwind-datepicker-react'
 
 const Review = () => {
+    const params = useParams()
     const [rating, setRating] = useState(0)
     const [hover, setHover] = useState(0)
     const [fav, setFav] = useState(0)
@@ -22,15 +23,22 @@ const Review = () => {
     }
 
     const doReview = () => {
+        const token = localStorage.getItem("token")
         const body = {
-            date: date,
-            fav: fav,
-            rating: rating,
+            showid: params.id,
+            dateWatched: date,
+            favorite: fav,
+            stars: rating,
             comment: comment
         }
 
-        console.log(body)
+        axios.post(`${baseUrl}/reviews`, body, { headers: { 'Content-Type': 'application/json', 'Authorization':  token} }).then((res) => {
+            
+          }).catch((err) => {
+            window.alert("Error :(")
+        }) 
 
+        
         setDate("")
         setComment("")
         setFav(0)

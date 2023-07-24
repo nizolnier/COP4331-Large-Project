@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken"
 
-
-export const getTokenData = token => jwt.verify(token, process.env.JWT_KEY)
+export const getTokenData = token => jwt.verify(token, process.env.JWT_SECRET)
 
 export const generateToken = (username, id) => {
     const token = jwt.sign(
@@ -14,11 +13,11 @@ export const generateToken = (username, id) => {
 }
 
 export const verifyAuthorizationRequest = (headers) => {
-    if (!headers.auth) {
+    if (!headers.authorization) {
         return false
     }
 
-    const tokenData = getTokenData(headers.auth)
+    const tokenData = getTokenData(headers.authorization)
 
     if (!tokenData) {
         return false

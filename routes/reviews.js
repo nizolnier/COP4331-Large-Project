@@ -2,8 +2,9 @@ import { validatedRequestObjectKeys } from "../utilities/requestUtilities.js"
 import { getTokenData } from "../utilities/jwtUtilities.js"
 import Review from "../models/reviewModel.js"
 import authMiddleware from "../middlewares/auth.js"
-import logUtilities from "../utilities/logUtilities.js"
+import log from "../utilities/logUtilities.js"
 import dotenv from "dotenv"
+import mongoose from "mongoose"
 
 dotenv.config()
 
@@ -11,7 +12,7 @@ export default (app, routeBase) => {
     app.post(`${routeBase}`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedBodyKeys = [
@@ -32,11 +33,11 @@ export default (app, routeBase) => {
         } else {
             const { showid, stars, favorite, comment, dateWatched } = req.body
 
-            const tokenData = getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.headers.authorization)
 
             const newReview = {
-                showid: mongoose.Types.ObjectId(showid),
-                userid: mongoose.Types.ObjectId(tokenData.id),
+                showid: new mongoose.Types.ObjectId(showid),
+                userid: new mongoose.Types.ObjectId(tokenData.id),
                 stars,
                 favorite,
                 comment,
@@ -62,10 +63,10 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/show`, authMiddleware, async (req, res) => {
+    app.get(`${routeBase}/show/:showid`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedParamKeys = [
@@ -84,7 +85,7 @@ export default (app, routeBase) => {
                 showid
             } = req.params
 
-            const reviewExists = Review.findOne({ showid: mongoose.Types.ObjectId(showid) })
+            const reviewExists = await Review.findOne({ showid: new mongoose.Types.ObjectId(showid) })
 
             if (!reviewExists) {
                 res.status(404).send({
@@ -101,10 +102,10 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/user`, authMiddleware, async (req, res) => {
+    app.get(`${routeBase}/user/:userid`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedParamKeys = [
@@ -123,7 +124,7 @@ export default (app, routeBase) => {
                 userid
             } = req.params
 
-            const reviewExists = Review.findOne({ userid: mongoose.Types.ObjectId(userid) })
+            const reviewExists = await Review.findOne({ userid: new mongoose.Types.ObjectId(userid) })
 
             if (!reviewExists) {
                 res.status(404).send({

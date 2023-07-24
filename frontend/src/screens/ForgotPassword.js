@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useMediaQuery } from 'react-responsive'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
-import { goToLogin, goToVerify } from '../router/coordinator'
+import { goToLogin, goToVerify, goToVerifyPassword } from '../router/coordinator'
 import Button from '../components/Button'
 
 
@@ -17,11 +17,21 @@ const ForgotPassword = () => {
 
     const doForgot = (e) => {
         e.preventDefault()
-        console.log('email===>' + form.email)
-
-        // axios
+        
+        axios.get(`${baseUrl}/users/oneemail/${form.email}`).then((res) => {     
+        }).catch((err) => {
+            window.alert("Log In error :(")
+        })
 
         reset()
+
+        axios.post(`${baseUrl}/users/send-email`, { email: form.email }).then((res) => {
+            localStorage.setItem("email", form.email)
+            goToVerifyPassword(navigate)
+
+        }).catch((err) => {
+            window.alert("Error :(")
+        })
         goToVerify(navigate)
     }
 

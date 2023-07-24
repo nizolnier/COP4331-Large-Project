@@ -2,12 +2,14 @@ import { validatedRequestObjectKeys } from "../utilities/requestUtilities.js"
 import Show from "../models/showModel.js"
 import authMiddleware from "../middlewares/auth.js"
 import dotenv from "dotenv"
+import log from "../utilities/logUtilities.js"
+import mongoose from "mongoose"
 
 dotenv.config()
 
 export default (app, routeBase) => {
     app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
-        logUtilities.log(routeBase, req)
+        log(routeBase, req)
 
         const expectedBodyKeys = [
             "showid",
@@ -26,13 +28,17 @@ export default (app, routeBase) => {
             const { showid, stars, favorite } = req.body
 
             try {
-                const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
+                const show = await Show.findOne({ _id: new mongoose.Types.ObjectId(showid) })
 
-                await show.update({
-                    nratings: show.nratings + 1,
-                    nfavorites: show.nfavorites + favorite,
-                    tratings: show.tratings + stars,
-                    avgrating: tratings / nratings,
+                const newR = show.nrating + 1
+                const newF = show.nfavorites + favorite
+                const newT = show.trating + stars
+                const newA = newT / newR
+                await show.updateOne({
+                    nrating: newR,
+                    nfavorites: newF,
+                    trating: newT,
+                    avgrating: newA,
                 })
 
                 res.status(200).send({ message: "Show updated", created: true })
@@ -51,7 +57,7 @@ export default (app, routeBase) => {
     app.get(`${routeBase}/all`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const shows = await Show.find()
@@ -59,10 +65,10 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/one`, authMiddleware, async (req, res) => {
+    app.get(`${routeBase}/one/:id`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedParamKeys = [
@@ -81,7 +87,7 @@ export default (app, routeBase) => {
                 id
             } = req.params
 
-            const showExists = await Show.findOne({ _id: mongoose.Types.ObjectId(id) })
+            const showExists = await Show.findOne({ _id: new mongoose.Types.ObjectId(id) })
 
             if (!showExists) {
                 res.status(404).send({
@@ -101,7 +107,7 @@ export default (app, routeBase) => {
     app.get(`${routeBase}/search`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedParamKeys = [

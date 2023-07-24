@@ -4,7 +4,8 @@ import Sidebar from '../components/Sidebar'
 import { useContext } from 'react'
 import ToggleSBContext from '../context/ToggleSBContext'
 import { baseUrl } from '../constants/url.js'
-import { useNavigate } from 'react-router-dom'
+import { useRequestData } from '../hooks/useRequestData'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useMediaQuery } from 'react-responsive';
 import Scroller from '../components/Scroller'
@@ -12,24 +13,22 @@ import sampleCartoons from '../tests/sample_shows.json'
 import Header from '../components/Header'
 
 const Profile = () => {
-    const user = {
-        username: "zain",
-        name: "Zain",
-        userid: "1",
-        numWatchlist: "244",
-        numReviews: "67"
-    }
-    
+    const params = useParams()
     const navigate = useNavigate()
     const { toggle } = useContext(ToggleSBContext)
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
 
+    const user = {
+        username: localStorage.getItem("username"),
+        name: localStorage.getItem("name")
+    }
+
     return (
 
         <div className="flex bg-[#1F1D36] overflow-hidden">
             <div className="flex flex-col">
-                {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
+                {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} /> : <></>}
             </div>
             
             <div className="w-1/6"></div>
@@ -44,14 +43,14 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="flex flex-col justify-end items-center w-[100] h-[15%] bg-[#1F1D36]">
-                    <h1 className="w-screen pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Hi, {user.name}!</h1>
+                    <h1 className="w-screen pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Hi, {profile.name}!</h1>
                     <div className="flex flex-row  w-screen h-[15%] items-center justify-center">
                         <div className="TotalFilms flex flex-col basis-28 items-center justify-center">
-                            <div className="basis-1/4 left- top-0 justify-center text-center text-red-300 text-2xl font-bold">{user.numWatchlist}</div>
+                            <div className="basis-1/4 left- top-0 justify-center text-center text-red-300 text-2xl font-bold">{profile.nwatchlist}</div>
                             <div className="TotalCartoons flex basis-8 items-center justify-center text-center text-white text-xs font-normal">Watchlist Total</div>
                         </div>
                         <div className="Review flex flex-col basis-28 items-center justify-center">
-                            <div className=" left-[8px] top-0 justify-center text-center text-fuchsia-800 text-2xl font-bold">{user.numReviews}</div>
+                            <div className=" left-[8px] top-0 justify-center text-center text-fuchsia-800 text-2xl font-bold">{profile.nreviews}</div>
                             <div className="Reviews flex basis-8 items-center justify-center text-center text-white text-xs font-normal">Reviews</div>
                         </div>
                     </div>

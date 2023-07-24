@@ -17,13 +17,18 @@ export const goToCartoon = (nav, id) => {
     nav(`/cartoons/${id}`)
 }
 
-export const goToProfile = (nav, id) => {
-    nav(`/user/${id}`)
+export const goToProfile = (nav, username) => {
+    nav(`/user/${username}`)
 }
 
 export const goToForgot = (nav) => {
     nav("/forgot-password")
 }
+
+export const goToVerifyPassword = (nav) => {
+    nav("/verification-code-password")
+}
+
 export const goToVerify = (nav) => {
     nav("/verification-code")
 }

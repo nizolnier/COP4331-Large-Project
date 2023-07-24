@@ -21,31 +21,15 @@ const Cartoon = () => {
     useProtectedPage()
 
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
-    // const params = useParams()
+    const params = useParams()
     const navigate = useNavigate()
-    // const [{ cartoon }, update] = useRequestData(`/cartoons/${params.id}`)
+    const [{ cartoon }, update] = useRequestData(`/cartoons/${params.id}`)
     const [hoverAdd, setHoverAdd] = useState(false)
     const [hoverWatch, setHoverWatch] = useState(false)
 
     const doWatchlist = () => {
         console.log("Don't say yes, run away now\nI'll meet you when you're out of the church at the back door\nDon't wait, or say a single vow \nYou need to hear me out \nAnd they said, 'Speak now'")
     }
-
-
-    const cartoon = {
-        id: 1,
-        picture: "https://nick.mtvnimages.com/uri/mgid:arc:content:nick.com:9cd2df6e-63c7-43da-8bde-8d77af9169c7?quality=0.7",
-        nratings: 30,
-        nfavorites: 10,
-        title: "SpongeBob Squarepants",
-        director: "Stephen Hillenburg",
-        year: 1999,
-        description: "A square yellow sponge named SpongeBob SquarePants lives in a pineapple with his pet snail, Gary, in the city of Bikini Bottom on the floor of the Pacific Ocean.",
-        avgrating: 4.4
-    };
-
-    cartoon.picture = "https://m.media-amazon.com/images/M/MV5BMGFkNGY4NGMtZjY0NC00YTI0LThiZjMtMjBmZGMzOGU3YTdmXkEyXkFqcGdeQXVyMTM0NTUzNDIy._V1_FMjpg_UX1000_.jpg"
-    cartoon.picture = "https://cdn.shoplightspeed.com/shops/613098/files/31964903/1652x2313x1/dark-horse-comics-avatar-the-last-airbender-graphi.jpg"
 
     useEffect(() => {
         imageToGradient(

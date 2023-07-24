@@ -5,6 +5,10 @@ import Show from "../models/showModel.js"
 import Verification from "../models/verificationModel.js"
 import authMiddleware from "../middlewares/auth.js"
 import dotenv from "dotenv"
+import log from "../utilities/logUtilities.js"
+import bcrypt from "bcryptjs"
+import sendEmail from "../utilities/emailUtilities.js"
+import mongoose from "mongoose"
 
 dotenv.config()
 
@@ -12,7 +16,7 @@ export default (app, routeBase) => {
     app.post(`${routeBase}/signup`, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedBodyKeys = [
@@ -79,7 +83,7 @@ export default (app, routeBase) => {
     app.post(`${routeBase}/login`, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedBodyKeys = [
@@ -115,7 +119,7 @@ export default (app, routeBase) => {
                 const passwordsMatch = await bcrypt.compare(password, userExists.password)
 
                 if (passwordsMatch) {
-                    token = generateToken(username, userExists._id.toString())
+                    const token = generateToken(username, userExists._id.toString())
 
                     res.status(200).send({
                         message: "successfully login for " + username,
@@ -134,10 +138,10 @@ export default (app, routeBase) => {
     })
 
 
-    app.get(`${routeBase}/oneuser`, authMiddleware, async (req, res) => {
+    app.get(`${routeBase}/oneuser/:username`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedParamKeys = [
@@ -176,8 +180,8 @@ export default (app, routeBase) => {
         }
     })
 
-    app.patch(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
-        logUtilities.log(routeBase, req)
+    app.patch(`${routeBase}/watchlist/:showid`, authMiddleware, async (req, res) => {
+        log(routeBase, req)
 
         const expectedParamKeys = [
             "showid"
@@ -192,12 +196,12 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.headers.authorization)
 
             try {
-                const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
+                const show = await Show.findOne({ _id: new mongoose.Types.ObjectId(showid) })
 
-                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+                const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
                 const newShow = {
                     showid: show._id,
@@ -221,8 +225,8 @@ export default (app, routeBase) => {
         }
     })
 
-    app.delete(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
-        logUtilities.log(routeBase, req)
+    app.delete(`${routeBase}/watchlist/:showid`, authMiddleware, async (req, res) => {
+        log(routeBase, req)
 
         const expectedParamKeys = [
             "showid"
@@ -237,13 +241,13 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.headers.authorization)
 
             try {
-                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+                const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
-                await user.update({
-                    "$pull": { watchlist: { showid } }
+                await user.updateOne({
+                    "$pull": { watchlist: { showid: new mongoose.Types.ObjectId(showid) } }
                 })
 
                 res.status(200).send({ message: "Watchlist updated", created: true })
@@ -258,8 +262,8 @@ export default (app, routeBase) => {
         }
     })
 
-    app.patch(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
-        logUtilities.log(routeBase, req)
+    app.patch(`${routeBase}/favcartoons/:showid`, authMiddleware, async (req, res) => {
+        log(routeBase, req)
 
         const expectedParamKeys = [
             "showid"
@@ -274,15 +278,15 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.headers.authorization)
 
             try {
-                const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
+                const show = await Show.findOne({ _id: new mongoose.Types.ObjectId(showid) })
 
-                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+                const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
                 const newShow = {
-                    _id: show._id,
+                    showid: show._id,
                     title: show.title,
                     picture: show.picture
                 }
@@ -304,8 +308,8 @@ export default (app, routeBase) => {
     })
 
 
-    app.delete(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
-        logUtilities.log(routeBase, req)
+    app.delete(`${routeBase}/favcartoons/:showid`, authMiddleware, async (req, res) => {
+        log(routeBase, req)
 
         const expectedParamKeys = [
             "showid"
@@ -320,13 +324,13 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.headers.authorization)
 
             try {
-                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+                const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
-                await user.update({
-                    "$pull": { favcartoons: { showid } }
+                await user.updateOne({
+                    "$pull": { favcartoons: { showid: new mongoose.Types.ObjectId(showid) } }
                 })
 
                 res.status(200).send({ message: "Favcartoons updated", created: true })
@@ -343,10 +347,10 @@ export default (app, routeBase) => {
     })
 
     // password things =========
-    app.get(`${routeBase}/oneemail`, async (req, res) => {
+    app.get(`${routeBase}/oneemail/:email`, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedParamKeys = [
@@ -384,7 +388,7 @@ export default (app, routeBase) => {
     app.post(`${routeBase}/send-email`, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedBodyKeys = [
@@ -402,27 +406,29 @@ export default (app, routeBase) => {
 
             const { email } = req.body;
 
-            let code = code = Math.floor(100000 + Math.random() * 900000)
+            let code = Math.floor(10000 + Math.random() * 90000)
             const subject = "Between Shows - Confirm Your Email Address"
             const output = 'Your verification code is ' + code
 
-            const newVerification = await Verification.create({
-                email, code,
-                createdAt: Date.now(),
-                expiredAt: Date.now() + 1800000,
-            })
-
             try {
+                const newVerification = await Verification.create({
+                    email, code,
+                    createdAt: Date.now(),
+                    expiredAt: Date.now() + 1800000,
+                })
+
                 sendEmail(email, subject, output)
+                res.status(200).send({ message: "Code sent", verification: newVerification })
             }
             catch (e) {
+                await Verification.deleteMany({email})
+
                 res.status(400).send({
                     error: e.message,
                 })
-
+                console.log(e.message)
             }
 
-            res.status(200).send({ message: "Code sent", verification: newVerification })
 
         }
 
@@ -431,7 +437,7 @@ export default (app, routeBase) => {
     app.post(`${routeBase}/verify`, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedBodyKeys = [
@@ -447,7 +453,7 @@ export default (app, routeBase) => {
                 created: false
             })
         } else {
-            const { email } = req.body
+            const { email, code } = req.body
             const verificationExists = await Verification.findOne({ email });
 
             if (!verificationExists) {
@@ -496,7 +502,7 @@ export default (app, routeBase) => {
     app.post(`${routeBase}/password`, async (req, res) => {
 
         if (!process.env.PROD) {
-            logUtilities.log(routeBase, req)
+            log(routeBase, req)
         }
 
         const expectedBodyKeys = [
@@ -512,7 +518,7 @@ export default (app, routeBase) => {
                 created: false
             })
         } else {
-            const { password } = req.body
+            const { password, email } = req.body
             const salt = await bcrypt.genSalt(10)
             const hashed = await bcrypt.hash(password, salt)
 
@@ -524,6 +530,11 @@ export default (app, routeBase) => {
                     },
                 }
             )
+
+            res.status(200).send({
+                message: "Password changed",
+                updated: true,
+            })
 
         }
     })

@@ -5,9 +5,9 @@ import ReviewsRoutes from "./routes/reviews.js"
 
 const setApp = function (app) {
     const routeBases = {
-        "users": "api/users",
-        "shows": "api/shows",
-        "reviews": "api/reviews"
+        "users": "/api/users",
+        "shows": "/api/shows",
+        "reviews": "/api/reviews"
     }
 
     UsersRoutes(app, routeBases.users)

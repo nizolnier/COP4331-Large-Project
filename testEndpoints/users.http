@@ -3,54 +3,54 @@ Content-Type: application/json
 
 {
     "username": "zainh",
-    "email": "za@a.com",
+    "name": "Zain",
+    "email": "zainy0012@gmail.com",
     "password": "12345"
 }
 
 ###
 POST http://localhost:4000/api/users/login
-
 Content-Type: application/json
+
 {
     "username": "zainh",
-    "password": "12345"
+    "password": "slay"
 }
 
 ###
-GET http://localhost:4000/api/users/oneuser/:username
+GET http://localhost:4000/api/users/oneuser/zainh
 Content-Type: application/json
-auth: "token"
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
 
 ###
-PATCH http://localhost:4000/api/users/watchlist/:showid
+PATCH http://localhost:4000/api/users/watchlist/64a7437b62d4733a9c26c60e
 Content-Type: application/json
-auth: "token"
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
 
 ###
-DELETE http://localhost:4000/api/users/watchlist/:showid
+DELETE http://localhost:4000/api/users/watchlist/64a7437b62d4733a9c26c60e
 Content-Type: application/json
-auth: "token"
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
 
 ###
-PATCH http://localhost:4000/api/users/favcartoons/:showid
+PATCH http://localhost:4000/api/users/favcartoons/64a7437b62d4733a9c26c60e
 Content-Type: application/json
-auth: "token"
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
 ###
-DELETE http://localhost:4000/api/users/favcartoons/:showid
+DELETE http://localhost:4000/api/users/favcartoons/64a7437b62d4733a9c26c60e
 Content-Type: application/json
-auth: "token"
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
 
 ###
-GET http://localhost:4000/api/users/oneemail/:email
+GET http://localhost:4000/api/users/oneemail/zainy0012@gmail.com
 Content-Type: application/json
-auth: "token"
 
 ###
 POST http://localhost:4000/api/users/send-email HTTP/1.1
 Content-Type: application/json
 
 {
-    "email": "za@a.com",
+    "email": "zainy0012@gmail.com"
 }
 
 ###
@@ -58,8 +58,8 @@ POST http://localhost:4000/api/users/verify HTTP/1.1
 Content-Type: application/json
 
 {
-    "email": "za@a.com",
-    "code": 12345
+    "email": "zainy0012@gmail.com",
+    "code": 606213
 }
 
 ###
@@ -67,6 +67,6 @@ POST http://localhost:4000/api/users/password HTTP/1.1
 Content-Type: application/json
 
 {
-    "email": "za@a.com",
+    "email": "zainy0012@gmail.com",
     "password": "slay"
 }

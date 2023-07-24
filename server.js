@@ -29,13 +29,13 @@ app.use((req, res, next) => {
 })
 
 const connectDB = async () => {
-    try{
+    try {
         const conn = await mongoose.connect(URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
         console.log(`MongoDB connected: ${conn.connection.host}`)
-    }catch(error){
+    } catch (error) {
 
         console.log(error)
         process.exit(1)
@@ -44,11 +44,12 @@ const connectDB = async () => {
 
 connectDB()
 
-
-app.use(express.static('frontend/build'))
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-})
+if (process.env.PROD) {
+    app.use(express.static('frontend/build'))
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+    })
+}
 
 //listening on port
 app.listen(PORT, () => {
@@ -56,4 +57,4 @@ app.listen(PORT, () => {
 })
 
 
-setApp( app )
+setApp(app)
