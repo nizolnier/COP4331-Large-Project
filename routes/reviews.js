@@ -5,8 +5,6 @@ const authMiddleware = require("../middlewares/auth")
 const logUtilities = require("../utilities/logUtilities")
 
 export default (app, routeBase) => {
-
-
     app.post(`${routeBase}`, authMiddleware, async (req, res) => {
         
         logUtilities.log(routeBase, req)

@@ -1,12 +1,11 @@
 const requestUtilities = require("../utilities/requestUtilities")
 const jwtUtilities = require("../utilities/jwtUtilities")
 const User = require("../models/userModel")
+const Show = require("../models/showModel")
 const Verification = require("../models/verificationModel")
 const authMiddleware = require("../middlewares/auth")
 
 export default (app, routeBase) => {
-
-
     app.post(`${routeBase}/signup`, async (req, res) => {
         
         logUtilities.log(routeBase, req)
@@ -168,7 +167,165 @@ export default (app, routeBase) => {
         }
     })
 
+    app.post(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
+        const expectedParamKeys = [
+            "showid"
+        ]
 
+        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { showid } = req.body
+            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+
+            try {
+                const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
+
+                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+
+                const newShow = {
+                    showid: show._id,
+                    title: show.title,
+                    picture: show.picture
+                }
+
+                await user.updateOne({
+                    watchlist: [...user.watchlist, newShow],
+                })
+
+                res.status(200).send({ message: "Watchlist updated", created: true })
+
+
+            } catch (err) {
+                res.status(400).send({
+                    error: err.message,
+                    created: false
+                })
+            }
+        }
+    })
+
+    app.delete(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
+        const expectedParamKeys = [
+            "showid"
+        ]
+
+        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { showid } = req.body
+            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+
+            try {
+                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+
+                await user.update({
+                    "$pull": { watchlist: { showid } }
+                })
+
+                res.status(200).send({ message: "Watchlist updated", created: true })
+
+
+            } catch (err) {
+                res.status(400).send({
+                    error: err.message,
+                    created: false
+                })
+            }
+        }
+    })
+
+    app.post(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
+        const expectedParamKeys = [
+            "showid"
+        ]
+
+        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { showid } = req.body
+            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+
+            try {
+                const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
+
+                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+
+                const newShow = {
+                    _id: show._id,
+                    title: show.title,
+                    picture: show.picture
+                }
+
+                await user.updateOne({
+                    favcartoons: [...user.favcartoons, newShow],
+                })
+
+                res.status(200).send({ message: "Favcartoons updated", created: true })
+
+
+            } catch (err) {
+                res.status(400).send({
+                    error: err.message,
+                    created: false
+                })
+            }
+        }
+    })
+
+
+    app.delete(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
+        const expectedParamKeys = [
+            "showid"
+        ]
+
+        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { showid } = req.body
+            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+
+            try {
+                const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
+
+                await user.update({
+                    "$pull": { favcartoons: { showid } }
+                })
+
+                res.status(200).send({ message: "Favcartoons updated", created: true })
+
+
+            } catch (err) {
+                res.status(400).send({
+                    error: err.message,
+                    created: false
+                })
+            }
+        }
+
+    })
+
+    // password things =========
     app.get(`${routeBase}/oneemail`, async (req, res) => {
         
         logUtilities.log(routeBase, req)
