@@ -67,8 +67,7 @@ export default (app, routeBase) => {
                 pageIndex // Assume that this, based on handling on the frontend, is not allowed to be lower than 1
             } = req.params
 
-            const likeInputRegex = new RegExp(`.*${input}.*`)
-
+            const likeInputRegex = new RegExp(`.*${input}.*`, 'i')
 
             try {
 
