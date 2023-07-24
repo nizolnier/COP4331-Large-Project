@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose"
 
 const verificationSchema = mongoose.Schema({
   username: { type: String, require: [false, "please add a username"], unique: true },
@@ -9,4 +9,4 @@ const verificationSchema = mongoose.Schema({
 }, {timestamps: true});
 
 
-module.exports = mongoose.model("Verification", verificationSchema)
+export default mongoose.model("Verification", verificationSchema)

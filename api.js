@@ -1,9 +1,9 @@
-const UsersRoutes = require("./routes/users")
-const ShowsRoutes = require("./routes/shows")
-const ReviewsRoutes = require("./routes/reviews")
+import UsersRoutes from "./routes/users.js"
+import ShowsRoutes from "./routes/shows.js"
+import ReviewsRoutes from "./routes/reviews.js"
 
 
-exports.setApp = function (app, client) {
+const setApp = function (app) {
     const routeBases = {
         "users": "api/users",
         "shows": "api/shows",
@@ -14,3 +14,5 @@ exports.setApp = function (app, client) {
     ShowsRoutes(app, routeBases.shows)
     ReviewsRoutes(app, routeBases.reviews)
 }
+
+export default setApp 

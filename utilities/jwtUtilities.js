@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken")
+import jwt from "jsonwebtoken"
 
 
 export const getTokenData = token => jwt.verify(token, process.env.JWT_KEY)

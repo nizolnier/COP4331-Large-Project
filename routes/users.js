@@ -1,16 +1,16 @@
-const requestUtilities = require("../utilities/requestUtilities")
-const jwtUtilities = require("../utilities/jwtUtilities")
-const User = require("../models/userModel")
-const Show = require("../models/showModel")
-const Verification = require("../models/verificationModel")
-const authMiddleware = require("../middlewares/auth")
-const dotenv = require("dotenv")
+import { validatedRequestObjectKeys } from "../utilities/requestUtilities.js"
+import { generateToken, getTokenData } from "../utilities/jwtUtilities.js"
+import User from "../models/userModel.js"
+import Show from "../models/showModel.js"
+import Verification from "../models/verificationModel.js"
+import authMiddleware from "../middlewares/auth.js"
+import dotenv from "dotenv"
 
 dotenv.config()
 
 export default (app, routeBase) => {
     app.post(`${routeBase}/signup`, async (req, res) => {
-        
+
         if (!process.env.PROD) {
             logUtilities.log(routeBase, req)
         }
@@ -22,7 +22,7 @@ export default (app, routeBase) => {
             "password"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
@@ -77,7 +77,7 @@ export default (app, routeBase) => {
 
 
     app.post(`${routeBase}/login`, async (req, res) => {
-        
+
         if (!process.env.PROD) {
             logUtilities.log(routeBase, req)
         }
@@ -87,7 +87,7 @@ export default (app, routeBase) => {
             "password"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
@@ -115,7 +115,7 @@ export default (app, routeBase) => {
                 const passwordsMatch = await bcrypt.compare(password, userExists.password)
 
                 if (passwordsMatch) {
-                    token = jwtUtilities.generateToken(username, userExists._id.toString())
+                    token = generateToken(username, userExists._id.toString())
 
                     res.status(200).send({
                         message: "successfully login for " + username,
@@ -135,7 +135,7 @@ export default (app, routeBase) => {
 
 
     app.get(`${routeBase}/oneuser`, authMiddleware, async (req, res) => {
-        
+
         if (!process.env.PROD) {
             logUtilities.log(routeBase, req)
         }
@@ -144,7 +144,7 @@ export default (app, routeBase) => {
             "username"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -183,7 +183,7 @@ export default (app, routeBase) => {
             "showid"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -192,7 +192,7 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.header.auth)
 
             try {
                 const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
@@ -228,7 +228,7 @@ export default (app, routeBase) => {
             "showid"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -237,7 +237,7 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.header.auth)
 
             try {
                 const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
@@ -265,7 +265,7 @@ export default (app, routeBase) => {
             "showid"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -274,7 +274,7 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.header.auth)
 
             try {
                 const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
@@ -306,12 +306,12 @@ export default (app, routeBase) => {
 
     app.delete(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
         logUtilities.log(routeBase, req)
-        
+
         const expectedParamKeys = [
             "showid"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -320,7 +320,7 @@ export default (app, routeBase) => {
             })
         } else {
             const { showid } = req.params
-            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.header.auth)
 
             try {
                 const user = await User.findOne({ _id: mongoose.Types.ObjectId(tokenData.id) })
@@ -344,7 +344,7 @@ export default (app, routeBase) => {
 
     // password things =========
     app.get(`${routeBase}/oneemail`, async (req, res) => {
-        
+
         if (!process.env.PROD) {
             logUtilities.log(routeBase, req)
         }
@@ -353,7 +353,7 @@ export default (app, routeBase) => {
             "email"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -391,7 +391,7 @@ export default (app, routeBase) => {
             "email",
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
@@ -429,7 +429,7 @@ export default (app, routeBase) => {
     })
 
     app.post(`${routeBase}/verify`, async (req, res) => {
-        
+
         if (!process.env.PROD) {
             logUtilities.log(routeBase, req)
         }
@@ -439,7 +439,7 @@ export default (app, routeBase) => {
             "code"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
@@ -494,17 +494,17 @@ export default (app, routeBase) => {
 
 
     app.post(`${routeBase}/password`, async (req, res) => {
-        
+
         if (!process.env.PROD) {
             logUtilities.log(routeBase, req)
         }
-        
+
         const expectedBodyKeys = [
             "email",
             "password"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({

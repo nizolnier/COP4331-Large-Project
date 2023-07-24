@@ -1,19 +1,19 @@
-const requestUtilities = require("../utilities/requestUtilities")
-const jwtUtilities = require("../utilities/jwtUtilities")
-const Review = require("../models/reviewModel")
-const authMiddleware = require("../middlewares/auth")
-const logUtilities = require("../utilities/logUtilities")
-const dotenv = require("dotenv")
+import { validatedRequestObjectKeys } from "../utilities/requestUtilities.js"
+import { getTokenData } from "../utilities/jwtUtilities.js"
+import Review from "../models/reviewModel.js"
+import authMiddleware from "../middlewares/auth.js"
+import logUtilities from "../utilities/logUtilities.js"
+import dotenv from "dotenv"
 
 dotenv.config()
 
 export default (app, routeBase) => {
     app.post(`${routeBase}`, authMiddleware, async (req, res) => {
-        
+
         if (!process.env.PROD) {
             logUtilities.log(routeBase, req)
         }
-        
+
         const expectedBodyKeys = [
             "showid",
             "stars",
@@ -22,7 +22,7 @@ export default (app, routeBase) => {
             "dateWatched"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys.length > 0) {
             res.status(422).send({
@@ -32,7 +32,7 @@ export default (app, routeBase) => {
         } else {
             const { showid, stars, favorite, comment, dateWatched } = req.body
 
-            const tokenData = jwtUtilities.getTokenData(req.header.auth)
+            const tokenData = getTokenData(req.header.auth)
 
             const newReview = {
                 showid: mongoose.Types.ObjectId(showid),
@@ -72,7 +72,7 @@ export default (app, routeBase) => {
             "showid"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -111,7 +111,7 @@ export default (app, routeBase) => {
             "userid"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({

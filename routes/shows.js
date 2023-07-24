@@ -1,20 +1,20 @@
-const requestUtilities = require("../utilities/requestUtilities")
-const Show = require("../models/showModel")
-const authMiddleware = require("../middlewares/auth")
-const dotenv = require("dotenv")
+import { validatedRequestObjectKeys } from "../utilities/requestUtilities.js"
+import Show from "../models/showModel.js"
+import authMiddleware from "../middlewares/auth.js"
+import dotenv from "dotenv"
 
 dotenv.config()
 
 export default (app, routeBase) => {
     app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
         logUtilities.log(routeBase, req)
-        
+
         const expectedBodyKeys = [
             "stars",
             "favorite"
         ]
 
-        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
 
         if (missingBodyKeys > 0) {
             res.status(422).send({
@@ -68,7 +68,7 @@ export default (app, routeBase) => {
             "id"
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({
@@ -108,7 +108,7 @@ export default (app, routeBase) => {
             'pageIndex'
         ]
 
-        const missingParameterKeys = requestUtilities.validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
 
         if (missingParameterKeys.length > 0) {
             res.status(422).send({

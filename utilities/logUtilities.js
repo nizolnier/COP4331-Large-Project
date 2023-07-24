@@ -1,6 +1,6 @@
 // Used to log requests to route endpoints
 
-exports.log = (routeBase, req) => {
+const log = (routeBase, req) => {
     const {
         method,
         path,
@@ -67,3 +67,5 @@ exports.log = (routeBase, req) => {
     // Log the contents
     console.log(`${logString}${BAR}`)
 }
+
+export default log

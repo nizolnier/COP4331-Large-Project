@@ -1,4 +1,4 @@
-const jwtUtilities = require("../utilities/jwtUtilities")
+import {verifyAuthorizationRequest} from "../utilities/jwtUtilities.js"
 
 export default (req, res, next) => {
     if (!jwtUtilities.verifyAuthorizationRequest(req.headers)) {

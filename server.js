@@ -1,8 +1,9 @@
-const express = require("express")
-const bodyParser = require('body-parser')
-const cors = require("cors")
-const dotenv = require("dotenv")
-const mongoose = require('mongoose')
+import express from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
+import setApp from './api.js'
 
 dotenv.config()
 
@@ -54,5 +55,5 @@ app.listen(PORT, () => {
     console.log('Server listening on port ' + PORT);
 })
 
-let api = require('./api.js')
-api.setApp( app, client )
+
+setApp( app )
