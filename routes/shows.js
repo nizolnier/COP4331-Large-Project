@@ -10,6 +10,7 @@ export default (app, routeBase) => {
         logUtilities.log(routeBase, req)
 
         const expectedBodyKeys = [
+            "showid",
             "stars",
             "favorite"
         ]

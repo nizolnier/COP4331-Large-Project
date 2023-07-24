@@ -1,0 +1,25 @@
+###
+GET http://localhost:4000/api/shows/all
+Content-Type: application/json
+auth: "token"
+
+###
+GET http://localhost:4000/api/shows/one/:id
+Content-Type: application/json
+auth: "token"
+
+###
+GET http://localhost:4000/api/shows/search/params
+Content-Type: application/json
+auth: "token"
+
+###
+PATCH http://localhost:4000/api/shows/update
+Content-Type: application/json
+auth: "token"
+
+{
+    "showid": "idk",
+    "stars": 5,
+    "favorite": 0
+}
