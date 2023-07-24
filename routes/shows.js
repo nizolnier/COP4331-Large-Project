@@ -6,12 +6,17 @@ export default (app, routeBase) => {
 
 
     app.get(`${routeBase}/all`, authMiddleware, async (req, res) => {
+
+        logUtilities.log(routeBase, req)
+
         const shows = await Show.find()
         res.status(200).send(shows)
     })
 
 
     app.get(`${routeBase}/one`, authMiddleware, async (req, res) => {
+
+        logUtilities.log(routeBase, req)
 
         const expectedParamKeys = [
             "id"
@@ -47,6 +52,8 @@ export default (app, routeBase) => {
     })
 
     app.get(`${routeBase}/search`, authMiddleware, async (req, res) => {
+
+        logUtilities.log(routeBase, req)
 
         const expectedParamKeys = [
             'input',

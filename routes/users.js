@@ -8,6 +8,9 @@ export default (app, routeBase) => {
 
 
     app.post(`${routeBase}/signup`, async (req, res) => {
+        
+        logUtilities.log(routeBase, req)
+
         const expectedBodyKeys = [
             "name",
             "username",
@@ -70,6 +73,9 @@ export default (app, routeBase) => {
 
 
     app.post(`${routeBase}/login`, async (req, res) => {
+        
+        logUtilities.log(routeBase, req)
+
         const expectedBodyKeys = [
             "username",
             "password"
@@ -123,6 +129,9 @@ export default (app, routeBase) => {
 
 
     app.get(`${routeBase}/oneuser`, authMiddleware, async (req, res) => {
+        
+        logUtilities.log(routeBase, req)
+
         const expectedParamKeys = [
             "username"
         ]
@@ -161,6 +170,9 @@ export default (app, routeBase) => {
 
 
     app.get(`${routeBase}/oneemail`, async (req, res) => {
+        
+        logUtilities.log(routeBase, req)
+
         const expectedParamKeys = [
             "email"
         ]
@@ -194,6 +206,8 @@ export default (app, routeBase) => {
     })
 
     app.post(`${routeBase}/send-email`, async (req, res) => {
+
+        logUtilities.log(routeBase, req)
 
         const expectedBodyKeys = [
             "email",
@@ -237,6 +251,9 @@ export default (app, routeBase) => {
     })
 
     app.post(`${routeBase}/verify`, async (req, res) => {
+        
+        logUtilities.log(routeBase, req)
+
         const expectedBodyKeys = [
             "email",
             "code"
@@ -297,6 +314,9 @@ export default (app, routeBase) => {
 
 
     app.post(`${routeBase}/password`, async (req, res) => {
+        
+        logUtilities.log(routeBase, req)
+        
         const expectedBodyKeys = [
             "email",
             "password"
