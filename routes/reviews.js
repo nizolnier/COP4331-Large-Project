@@ -3,11 +3,16 @@ const jwtUtilities = require("../utilities/jwtUtilities")
 const Review = require("../models/reviewModel")
 const authMiddleware = require("../middlewares/auth")
 const logUtilities = require("../utilities/logUtilities")
+const dotenv = require("dotenv")
+
+dotenv.config()
 
 export default (app, routeBase) => {
     app.post(`${routeBase}`, authMiddleware, async (req, res) => {
         
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
         
         const expectedBodyKeys = [
             "showid",
@@ -59,7 +64,9 @@ export default (app, routeBase) => {
 
     app.get(`${routeBase}/show`, authMiddleware, async (req, res) => {
 
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedParamKeys = [
             "showid"
@@ -96,7 +103,9 @@ export default (app, routeBase) => {
 
     app.get(`${routeBase}/user`, authMiddleware, async (req, res) => {
 
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedParamKeys = [
             "userid"

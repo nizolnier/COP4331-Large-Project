@@ -4,11 +4,16 @@ const User = require("../models/userModel")
 const Show = require("../models/showModel")
 const Verification = require("../models/verificationModel")
 const authMiddleware = require("../middlewares/auth")
+const dotenv = require("dotenv")
+
+dotenv.config()
 
 export default (app, routeBase) => {
     app.post(`${routeBase}/signup`, async (req, res) => {
         
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedBodyKeys = [
             "name",
@@ -73,7 +78,9 @@ export default (app, routeBase) => {
 
     app.post(`${routeBase}/login`, async (req, res) => {
         
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedBodyKeys = [
             "username",
@@ -129,7 +136,9 @@ export default (app, routeBase) => {
 
     app.get(`${routeBase}/oneuser`, authMiddleware, async (req, res) => {
         
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedParamKeys = [
             "username"
@@ -336,7 +345,9 @@ export default (app, routeBase) => {
     // password things =========
     app.get(`${routeBase}/oneemail`, async (req, res) => {
         
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedParamKeys = [
             "email"
@@ -372,7 +383,9 @@ export default (app, routeBase) => {
 
     app.post(`${routeBase}/send-email`, async (req, res) => {
 
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedBodyKeys = [
             "email",
@@ -417,7 +430,9 @@ export default (app, routeBase) => {
 
     app.post(`${routeBase}/verify`, async (req, res) => {
         
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedBodyKeys = [
             "email",
@@ -480,7 +495,9 @@ export default (app, routeBase) => {
 
     app.post(`${routeBase}/password`, async (req, res) => {
         
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
         
         const expectedBodyKeys = [
             "email",

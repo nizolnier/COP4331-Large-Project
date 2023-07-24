@@ -1,7 +1,9 @@
 const requestUtilities = require("../utilities/requestUtilities")
 const Show = require("../models/showModel")
 const authMiddleware = require("../middlewares/auth")
-const jwtUtilities = require("../utilities/jwtUtilities")
+const dotenv = require("dotenv")
+
+dotenv.config()
 
 export default (app, routeBase) => {
     app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
@@ -47,7 +49,9 @@ export default (app, routeBase) => {
 
     app.get(`${routeBase}/all`, authMiddleware, async (req, res) => {
 
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const shows = await Show.find()
         res.status(200).send(shows)
@@ -56,7 +60,9 @@ export default (app, routeBase) => {
 
     app.get(`${routeBase}/one`, authMiddleware, async (req, res) => {
 
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedParamKeys = [
             "id"
@@ -93,7 +99,9 @@ export default (app, routeBase) => {
 
     app.get(`${routeBase}/search`, authMiddleware, async (req, res) => {
 
-        logUtilities.log(routeBase, req)
+        if (!process.env.PROD) {
+            logUtilities.log(routeBase, req)
+        }
 
         const expectedParamKeys = [
             'input',
