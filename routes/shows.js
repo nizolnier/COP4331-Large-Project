@@ -110,16 +110,16 @@ export default (app, routeBase) => {
             log(routeBase, req)
         }
 
-        const expectedParamKeys = [
+        const expectedQueryKeys = [
             'input',
             'pageIndex'
         ]
 
-        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
+        const missingQueryKeys = validatedRequestObjectKeys(req.query, expectedQueryKeys)
 
-        if (missingParameterKeys.length > 0) {
+        if (missingQueryKeys.length > 0) {
             res.status(422).send({
-                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                error: `There are missing fields: (${missingQueryKeys.join(',')})`,
                 found: false
             })
         } else {
@@ -127,7 +127,7 @@ export default (app, routeBase) => {
             const {
                 input,
                 pageIndex // Assume that this, based on handling on the frontend, is not allowed to be lower than 1
-            } = req.params
+            } = req.query
 
             const likeInputRegex = new RegExp(`.*${input}.*`, 'i')
 
