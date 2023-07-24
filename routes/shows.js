@@ -3,6 +3,9 @@ const Show = require("../models/showModel")
 const authMiddleware = require("../middlewares/auth")
 
 export default (app, routeBase) => {
+    app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
+        
+    })
 
 
     app.get(`${routeBase}/all`, authMiddleware, async (req, res) => {

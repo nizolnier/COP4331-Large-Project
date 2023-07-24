@@ -167,7 +167,7 @@ export default (app, routeBase) => {
         }
     })
 
-    app.post(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
+    app.patch(`${routeBase}/watchlist`, authMiddleware, async (req, res) => {
         const expectedParamKeys = [
             "showid"
         ]
@@ -180,7 +180,7 @@ export default (app, routeBase) => {
                 found: false
             })
         } else {
-            const { showid } = req.body
+            const { showid } = req.params
             const tokenData = jwtUtilities.getTokenData(req.header.auth)
 
             try {
@@ -223,7 +223,7 @@ export default (app, routeBase) => {
                 found: false
             })
         } else {
-            const { showid } = req.body
+            const { showid } = req.params
             const tokenData = jwtUtilities.getTokenData(req.header.auth)
 
             try {
@@ -245,7 +245,7 @@ export default (app, routeBase) => {
         }
     })
 
-    app.post(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
+    app.patch(`${routeBase}/favcartoons`, authMiddleware, async (req, res) => {
         const expectedParamKeys = [
             "showid"
         ]
@@ -258,7 +258,7 @@ export default (app, routeBase) => {
                 found: false
             })
         } else {
-            const { showid } = req.body
+            const { showid } = req.params
             const tokenData = jwtUtilities.getTokenData(req.header.auth)
 
             try {
@@ -302,7 +302,7 @@ export default (app, routeBase) => {
                 found: false
             })
         } else {
-            const { showid } = req.body
+            const { showid } = req.params
             const tokenData = jwtUtilities.getTokenData(req.header.auth)
 
             try {
