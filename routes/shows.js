@@ -1,10 +1,45 @@
 const requestUtilities = require("../utilities/requestUtilities")
 const Show = require("../models/showModel")
 const authMiddleware = require("../middlewares/auth")
+const jwtUtilities = require("../utilities/jwtUtilities")
 
 export default (app, routeBase) => {
     app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
-        
+        const expectedBodyKeys = [
+            "stars",
+            "favorite"
+        ]
+
+        const missingBodyKeys = requestUtilities.validatedRequestObjectKeys(req.body, expectedBodyKeys)
+
+        if (missingBodyKeys > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { showid, stars, favorite } = req.body
+
+            try {
+                const show = await Show.findOne({ _id: mongoose.Types.ObjectId(showid) })
+
+                await show.update({
+                    nratings: show.nratings + 1,
+                    nfavorites: show.nfavorites + favorite,
+                    tratings: show.tratings + stars,
+                    avgrating: tratings / nratings,
+                })
+
+                res.status(200).send({ message: "Show updated", created: true })
+
+
+            } catch (err) {
+                res.status(400).send({
+                    error: err.message,
+                    created: false
+                })
+            }
+        }
     })
 
 
