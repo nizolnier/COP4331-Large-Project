@@ -22,7 +22,7 @@ import {
 } from 'react-query'
 
 const Search = () => {
-    // useProtectedPage()
+    useProtectedPage()
 
     // Access the query client
     const queryClient = useQueryClient()

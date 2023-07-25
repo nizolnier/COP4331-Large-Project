@@ -104,7 +104,7 @@ export default (app, routeBase) => {
 
     })
 
-    app.get(`${routeBase}/search`, async (req, res) => {
+    app.get(`${routeBase}/search`, authMiddleware, async (req, res) => {
 
         if (!process.env.PROD) {
             log(routeBase, req)
