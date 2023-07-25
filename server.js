@@ -45,9 +45,20 @@ const connectDB = async () => {
 connectDB()
 
 if (process.env.PROD) {
-    app.use(express.static('frontend/build'))
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+    // List of all the files that should be served as-is
+    let protectedFiles = ['transformed.js', 'main.css', 'favicon.ico']
+
+    app.get("*", (req, res) => {
+
+        let path = req.params['0'].substring(1)
+
+        if (protectedFiles.includes(path)) {
+            // Return the actual file
+            res.sendFile(`${__dirname}/build/${path}`);
+        } else {
+            // Otherwise, redirect to /build/index.html
+            res.sendFile(`${__dirname}/build/index.html`);
+        }
     })
 }
 
