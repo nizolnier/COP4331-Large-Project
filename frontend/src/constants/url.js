@@ -1,2 +1,2 @@
 // api url
-export const baseUrl = "https://cop4331-lp-group12-12345b237b33.herokuapp.com/"
+export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://between-shows-53c612d10269.herokuapp.com/api' : 'http://localhost:4000/api'
