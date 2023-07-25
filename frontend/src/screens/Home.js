@@ -7,7 +7,7 @@ import Header from '../components/Header'
 import ToggleSBContext from '../context/ToggleSBContext'
 import Scroller from '../components/Scroller'
 
-import sampleCartoons from '../tests/sample_shows.json'
+import sampleCartoons from '../tests/sample_cartoons.json'
 
 const Home = () => {
     const {toggle} = useContext(ToggleSBContext)
