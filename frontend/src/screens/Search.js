@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer'
 import sampleShows from '../tests/sample_shows.json'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import { useProtectedPage } from '../hooks/useProtectedPage'
 import Card from '../components/Card'
 
 import useResize from '../hooks/useCardResize.js'
@@ -17,6 +17,8 @@ import {
 } from 'react-query'
 
 const Search = () => {
+    useProtectedPage()
+
     // Access the query client
     const queryClient = useQueryClient()
 
