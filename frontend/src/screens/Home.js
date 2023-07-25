@@ -10,21 +10,21 @@ import Scroller from '../components/Scroller'
 import sampleCartoons from '../tests/sample_shows.json'
 
 const Home = () => {
-    const user = {
-        username: "zain",
-        name: "Zain",
-        userid: "1"
-    }
     const {toggle} = useContext(ToggleSBContext)
 
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
     useProtectedPage()
 
+    const user = {
+        username: localStorage.getItem("username"),
+        name: localStorage.getItem("name")
+    }
+
     return (
         <div className="w-screen bg-[#1F1D36] text-white" >
             <div>
-                {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} userid={user.userid} /> : <></>}
+                {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} /> : <></>}
             </div>
             <Header username={user.username} />
             <div>
