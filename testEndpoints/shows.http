@@ -1,0 +1,25 @@
+###
+GET http://localhost:4000/api/shows/all
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
+
+###
+GET http://localhost:4000/api/shows/one/64a7437b62d4733a9c26c60e
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
+
+###
+GET http://localhost:4000/api/shows/search?input=bob square&pageIndex=1
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAyMjcwMzUsImV4cCI6MTY5MDIzNDIzNX0.eToESF53_4hM3GTsGifhX6f_La6yETfPdiQZyg-1v0s
+
+###
+PATCH http://localhost:4000/api/shows/update
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
+
+{
+    "showid": "64bdfb814c1699dc5bcdcb6b",
+    "stars": 5,
+    "favorite": 1
+}

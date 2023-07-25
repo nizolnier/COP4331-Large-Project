@@ -1,14 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import back from '../assets/back.svg'
 import Datepicker from 'tailwind-datepicker-react'
+import axios from 'axios'
+import { baseUrl } from '../constants/url'
+import { useProtectedPage } from '../hooks/useProtectedPage'
+import { useNavigate, useParams } from 'react-router-dom'
+import { goToCartoon } from '../router/coordinator'
 
 const Review = () => {
+    useProtectedPage()
+    const navigate = useNavigate()
+    const params = useParams()
     const [rating, setRating] = useState(0)
     const [hover, setHover] = useState(0)
     const [fav, setFav] = useState(0)
     const [date, setDate] = useState("")
     const [show, setShow] = useState(false)
     const [comment, setComment] = useState("")
+    const [cartoon, setCartoon] = useState({})
+
+    axios.defaults.headers.common['Authorization'] = localStorage.getItem("token")
 
     const handleChange = (selectedDate) => {
         setDate(selectedDate)
@@ -22,24 +33,72 @@ const Review = () => {
     }
 
     const doReview = () => {
-        const body = {
-            date: date,
-            fav: fav,
-            rating: rating,
+        let body = {
+            showid: params.id,
+            dateWatched: date,
+            favorite: fav,
+            stars: rating,
             comment: comment
         }
 
-        console.log(body)
+        axios.delete(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
 
-        setDate("")
-        setComment("")
-        setFav(0)
-        setRating(0)
+        }).catch((err) => {
+            console.log(err)
+        })
 
-        // axios
+        axios.post(`${baseUrl}/reviews`, body).then((res) => {
+
+        }).catch((err) => {
+            console.log(err)
+        })
+
+        body = {
+            showid: params.id,
+            stars: rating,
+            favorite: fav
+        }
+        axios.patch(`${baseUrl}/shows/update`, body).then((res) => {
+
+        }).catch((err) => {
+            console.log(err)
+        })
+
+        if (fav) {
+            axios.patch(`${baseUrl}/users/favcartoons/${params.id}`).then((res) => {
+
+            }).catch((err) => {
+                console.log(err)
+            })
+
+        }
+
+        if (!fav) {
+            axios.delete(`${baseUrl}/users/favcartoons/${params.id}`).then((res) => {
+
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+
+        goToCartoon(navigate, params.id)
+
+
     }
 
-    
+    const loadCartoon = async () => {
+        await axios.get(`${baseUrl}/shows/one/${params.id}`
+        ).then((res) => {
+            setCartoon(res.data.showExists)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    useEffect(() => {
+        loadCartoon()
+    }, [])
+
 
     // this is for the datepicker
     const options = {
@@ -50,7 +109,7 @@ const Review = () => {
         theme: {
             background: "dark:bg-[#3D3B53] bg-[#3D3B53]",
             icons: "text-white text-xs dark:bg-red-300 bg-red-300 hover:bg-fuchsia-800 dark:hover:bg-fuchsia-800 hover:text-white dark:hover:text-white",
-            input: "lg:w-[200%] w-[110%] border border-stone-600  border-opacity-30 dark:border-opacity-30 dark:border dark:border-stone-600 dark:bg-[#3D3B53] bg-[#3D3B53] text-white text-[9px] dark:text-white dark:text-[9px]",
+            input: "lg:w-[200%] w-[100%] border border-stone-600  border-opacity-30 dark:border-opacity-30 dark:border dark:border-stone-600 dark:bg-[#3D3B53] bg-[#3D3B53] text-white text-[9px] dark:text-white dark:text-[9px]",
             inputIcon: "dark:text-white text-white",
             text: "hover:bg-red-300 dark:hover:bg-red-300",
             disabledText: "bg-[#323044] dark:bg-[#323044] hover:bg-red-300 dark:hover:bg-red-300",
@@ -62,19 +121,19 @@ const Review = () => {
         <div className="h-[5%]"></div>
         <div className="flex flex-col lg:w-1/2 w-[90%] h-[40%]">
             <div className="flex">
-                <img src={back} />
+                <img src={back} onClick={() => goToCartoon(navigate, params.id)} />
                 <h1 className="pl-6 text-sm font-semibold" >Write your review</h1>
             </div>
             <div className="pt-10 flex items-center justify-between w-[100%]">
                 <div className="flex flex-col justify-between">
-                    <h2 className="pb-4 text-lg font-bold">movie title</h2>
+                    <h2 className="pb-4 text-lg font-bold">{cartoon?.title}</h2>
                     <div>
                         <p className="pb-2 text-xs font-normal">Specify the date you watched it</p>
                         <Datepicker options={options} onChange={handleChange} show={show} setShow={handleClose} />
                     </div>
                     <div className="flex flex-col">
                         <p className="py-2 text-xs font-normal">Give your rating</p>
-                        <div className="flex lg:w-[150%] w-[110%] align-center justify-between">
+                        <div className="flex lg:w-[150%] w-[100%] align-center justify-between">
 
 
                             <div className="flex">
@@ -94,7 +153,7 @@ const Review = () => {
                         </div>
                     </div>
                 </div>
-                <div><div className="w-[116px] h-[166px] bg-stone-300 rounded-[7px]" /></div>
+                <div><img src={cartoon?.picture} className="w-[116px] h-[166px] bg-stone-300 rounded-[7px]" /></div>
             </div>
 
         </div>

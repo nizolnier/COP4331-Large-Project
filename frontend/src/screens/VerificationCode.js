@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useMediaQuery } from 'react-responsive'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
-import { goToReset } from '../router/coordinator'
+import { goToLogin, goToReset } from '../router/coordinator'
 import VerificationInput from 'react-verification-input'
 import './index.css'
 import { useState } from 'react'
@@ -14,22 +14,36 @@ import Button from '../components/Button.js'
 const VerificationCode = () => {
     const navigate = useNavigate()
     const [code, setCode] = useState()
-    
+    const email = localStorage.getItem('email')
+
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
 
     const doVerify = (e) => {
         e.preventDefault()
-        console.log('code===>' + code)
+        const body = {
+            code,
+            email
+        }
 
-        // axios
-        goToReset(navigate)
+        axios.post(`${baseUrl}/users/verify`, body).then((res) => {
+            if(window.location.pathname === "/verification-code-password") {
+                goToReset(navigate)
+            } else {
+                localStorage.removeItem("email")
+                goToLogin(navigate)
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+
     }
 
     const sendCode = () => {
-        console.log("never gonna give u up")
-        console.log("never gonna let u down")
-        console.log("haha youve been rick rolled by console log lol")
+        axios.post(`${baseUrl}/users/send-email`, { email: form.email }).then((res) => {
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
@@ -41,7 +55,7 @@ const VerificationCode = () => {
                 <p className="text-center text-white text-md font-normal">We've sent you a verification code.</p>
             </div>
             <form onSubmit={doVerify} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%]">
-                <VerificationInput value={code} onChange={setCode} classNames={{character: "character"}} length={5} validChars="0-9" inputProps={{ inputMode: "numeric" }} />
+                <VerificationInput value={code} onChange={setCode} classNames={{ character: "character" }} length={5} validChars="0-9" inputProps={{ inputMode: "numeric" }} />
                 <Button title="Verify" type="submit" />
                 <p className=" cursor-default text-red-300 text-[9px] font-normal"><b onClick={sendCode} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Send code again</b> 20 seconds.</p>
             </form>

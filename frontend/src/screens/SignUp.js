@@ -1,7 +1,7 @@
 import { useForm } from '../hooks/useForm'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
-import { goToLogin } from '../router/coordinator'
+import { goToLogin, goToVerify } from '../router/coordinator'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -12,7 +12,7 @@ import PasswordIcon from '../components/PasswordIcon'
 
 const SignUp = () => {
     const navigate = useNavigate()
-    const { form, onChange, reset } = useForm({ email: "", password: "", fname: "", username: "" })
+    const { form, onChange, reset } = useForm({ email: "", password: "", name: "", username: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -22,20 +22,24 @@ const SignUp = () => {
 
     const doSignUp = (e) => {
         e.preventDefault()
-        console.log('email===>' + form.email)
-        console.log('password===>' + form.password)
-        console.log('username===>' + form.username)
-        console.log('username===>' + form.fname)
+        console.log(`${baseUrl}/users/signup`)
 
-        /* axios.post(`${baseUrl}/signup`, form).then((res) => {
+        try {
+            let response = axios.post(`${baseUrl}/users/signup`, form)
+
+            console.log(response.status)
+
+            let res2 = axios.post(`${baseUrl}/users/send-email`, { email: form.email })
+            console.log(res2)
+            localStorage.setItem("email", form.email)
+            reset()
+            goToVerify(navigate)
+
+        } catch(err){
+            console.log(err)
+        }
+
         
-            
-            goToLogin(navigate)
-          }).catch((err) => {
-            window.alert("Sign Up error :(")
-          }) */
-
-        reset()
     }
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
@@ -53,7 +57,7 @@ const SignUp = () => {
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                         </svg>
                     </div>
-                    <input required placeholder="Enter your name" value={form.fname} onChange={onChange} name="fname" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
+                    <input required placeholder="Enter your name" value={form.name} onChange={onChange} name="name" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
                 </div>
                 <div className="relative w-[100%]">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
@@ -78,7 +82,7 @@ const SignUp = () => {
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.5 8V4.5a3.5 3.5 0 1 0-7 0V8M8 12v3M2 8h12a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
                         </svg>
                     </div>
-                    
+
                     <input required placeholder="Enter a password" type={isPasswordVisible ? "text" : "password"} value={form.password} onChange={onChange} name="password" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
 
                     <span onClick={togglePasswordVisibility} className="cursor-pointer absolute z-10 inset-y-0 right-0 flex items-center pr-3.5 pl-3.5">

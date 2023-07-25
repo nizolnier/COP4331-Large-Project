@@ -1,9 +1,9 @@
-const express = require("express")
-const bodyParser = require('body-parser')
-const cors = require("cors")
-const dotenv = require("dotenv")
-const mongoose = require('mongoose')
-const path = require('path')
+import express from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
+import setApp from './api.js'
 
 dotenv.config()
 
@@ -28,13 +28,28 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use(express.static('frontend/build'))
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+        console.log(`MongoDB connected: ${conn.connection.host}`)
+    } catch (error) {
 
-app.get('/search', require('./backend/controllers/searchCartoons'))
+        console.log(error)
+        process.exit(1)
+    }
+}
 
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-})
+connectDB()
+
+if (process.env.PROD) {
+    app.use(express.static('frontend/build'))
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+    })
+}
 
 //listening on port
 app.listen(PORT || 3000, () => {
@@ -42,25 +57,4 @@ app.listen(PORT || 3000, () => {
 })
 
 
-//connect DB
-const connectDB = async () => {
-    try{
-        const conn = await mongoose.connect(URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-        console.log(`MongoDB connected: ${conn.connection.host}`)
-    }catch(error){
-
-        console.log(error)
-        process.exit(1)
-    }
-}
-
-// connectDB();
-
-// app.use(express.json())
-// app.use(express.urlencoded({extended: false}))
-
-app.use('', require('./backend/routes/userRoutes'))
-app.use('', require('./backend/routes/showRoutes'))
+setApp(app)
