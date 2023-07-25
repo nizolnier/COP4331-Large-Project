@@ -14,7 +14,7 @@ import useCardResize from '../hooks/useCardResize.js'
 import TestContext from '../components/Searchbar.js'
 
 // Change this once API endpoints are done
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://localhost:4000';
 
 import {
     useInfiniteQuery,
@@ -22,7 +22,7 @@ import {
 } from 'react-query'
 
 const Search = () => {
-    useProtectedPage()
+    // useProtectedPage()
 
     // Access the query client
     const queryClient = useQueryClient()

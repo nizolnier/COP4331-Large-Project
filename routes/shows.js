@@ -7,8 +7,6 @@ import mongoose from "mongoose"
 
 dotenv.config()
 
-import sampleCartoons from '../frontend/src/tests/sample_cartoons.json' assert { type: "json" };
-
 export default (app, routeBase) => {
     app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
         log(routeBase, req)
@@ -106,7 +104,7 @@ export default (app, routeBase) => {
 
     })
 
-    app.get(`${routeBase}/search`, authMiddleware, async (req, res) => {
+    app.get(`${routeBase}/search`, async (req, res) => {
 
         if (!process.env.PROD) {
             log(routeBase, req)
@@ -139,8 +137,6 @@ export default (app, routeBase) => {
 
                 // Would do the cool way with mongo operators but genre lowkey annoying to do for regex
                 const allShows = await Show.find()
-                // for testing locally
-                // const allShows = sampleCartoons;
 
                 const similarShows = allShows.filter(show => {
                     return (
