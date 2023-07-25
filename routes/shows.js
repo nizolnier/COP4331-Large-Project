@@ -138,8 +138,9 @@ export default (app, routeBase) => {
             try {
 
                 // Would do the cool way with mongo operators but genre lowkey annoying to do for regex
-                // const allShows = await Show.find()
-                const allShows = sampleCartoons;
+                const allShows = await Show.find()
+                // for testing locally
+                // const allShows = sampleCartoons;
 
                 const similarShows = allShows.filter(show => {
                     return (
