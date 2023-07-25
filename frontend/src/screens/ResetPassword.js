@@ -42,7 +42,7 @@ const ResetPassword = () => {
                 goToLogin(navigate)
     
             }).catch((err) => {
-                window.alert("Error :(")
+                console.log(err)
             })
 
             reset()

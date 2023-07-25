@@ -32,7 +32,7 @@ const LogIn = () => {
             goToHome(navigate)
 
         }).catch((err) => {
-            window.alert("Log In error :(")
+            console.log(err)
         })
 
         reset()

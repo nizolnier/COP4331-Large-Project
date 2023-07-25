@@ -30,7 +30,7 @@ const ForgotPassword = () => {
             goToVerifyPassword(navigate)
 
         }).catch((err) => {
-            window.alert("Error :(")
+            console.log(err)
         })
         goToVerify(navigate)
     }

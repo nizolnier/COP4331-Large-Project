@@ -35,8 +35,8 @@ const SignUp = () => {
             reset()
             goToVerify(navigate)
 
-        } catch(error){
-            console.log(error.message)
+        } catch(err){
+            console.log(err)
         }
 
         

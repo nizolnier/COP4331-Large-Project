@@ -28,7 +28,9 @@ const Sidebar = ({ username, name }) => {
     }
 
     const doLogout = () => {
-        //remove token here
+        localStorage.removeItem("token")
+        localStorage.removeItem("username")
+        localStorage.removeItem("name")
 
         goToLogin(navigate)
     }

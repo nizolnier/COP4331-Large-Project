@@ -160,7 +160,7 @@ export default (app, routeBase) => {
                 username
             } = req.params
 
-            const userExists = User.findOne({ username })
+            const userExists = await User.findOne({ username })
 
             if (!userExists) {
                 res.status(404).send({
@@ -175,6 +175,40 @@ export default (app, routeBase) => {
                     favcartoons: userExists.favcartoons,
                     watchlist: userExists.watchlist,
                     twatched: userExists.twatched
+                })
+            }
+        }
+    })
+
+    app.get(`${routeBase}/watchlist/:showid`, authMiddleware, async (req, res) => {
+
+        log(routeBase, req)
+
+        const expectedParamKeys = [
+            "showid"
+        ]
+
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { showid } = req.params
+            const tokenData = getTokenData(req.headers.authorization)
+
+            const inWatchlist = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) , "watchlist.showid": new mongoose.Types.ObjectId(showid) })
+
+            if (!inWatchlist) {
+                res.status(404).send({
+                    error: 'Not in watchlist',
+                    found: false
+                })
+            } else {
+                res.status(200).send({
+                    found: true
                 })
             }
         }
@@ -257,6 +291,40 @@ export default (app, routeBase) => {
                 res.status(400).send({
                     error: err.message,
                     created: false
+                })
+            }
+        }
+    })
+
+    app.get(`${routeBase}/favcartoons/:showid`, authMiddleware, async (req, res) => {
+
+        log(routeBase, req)
+
+        const expectedParamKeys = [
+            "showid"
+        ]
+
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { showid } = req.params
+            const tokenData = getTokenData(req.headers.authorization)
+
+            const inFavcartoons = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) , "favcartoons.showid" : new mongoose.Types.ObjectId(showid) })
+
+            if (!inFavcartoons) {
+                res.status(404).send({
+                    error: 'Not in favcartoons',
+                    found: false
+                })
+            } else {
+                res.status(200).send({
+                    found: true
                 })
             }
         }
@@ -369,7 +437,7 @@ export default (app, routeBase) => {
                 email
             } = req.params
 
-            const userExists = User.findOne({ email })
+            const userExists = await User.findOne({ email })
 
             if (!userExists) {
                 res.status(404).send({

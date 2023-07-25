@@ -157,7 +157,6 @@ export default (app, routeBase) => {
                     shows: showsForPage
                 })
             } catch (e) {
-                // idk find eror nicole
                 res.status(400).send({
                     error: e.toString(),
                     found: false

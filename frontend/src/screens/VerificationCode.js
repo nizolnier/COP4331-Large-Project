@@ -34,7 +34,7 @@ const VerificationCode = () => {
                 goToLogin(navigate)
             }
         }).catch((err) => {
-            window.alert("Error :(")
+            console.log(err)
         })
 
     }
@@ -42,7 +42,7 @@ const VerificationCode = () => {
     const sendCode = () => {
         axios.post(`${baseUrl}/users/send-email`, { email: form.email }).then((res) => {
         }).catch((err) => {
-            window.alert("Error :(")
+            console.log(err)
         })
     }
 

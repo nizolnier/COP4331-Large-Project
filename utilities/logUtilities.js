@@ -6,7 +6,8 @@ const log = (routeBase, req) => {
         path,
         body,
         params,
-        query
+        query,
+        headers
     } = req
     
     // For logging styling for separation
@@ -60,6 +61,16 @@ const log = (routeBase, req) => {
 
         for (const key in query)
             logString += `${key} : ${query[key]}\n`
+        
+        logString += "\n"
+    }
+
+    // If we have queries, add its contents
+    if (Object.keys(headers).length > 0) {
+        logString += "HEADERS:\n\n"
+
+        for (const key in headers)
+            logString += `${key} : ${headers[key]}\n`
         
         logString += "\n"
     }
