@@ -7,6 +7,8 @@ import mongoose from "mongoose"
 
 dotenv.config()
 
+import sampleCartoons from '../frontend/src/tests/sample_cartoons.json' assert { type: "json" };
+
 export default (app, routeBase) => {
     app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
         log(routeBase, req)
@@ -112,7 +114,8 @@ export default (app, routeBase) => {
 
         const expectedQueryKeys = [
             'input',
-            'pageIndex'
+            'page',
+            'limit'
         ]
 
         const missingQueryKeys = validatedRequestObjectKeys(req.query, expectedQueryKeys)
@@ -126,7 +129,8 @@ export default (app, routeBase) => {
 
             const {
                 input,
-                pageIndex // Assume that this, based on handling on the frontend, is not allowed to be lower than 1
+                page,
+                limit
             } = req.query
 
             const likeInputRegex = new RegExp(`.*${input}.*`, 'i')
@@ -134,7 +138,8 @@ export default (app, routeBase) => {
             try {
 
                 // Would do the cool way with mongo operators but genre lowkey annoying to do for regex
-                const allShows = await Show.find()
+                // const allShows = await Show.find()
+                const allShows = sampleCartoons;
 
                 const similarShows = allShows.filter(show => {
                     return (
@@ -146,15 +151,20 @@ export default (app, routeBase) => {
                     )
                 })
 
+                const numPages = Math.ceil(similarShows.length / limit);
+
                 // Using min and max for indexing safety
                 const showsForPage = similarShows.slice(
-                    Math.max(0, 10 * (pageIndex - 1)),
-                    Math.min(similarShows.length, 10 * pageIndex)
+                    Math.max(0, limit * (page - 1)),
+                    Math.min(limit * page, similarShows.length)
                 )
 
+
                 res.status(201).send({
-                    found: true,
-                    shows: showsForPage
+                    pages: numPages,
+                    page: page,
+                    total: numPages * limit,
+                    cartoons: showsForPage
                 })
             } catch (e) {
                 res.status(400).send({

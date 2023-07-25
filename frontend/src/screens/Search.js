@@ -1,7 +1,7 @@
 import { useRequestData } from '../hooks/useRequestData'
 import { useInView } from 'react-intersection-observer'
 import { useState, useEffect, useContext } from 'react'
-import sampleShows from '../tests/sample_shows.json'
+import sampleShows from '../tests/sample_cartoons.json'
 //import SearchBar from '../components/Searchbar'
 import SideBar from '../components/Sidebar'
 import NavBar from '../components/NavBar'
@@ -9,12 +9,12 @@ import axios from 'axios'
 import { useProtectedPage } from '../hooks/useProtectedPage'
 import Card from '../components/Card'
 
-import useResize from '../hooks/useCardResize.js'
+import useCardResize from '../hooks/useCardResize.js'
 
 import TestContext from '../components/Searchbar.js'
 
 // Change this once API endpoints are done
-const baseUrl = 'https://www.episodate.com/api';
+const baseUrl = 'http://localhost:3000';
 
 import {
     useInfiniteQuery,
@@ -33,11 +33,11 @@ const Search = () => {
     const [resultsFound, setResultsFound] = useState(true)
 
     // To see if last cartoon is in viewport
-    const [ref, inView, entry] = useInView();
+    const { ref, inView } = useInView();
     // Number of cartoons fetched at a time
-    const limit = 10;
+    const limit = 20;
 
-    const { cartoonsPerPage } = useResize();
+    const { cartoonsPerPage } = useCardResize();
     const [cardWidth, setCardWidth] = useState('');
 
     useEffect(() => {
@@ -79,7 +79,7 @@ const Search = () => {
 
 
     const fetchCartoons = async (pageParam) => {
-        const urlEnd = `/search?q=${query}&page=${pageParam}`
+        const urlEnd = `/api/shows/search?input=${query}&page=${pageParam}&limit=${limit}`
 
         const res = await axios.get(`${baseUrl}${urlEnd}`);
 
@@ -113,16 +113,16 @@ const Search = () => {
         if (inView && hasNextPage) {
             fetchNextPage()
         }
-    }, [inView, hasNextPage])
+    }, [inView, hasNextPage, fetchNextPage])
 
     let results = null;
     if (isSuccess && data != null) {
         results = data.pages.map((page) => {
             if (page) {
-                return page.result.tv_shows.map((cartoon, index) => {
-                    if (index == limit)
+                return page.result.cartoons.map((cartoon, index) => {
+                    if (index == limit - 1)
                     {
-                        return <Card cartoon={cartoon} key={index} ref={ref} height={'200px'} width={cardWidth}></Card>
+                        return <Card cartoon={cartoon} key={index} ref={ref} height={'100px'} width={cardWidth}></Card>
                     }
                     return <Card cartoon={cartoon} key={index} width={cardWidth} height={'200px'}></Card>
                 })
