@@ -1,0 +1,21 @@
+POST http://localhost:4000/api/reviews HTTP/1.1
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
+
+{
+    "showid": "64bdfb814c1699dc5bcdcb6b",
+    "stars": 5,
+    "favorite": 1,
+    "comment": "slayed",
+    "dateWatched": "07/24/2023"
+}
+
+###
+GET http://localhost:4000/api/reviews/show/64bdfb814c1699dc5bcdcb6b
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI
+
+###
+GET http://localhost:4000/api/reviews/user/64bdf02bba091138f24bd8be
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphaW5oIiwiaWQiOiI2NGJkZjAyYmJhMDkxMTM4ZjI0YmQ4YmUiLCJpYXQiOjE2OTAxNzExMzYsImV4cCI6MTY5MDE3ODMzNn0.G6pUGAdeFyrpdicJMesEgp1Uqn0m527dSt4_1Rcq5hI

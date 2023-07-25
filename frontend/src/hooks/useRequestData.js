@@ -4,15 +4,14 @@ import {baseUrl} from '../constants/url'
 
 // filling up arrays of data
 export const useRequestData = (urlEnd) => {
-    const [data, setData] = useState([])
+    const [data, setData] = useState({})
 
     const getData = () => {
         axios.get(`${baseUrl}${urlEnd}`, {
             headers: {
-                Authorization: 'token goes here'
+                Authorization: localStorage.getItem("token")
             }
         }).then(response => {
-            console.log(response.data)
             setData(response.data)
         }).catch(err => {
 
