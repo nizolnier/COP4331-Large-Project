@@ -62,3 +62,4 @@ connectDB();
 
 app.use('', require('./backend/routes/userRoutes'))
 app.use('', require('./backend/routes/showRoutes'))
+app.use('', require('./backend/routes/reviewRoutes'))

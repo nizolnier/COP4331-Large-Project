@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-  //userid: {type: String, require: [true, "please provide a userId"], unique: true},
+  userid: {type: Number, require: [false, "please provide a userId"], unique: false},
   username: { type: String, require: [true, "please add a username"], unique: true },
   email: { type: String, require: [true, "please add an email"]},
-  password: { type: String, require: [true, "please add a password"] },
+  pass: { type: String, require: [true, "please add a password"] },
   userType: {type: Number, default: 1, require: [true, "please add a userType(1-regular, 2-admin)"]},
   fav_cartoon: {type : Array , default : [] },
   watch_list: {type : Array , default : [] },
@@ -13,4 +13,4 @@ const userSchema = mongoose.Schema({
 }, {timestamps: true});
 
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("users", userSchema)

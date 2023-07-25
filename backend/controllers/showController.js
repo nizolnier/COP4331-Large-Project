@@ -1,5 +1,5 @@
 const { json } = require("body-parser");
-const Show = require("../models/showModel");
+const shows = require("../models/showModel");
 const asyncHandler = require("express-async-handler");
 
 const GetShow = asyncHandler(async (req, res) => {
@@ -7,8 +7,25 @@ const GetShow = asyncHandler(async (req, res) => {
 
   if (!showid) {
     res.status(400).json({
-      error: "showid can not be an empty array.",
+      error: "showid can not be empty.",
     });
+    return;
+  }
+
+  if (typeof showid === "number") {
+
+    const showCur = await shows.findOne({ showid });
+
+    console.log(showCur);
+
+    if (showCur) {
+      res.json(JSON.parse(showCur));
+    } else {
+      res.json({
+        error: "No results found associated with showid " + showid,
+      });
+    }
+
     return;
   }
 
@@ -16,7 +33,7 @@ const GetShow = asyncHandler(async (req, res) => {
 
   for (let i = 0; i < showid.length; i++) {
     try {
-      const showCur = await Show.findOne({ showid: showid[i] });
+      const showCur = await shows.findOne({ showid: showid[i] });
       let showCurJson;
 
       if (showCur) {
@@ -29,10 +46,10 @@ const GetShow = asyncHandler(async (req, res) => {
         description: ${showCur.description},
         year: ${showCur.year},
         director: ${showCur.director},
-        num_of_ratings: ${showCur.num_of_ratings},
-        total_ratings:${showCur.total_ratings},
-        average_ratings: ${showCur.average_ratings},
-        num_of_favorites: ${showCur.num_of_favorites},
+        nrating: ${showCur.nrating},
+        trating:${showCur.trating},
+        avgrating: ${showCur.avgrating},
+        nfavorites: ${showCur.nfavorites},
       }`;
       } else {
         showCur = `
@@ -62,10 +79,10 @@ const updateShow = asyncHandler(async (req, res) => {
     description,
     year,
     director,
-    num_of_ratings,
-    total_ratings,
-    average_ratings,
-    num_of_favorites,
+    nrating,
+    trating,
+    avgrating,
+    nfavorites,
   } = req.body;
 
   if (!showid) {
@@ -73,26 +90,47 @@ const updateShow = asyncHandler(async (req, res) => {
     throw new Error("please provide required all fields (showid)");
   }
 
-  const showCur = await Show.findOne({ showid });
+  const showCur = await shows.findOne({showid})
 
-  if (showCur) {
+
+  const updatedShowCur = await shows.findOneAndUpdate(
+    { showid },
+    {
+      $set: {
+        picture: picture ? picture : showCur.picture,
+        title: title ? title : showCur.title,
+        genre: genre ? genre : showCur.genre,
+        description: description ? description : showCur.description,
+        year: year ? year : showCur.year,
+        director: director ? director : showCur.director,
+        nrating: nrating
+          ? nrating
+          : showCur.nrating,
+        trating: trating ? trating : showCur.trating,
+        avgrating: avgrating
+          ? avgrating
+          : showCur.avgrating,
+        nfavorites: nfavorites
+          ? nfavorites
+          : showCur.nfavorites,
+      },
+    }
+  );
+
+  if (updatedShowCur) {
     res.status(200).json({
-      message: "successfully updated show" + showCur.title,
-      showid: showCur.showid,
-      picture: picture ? picture : showCur.picture,
-      title: title ? title : showCur.title,
-      genre: genre ? genre : showCur.genre,
-      description: description ? description : showCur.description,
-      year: year ? year : showCur.year,
-      director: director ? director : showCur.director,
-      num_of_ratings: num_of_ratings ? num_of_ratings : showCur.num_of_ratings,
-      total_ratings: total_ratings ? total_ratings : showCur.total_ratings,
-      average_ratings: average_ratings
-        ? average_ratings
-        : showCur.average_ratings,
-      num_of_favorites: num_of_favorites
-        ? num_of_favorites
-        : showCur.num_of_favorites,
+      message: "successfully updated shows" + updatedShowCur.title,
+      showid: updatedShowCur.showid,
+      picture: updatedShowCur.picture,
+      title: updatedShowCur.title,
+      genre: updatedShowCur.genre,
+      description: updatedShowCur.description,
+      year: updatedShowCur.year,
+      director: updatedShowCur.director,
+      nrating: updatedShowCur.nrating,
+      trating: updatedShowCur.trating,
+      avgrating: updatedShowCur.avgrating,
+      nfavorites: updatedShowCur.nfavorites,
     });
   } else {
     res
@@ -102,4 +140,79 @@ const updateShow = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { GetShow, updateShow };
+const addShow = asyncHandler(async (req, res) => {
+  const {
+    showid,
+    picture,
+    title,
+    genre,
+    description,
+    year,
+    director,
+    nrating,
+    trating,
+    avgrating,
+    nfavorites,
+  } = req.body;
+
+  if (!showid) {
+    res.status(400);
+    throw new Error("please provide required all fields (showid)");
+  }
+
+  const existOne = await shows.findOne({showid});
+
+  if(existOne)
+    res.json({
+      error: "showid " + showid + " already exist"
+    })
+
+  const showCur = await shows.create({
+    picture: picture,
+        title: title,
+        genre: genre,
+        description: description,
+        year: year,
+        director: director,
+        nrating: nrating,
+        trating: trating,
+        avgrating: avgrating,
+        nfavorites: nfavorites,
+  })
+
+  if (showCur) {
+    res.status(200).json({
+      message: "successfully created shows" + showCur.title,
+      showCur
+    });
+  } else {
+    res
+      .status(200)
+      .json({ Error: "Internal error fail to create show" });
+  }
+
+})
+
+
+
+const deleteShow = asyncHandler(async (req, res) => {
+  const {showid} = req.body;
+
+  if(!showid)
+  {
+    res.json({error: "showid can not be empty"});
+    return;
+  }
+
+  const deletedShow = await shows.deleteMany({showid});
+
+  if(deletedShow)
+  {
+    res.json({status: "successfully deleted show " + showid});
+  }
+  else{
+    res.json({error: "Internal error failed to delete show " + showid});
+  }
+})
+
+module.exports = { GetShow, updateShow,addShow, deleteShow };

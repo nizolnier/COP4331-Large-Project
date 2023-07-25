@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const users = require("../models/userModel");
 const Show = require("../models/showModel");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
@@ -19,11 +19,11 @@ const deleteFavorite = asyncHandler(async (req, res) => {
       });
       return;
     }
-    const userCur = await User.findOne({ username });
+    const userCur = await users.findOne({ username });
 
     if (!userCur) {
       res.status(400).json({
-        error: "user with " + username + " not found",
+        error: "users with " + username + " not found",
       });
 
       return;
@@ -44,7 +44,7 @@ const deleteFavorite = asyncHandler(async (req, res) => {
 
     curFavList.splice(index, 1);
 
-    const ifUpdated = await User.findOneAndUpdate(
+    const ifUpdated = await users.findOneAndUpdate(
       { username },
       {
         $set: {
@@ -87,11 +87,11 @@ const deleteWatchList = asyncHandler(async (req, res) => {
       });
       return;
     }
-    const userCur = await User.findOne({ username });
+    const userCur = await users.findOne({ username });
 
     if (!userCur) {
       res.status(400).json({
-        error: "user with " + username + " not found",
+        error: "users with " + username + " not found",
       });
 
       return;
@@ -112,7 +112,7 @@ const deleteWatchList = asyncHandler(async (req, res) => {
 
     curWatchList.splice(index, 1);
 
-    const ifUpdated = await User.findOneAndUpdate(
+    const ifUpdated = await users.findOneAndUpdate(
       { username },
       {
         $set: {
@@ -155,11 +155,11 @@ const addFavorite = asyncHandler(async (req, res) => {
       });
       return;
     }
-    const userCur = await User.findOne({ username });
+    const userCur = await users.findOne({ username });
 
     if (!userCur) {
       res.status(400).json({
-        error: "user with " + username + " not found",
+        error: "users with " + username + " not found",
       });
 
       return;
@@ -203,11 +203,11 @@ const addWatchList = asyncHandler(async (req, res) => {
       });
       return;
     }
-    const userCur = await User.findOne({ username });
+    const userCur = await users.findOne({ username });
 
     if (!userCur) {
       res.status(400).json({
-        error: "user with " + username + " not found",
+        error: "users with " + username + " not found",
       });
 
       return;
@@ -240,32 +240,32 @@ const addWatchList = asyncHandler(async (req, res) => {
 });
 
 const AddUser = asyncHandler(async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, pass, email } = req.body;
 
-  if (!username || !password || !email) {
+  if (!username || !pass || !email) {
     res.status(400).json({
-      Error: "please provide all fields (username, password, email)",
+      Error: "please provide all fields (username, pass, email)",
     });
     return;
   }
 
-  //check if user exist
-  const userExists = await User.findOne({ username });
+  //check if users exist
+  const userExists = await users.findOne({ username });
 
   if (userExists) {
-    res.status(400).json({ Error: "user already exists" });
+    res.status(400).json({ Error: "users already exists" });
     return;
   }
 
-  //hash password
+  //hash pass
   const salt = await bcrypt.genSalt(10);
-  const hashedpw = await bcrypt.hash(password, salt);
+  const hashedpw = await bcrypt.hash(pass, salt);
 
-  //create user
-  const newuser = await User.create({
+  //create users
+  const newuser = await users.create({
     username: req.body.username,
     email: req.body.email,
-    password: hashedpw,
+    pass: hashedpw,
     userType: req.body.userType,
     fav_cartoon: req.body.fav_cartoon,
     watch_list: req.body.watch_list,
@@ -276,22 +276,22 @@ const AddUser = asyncHandler(async (req, res) => {
   } else {
     res
       .status(400)
-      .json({ Error: "Error Creating User, server/database error" });
+      .json({ Error: "Error Creating users, server/database error" });
     return;
   }
 });
 
 const GetUser = asyncHandler(async (req, res) => {
-  const { username, password, authUser } = req.body;
+  const { username, pass, authUser } = req.body;
 
-  if (!username || !password) {
+  if (!username || !pass) {
     res.status(400).json({
-      Error: "please provide required all fields (username, password)",
+      Error: "please provide required all fields (username, pass)",
     });
     return;
   }
 
-  const userCur = await User.findOne({ username });
+  const userCur = await users.findOne({ username });
 
   if (!userCur) {
     res.json({
@@ -304,7 +304,7 @@ const GetUser = asyncHandler(async (req, res) => {
   // if(authUser.username != username)     //bypass token checking, uncomment to make it work
   // {
   //   res.json({
-  //     error: "Wrong token for user " + username + ", please double check"
+  //     error: "Wrong token for users " + username + ", please double check"
 
   //   })
 
@@ -318,19 +318,19 @@ const GetUser = asyncHandler(async (req, res) => {
     return;
   }
 
-  if (await bcrypt.compare(password, userCur.password)) {
+  if (await bcrypt.compare(pass, userCur.pass)) {
     res.status(200).json({
       message: "successfully login for " + username,
       username: userCur.username,
       email: userCur.email,
-      password: userCur.password,
+      pass: userCur.pass,
       userType: userCur.userType,
       fav_cartoon: userCur.fav_cartoon,
       watch_list: userCur.watch_list,
       token: userCur.token,
     });
   } else {
-    res.status(400).json({ Error: "invalid credentials/user not exist" });
+    res.status(400).json({ Error: "invalid credentials/users not exist" });
     return;
   }
 });
@@ -347,12 +347,12 @@ const forgotPassword = asyncHandler(async (req, res) => {
       return;
     }
 
-    const userCur = await User.findOne({ email });
+    const userCur = await users.findOne({ email });
     const verificationCur = await verification.findOne({ email });
 
     if (!userCur) {
       res.json({
-        Error: "No user associated with email " + email,
+        Error: "No users associated with email " + email,
       });
       return;
     }
@@ -388,7 +388,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     let transporter = nodemailer.createTransport({
       host: "smtp-mail.outlook.com",
       auth: {
-        user: process.env.AUTH_USERNAME,
+        users: process.env.AUTH_USERNAME,
         pass: process.env.AUTH_PASSWORD,
       },
     });
@@ -396,21 +396,21 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const mailOptions = {
       from: process.env.AUTH_USERNAME,
       to: email,
-      subject: "Forgot password for Large Project COP4331",
-      html: `<p>Enter <b>${code}</b> in the app to complete your sign in if you <b>forgot</b> your password. This code expires in 30 minutes</p>`,
+      subject: "Forgot pass for Large Project COP4331",
+      html: `<p>Enter <b>${code}</b> in the app to complete your sign in if you <b>forgot</b> your pass. This code expires in 30 minutes</p>`,
     };
 
     await transporter.sendMail(mailOptions);
 
     res.json({
       sent: true,
-      status: "verification code sent, waiting on user action",
+      status: "verification code sent, waiting on users action",
       verification: code,
       data: {
         username: userCur.username,
         email: req.body.email,
         verified: userCur.verified,
-        password: userCur.password,
+        pass: userCur.pass,
       },
     });
   } catch (err) {
@@ -421,14 +421,14 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, pass } = req.body;
 
   if (!username) {
     res.status(400).json({ Error: "please provide required field (username)" });
     return;
   }
 
-  const userCur = await User.findOne({ username });
+  const userCur = await users.findOne({ username });
 
   if (!userCur) {
     res.json({
@@ -440,14 +440,14 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   const salt = await bcrypt.genSalt(10);
-  const hashedpw = await bcrypt.hash(password, salt);
+  const hashedpw = await bcrypt.hash(pass, salt);
 
-  const ifUpdated = await User.findOneAndUpdate(
+  const ifUpdated = await users.findOneAndUpdate(
     { username },
     {
       $set: {
         email: email ? email : userCur.email,
-        password: password ? hashedpw : userCur.password,
+        pass: pass ? hashedpw : userCur.pass,
       },
     }
   );
@@ -457,7 +457,7 @@ const updateUser = asyncHandler(async (req, res) => {
       update_status: true,
       username: username,
       email: email ? email : userCur.email,
-      password: password ? hashedpw : userCur.password,
+      pass: pass ? hashedpw : userCur.pass,
     });
   } else {
     res.json({
@@ -471,7 +471,7 @@ const sendVerification = asyncHandler(async (req, res) => {
     const { email, username } = req.body;
     const code = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
 
-    const userCur = await User.findOne({ username });
+    const userCur = await users.findOne({ username });
 
     if (userCur.verified) {
       res.json({
@@ -484,7 +484,7 @@ const sendVerification = asyncHandler(async (req, res) => {
     let transporter = nodemailer.createTransport({
       host: "smtp-mail.outlook.com",
       auth: {
-        user: process.env.AUTH_USERNAME,
+        users: process.env.AUTH_USERNAME,
         pass: process.env.AUTH_PASSWORD,
       },
     });
@@ -518,7 +518,7 @@ const sendVerification = asyncHandler(async (req, res) => {
 
     res.json({
       sent: true,
-      status: "verification code sent, waiting on user to verify",
+      status: "verification code sent, waiting on users to verify",
       verification: code,
       data: {
         username: req.body.username,
@@ -562,7 +562,7 @@ const UserVerify = asyncHandler(async (req, res) => {
 
     if (expiredTime < Date.now()) {
       await verification.deleteMany({ username });
-      await User.findOneAndRemove({ username });
+      await users.findOneAndRemove({ username });
       res.json({
         error: "code expire, please try again later",
         username: username,
@@ -579,9 +579,9 @@ const UserVerify = asyncHandler(async (req, res) => {
 
       return;
     } else {
-      const usercur = await User.findOne({ username });
+      const usercur = await users.findOne({ username });
 
-      await User.updateOne(
+      await users.updateOne(
         { username: username },
         {
           $set: {
@@ -607,8 +607,8 @@ const UserVerify = asyncHandler(async (req, res) => {
   }
 });
 
-const genereteToken = (user) => {
-  return jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+const genereteToken = (users) => {
+  return jwt.sign(users.toJSON(), process.env.JWT_SECRET);
 };
 
 module.exports = {

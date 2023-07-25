@@ -3,9 +3,15 @@ const router = express.Router();
 
 const {
   GetShow,
-  updateShow
-  } = require('../controllers/showController');
+  updateShow,
+  addShow,
+  deleteShow,
+} = require("../controllers/showController");
 
-  router.post("/GetShow", GetShow).post('/UpdateShow', updateShow)
+router
+  .post("/getshow", GetShow)
+  .post("/updateshow", updateShow)
+  .post("/addshow", addShow)
+  .post("/deleteshow", deleteShow);
 
-  module.exports = router;
+module.exports = router;
