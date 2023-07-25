@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import Show from '../screens/Show';
 import Router from '../router/Router';
 
-import sampleShows from './sample_shows.json'
+import sampleShows from './sample_cartoons.json'
 import sampleUser from './sample_user.json'
 import sampleReviews from './sample_reviews.json'
 

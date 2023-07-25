@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-// setting up form values more easily
+// setting up number of cards on a page by page width
 const useCardResize = (initialValues) => {
     const [cartoonsPerPage, setCartoonsPerPage] = useState(initialValues)
 
