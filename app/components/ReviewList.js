@@ -34,7 +34,7 @@ const ReviewCard = (props) => {
     const imageAspectRatio = '2/3';
 
     return (
-        <View className={`my-2 w-full flex flex-row bg-[#E9A6A60D] rounded-xl p-4`} key={review._id}>
+        <View className={`my-2 w-full flex flex-row bg-[#E9A6A60D] rounded-xl p-4`}>
             <Image src={cartoon.picture} className={`rounded-xl h-auto w-${imageWidth} aspect-[${imageAspectRatio}]`} onPress={props.onPress} resizeMode="contain"/>
             <View className={`flex flex-col pl-2 shrink`}>
                 <Text className="text-white font-bold">{cartoon.title}</Text>
@@ -61,28 +61,14 @@ const ReviewList = (props) => {
         if (selected) props.navigation.navigate("review")
     }, [selected])
 
-    const renderItem = ({item}) => {
-        return (
-            <ReviewCard
-                review={item}
-                cartoon={cartoon}
-                user={user}
-                onPress={() => setSelected(item)}
-            />
-        );
-      };
-
     const Reviews = () => {
-        return props.reviews.map((review) => {
-            return (
-                <ReviewCard
-                    review={review}
-                    cartoon={cartoon}
-                    user={user}
-                    onPress={() => setSelected(item)}
-                />
-            );
-        })
+        return props.reviews.map((review, i) => <ReviewCard
+            review={review}
+            cartoon={cartoon}
+            user={user}
+            key={review._id}
+            onPress={() => setSelected(item)}
+        />)
     }
     
     const Header = () => {

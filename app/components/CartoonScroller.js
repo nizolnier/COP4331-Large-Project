@@ -8,20 +8,21 @@ import CardRating from './CardRating';
 const Card = ({navigation, ...props}) => {
     const cartoon = props.cartoon;
 
-    // change this to change card size
-    const cardWidth = 24;
     // image aspect ratio is currently 2:3
     const imageAspectRatio = '2/3';
 
     return (
-        <View className={`mx-2 w-${cardWidth} flex flex-col`}>
-            <Image src={cartoon.picture} className={`rounded-xl w-${cardWidth} h-auto aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
+        <View className={`mx-2 flex flex-col`}>
+            <Image src={cartoon.picture} className={`rounded-xl h-full w-full aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
             <CardRating avgRating={cartoon.avgrating} numRatings={cartoon.nrating}/>
         </View>
     )
 }
 
 const CartoonScroller = (props) => {
+    // change this to change card size
+    const cardHeight = 48;
+
     const [selectedCartoon, setSelectedCartoon] = useState();
 
     useEffect(() => {
@@ -51,6 +52,7 @@ const CartoonScroller = (props) => {
                 extraData={selectedCartoon}
                 horizontal={true}
                 indicatorStyle="white"
+                className={`h-${cardHeight}`}
             />
         </SafeAreaView>
     )
