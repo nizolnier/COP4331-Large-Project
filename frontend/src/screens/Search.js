@@ -8,13 +8,11 @@ import NavBar from '../components/NavBar'
 import axios from 'axios'
 import { useProtectedPage } from '../hooks/useProtectedPage'
 import Card from '../components/Card'
+import { baseUrl } from '../constants/url'
 
 import useCardResize from '../hooks/useCardResize.js'
 
 import TestContext from '../components/Searchbar.js'
-
-// Change this once API endpoints are done
-const baseUrl = 'http://localhost:3000';
 
 import {
     useInfiniteQuery,
