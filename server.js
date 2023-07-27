@@ -52,8 +52,8 @@ if (process.env.PROD) {
 }
 
 //listening on port
-app.listen(PORT, () => {
-    console.log('Server listening on port ' + PORT);
+app.listen(PORT || 3000, () => {
+    console.log('Server listening on port ' + (PORT || 3000));
 })
 
 

@@ -23,6 +23,8 @@ import Reviews from './screens/Reviews'
 import VerificationCode from './screens/VerificationCode.js';
 import Cartoon from './screens/Cartoon.js';
 import Error from './screens/Error.js';
+import ForgotPassword from './screens/ForgotPassword'
+import ResetPassword from './screens/ResetPassword.js';
 
 /* Components */
 import LogoTitle from './components/LogoTitle'
@@ -65,6 +67,16 @@ function CustomDrawerContent(props) {
         icon={() => <Feather name="align-left" />}
         onPress={() => props.navigation.navigate("Reviews")}
       />
+      <DrawerItem
+        label="Login"
+        icon={() => <Ionicons name="person-outline" />}
+        onPress={() => props.navigation.navigate("Login")}
+      />
+      <DrawerItem
+        label="Reset Password (temporary)"
+        icon={() => <Ionicons name="lock-closed-outline" />}
+        onPress={() => props.navigation.navigate("ResetPassword")}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -78,6 +90,7 @@ const App = () => {
             component={Landing}
             options={{
               headerShown: false,
+              swipeEnabled: false,
               drawerItemStyle: { display: 'none' }
             }}
         />
@@ -150,6 +163,20 @@ const App = () => {
         <Drawer.Screen
             name="Error"
             component={Error}
+            options={{
+              drawerItemStyle: { display: 'none' }
+            }}
+        />
+        <Drawer.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
+            options={{
+              drawerItemStyle: { display: 'none' }
+            }}
+        />
+        <Drawer.Screen
+            name="ResetPassword"
+            component={ResetPassword}
             options={{
               drawerItemStyle: { display: 'none' }
             }}

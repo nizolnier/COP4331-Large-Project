@@ -6,7 +6,7 @@ const LogoTitle = ({navigation}) => {
         // Use `setOptions` to update the button that we previously specified in App.js
         navigation.setOptions({
             headerTitle: () => (
-                <Text>Logo</Text>
+                <Text>Between Shows</Text>
             ),
         });
     }, [navigation]);
