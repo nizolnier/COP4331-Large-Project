@@ -93,9 +93,19 @@ const Signup = ({navigation}) => {
         }
 
         axios.post(`${baseUrl}/users/signup`, form).then((response) => {
+
             if (response) {
-                navigation.navigate('Verify')
+                axios.post(`${baseUrl}/users/send-email`, {email}).then((response) => {
+                    if (response) {
+                        navigation.navigate('Verify')
+                    }
+                }).catch((err) => {
+                    if (err.response) {
+                        setError(err.response.data.error)
+                    }
+                })
             }
+
         }).catch((err) => {
             if (err.response) {
                 setError(err.response.data.error)
