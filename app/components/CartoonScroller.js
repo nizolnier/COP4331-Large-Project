@@ -13,7 +13,7 @@ const Card = ({navigation, ...props}) => {
 
     return (
         <View className={`mx-2 flex flex-col`}>
-            <Image src={cartoon.picture} className={`rounded-xl h-full w-full aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
+            <Image src={cartoon.picture} className={`rounded-xl h-${props.cardHeight} w-full aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
             <CardRating avgRating={cartoon.avgrating} numRatings={cartoon.nrating}/>
         </View>
     )
@@ -33,6 +33,7 @@ const CartoonScroller = (props) => {
         return (
             <Card
             cartoon={item}
+            cardHeight={cardHeight}
             onPress={() => setSelectedCartoon(item)}
             />
         );

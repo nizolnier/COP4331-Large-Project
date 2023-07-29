@@ -202,6 +202,16 @@ const Home = ({navigation}) => {
         watch_list: DATA,
     })
 
+    const fetchUser = async (pageParam) => {
+        const urlEnd = `/oneuser/${username}`
+
+        const res = await axios.get(`${baseUrl}${urlEnd}`);
+
+        return {
+            result: res.data,
+        }
+    }
+
     useEffect(() => {
         // Use `setOptions` to update the button that we previously specified
         navigation.setOptions({
