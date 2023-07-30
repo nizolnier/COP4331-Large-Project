@@ -204,7 +204,7 @@ const Home = ({navigation}) => {
     const [user, setUser] = useState({})
     const isFocused = useIsFocused()
 
-    useProtectedPage();
+    useProtectedPage(navigation);
 
     useEffect(() => {
         if (isFocused) fetchUsername()

@@ -7,10 +7,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useProtectedPage } from '../hooks/useProtectedPage';
 
-const Watchlist = () => {
+const Watchlist = ({navigation}) => {
     const inFocused = useIsFocused();
 
-    useProtectedPage();
+    useProtectedPage(navigation);
 
     useEffect(() => {
         if (inFocused) getWatchList();
