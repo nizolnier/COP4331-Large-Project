@@ -199,7 +199,7 @@ export default (app, routeBase) => {
             const { showid } = req.params
             const tokenData = getTokenData(req.headers.authorization)
 
-            const inWatchlist = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) , "watchlist.showid": new mongoose.Types.ObjectId(showid) })
+            const inWatchlist = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id), "watchlist.showid": new mongoose.Types.ObjectId(showid) })
 
             if (!inWatchlist) {
                 res.status(404).send({
@@ -315,7 +315,7 @@ export default (app, routeBase) => {
             const { showid } = req.params
             const tokenData = getTokenData(req.headers.authorization)
 
-            const inFavcartoons = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) , "favcartoons.showid" : new mongoose.Types.ObjectId(showid) })
+            const inFavcartoons = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id), "favcartoons.showid": new mongoose.Types.ObjectId(showid) })
 
             if (!inFavcartoons) {
                 res.status(404).send({
@@ -489,7 +489,15 @@ export default (app, routeBase) => {
                 res.status(200).send({ message: "Code sent", verification: newVerification })
             }
             catch (e) {
-                await Verification.deleteMany({email})
+                try {
+                    await Verification.deleteMany({ email })
+                }
+                catch (e) {
+                    res.status(400).send({
+                        error: e.message,
+                    })
+                }
+
 
                 res.status(400).send({
                     error: e.message,
@@ -522,46 +530,56 @@ export default (app, routeBase) => {
             })
         } else {
             const { email, code } = req.body
-            const verificationExists = await Verification.findOne({ email });
+            try {
+                const verificationExists = await Verification.findOne({ email });
 
-            if (!verificationExists) {
-                res.status(404).send({
-                    error: "User does not exist",
-                })
-                return
-            }
+                if (!verificationExists) {
+                    res.status(404).send({
+                        error: "User does not exist",
+                    })
+                    return
+                }
 
 
-            if (verificationExists.expiredAt < Date.now()) {
-                await verification.deleteMany({ email });
-                await User.findOneAndRemove({ email });
+                if (verificationExists.expiredAt < Date.now()) {
+
+                    await verification.deleteMany({ email })
+                    await User.findOneAndRemove({ email })
+                    res.status(400).send({
+                        error: "Code expired, please try again later",
+                    })
+                }
+
+                if (code != verificationExists.code) {
+                    res.status(401).send({
+                        error:
+                            "Invalid verification code",
+                        email: email,
+                    })
+
+                } else {
+                    await User.updateOne(
+                        { email: email },
+                        {
+                            $set: {
+                                verified: true,
+                            },
+                        }
+                    )
+
+                    await Verification.deleteMany({ email })
+
+
+                    res.status(200).send({
+                        message: "Successfully verified",
+                        verified: true,
+                    })
+                }
+            } catch (e) {
                 res.status(400).send({
-                    error: "Code expired, please try again later",
+                    error: e.message,
                 })
-            }
-
-            if (code != verificationExists.code) {
-                res.status(401).send({
-                    error:
-                        "Invalid verification code",
-                    email: email,
-                })
-
-            } else {
-                await User.updateOne(
-                    { email: email },
-                    {
-                        $set: {
-                            verified: true,
-                        },
-                    }
-                )
-                await Verification.deleteMany({ email });
-
-                res.status(200).send({
-                    message: "Successfully verified",
-                    verified: true,
-                })
+                console.log(e.message)
             }
         }
     })
@@ -587,22 +605,31 @@ export default (app, routeBase) => {
             })
         } else {
             const { password, email } = req.body
-            const salt = await bcrypt.genSalt(10)
-            const hashed = await bcrypt.hash(password, salt)
+            try {
+                const salt = await bcrypt.genSalt(10)
+                const hashed = await bcrypt.hash(password, salt)
 
-            await User.updateOne(
-                { email: email },
-                {
-                    $set: {
-                        password: hashed,
-                    },
-                }
-            )
+                await User.updateOne(
+                    { email: email },
+                    {
+                        $set: {
+                            password: hashed,
+                        },
+                    }
+                )
 
-            res.status(200).send({
-                message: "Password changed",
-                updated: true,
-            })
+                res.status(200).send({
+                    message: "Password changed",
+                    updated: true,
+                })
+
+
+            } catch (e) {
+                res.status(400).send({
+                    error: e.message,
+                })
+                console.log(e.message)
+            }
 
         }
     })
