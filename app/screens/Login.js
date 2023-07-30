@@ -6,24 +6,44 @@ import LogoSVG from '../components/LogoSVG';
 import { TextInput } from 'react-native-gesture-handler';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link } from '@react-navigation/native';
+import { Link, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 import { baseUrl } from '../constants/url';
 
 const bgColor = '#1F1D36'
 
-const Login = () => {
+const Login = ({navigation}) => {
     const [username, onChangeLogin] = useState('')
     const [password, onChangePassword] = useState('')
     const passwordRef = useRef()
     const [error, setError] = useState('')
     const [errorType, setErrorType] = useState('')
+    const [successMsg, setSuccessMsg] = useState('')
+    const isFocused = useIsFocused()
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible)
+    }
+
+    // clear old data
+    useEffect(() => {
+        if (isFocused) resetData()
+    }, [isFocused])
+
+    const resetData = async () => {
+        onChangeLogin('')
+        onChangePassword('')
+        setError('')
+        setErrorType('')
+        try {
+            await AsyncStorage.removeItem("EMAIL")
+        }
+        catch (err) {
+            console.error(err)
+        }
     }
 
     const validateFormData = () => {
@@ -96,6 +116,7 @@ const Login = () => {
                     <LogoSVG/>
                 </View>
                 <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl font-bold '}>Login</Text>
+                <Text className="color-green-600 text-center">{successMsg}</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>Please sign in to continue.</Text>
                 <View className={`h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 ${errorType === "username" ? 'border border-red-600' : ''}`}>
                     <Ionicons name="person" color={'white'}></Ionicons>

@@ -9,14 +9,18 @@ import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { baseUrl } from '../constants/url';
 import axios from 'axios'
+import { useIsFocused } from '@react-navigation/native';
 
 const bgColor = '#1F1D36'
 
 const VerificationCode = ({navigation}) => {
     const [email, setEmail] = useState('')
     const [error, setError] = useState('')
+    const [successMsg, setSuccessMsg] = useState('')
     const [code, setCode] = useState('')
     const [cursorClass, setCursorClass] = useState('')
+
+    const isFocused = useIsFocused()
 
     // get email from react native's async storage
     const getEmail = async () => {
@@ -33,9 +37,19 @@ const VerificationCode = ({navigation}) => {
         }
     }
 
+    // clear old data
     useEffect(() => {
+        if (isFocused) resetData()
+    }, [isFocused])
+
+    const resetData = () => {
+        setCode('')
+        setCodeArray([])
+        setCursorClass('')
         getEmail()
-    }, [])
+        setError('')
+        setSuccessMsg('')
+    }
 
     const [codeArray, setCodeArray] = useState([])
 
@@ -59,13 +73,40 @@ const VerificationCode = ({navigation}) => {
 
         // send verification request
         axios.post(`${baseUrl}/users/verify`, form).then((response) => {
-            if (response) {
-                // navigate to login page
-                navigation.navigate('Login')
+            if (response.verified) {
+                AsyncStorage.removeItem('EMAIL');
+                const prevRoute = navigation.state.routes[navigation.state.routes.length - 2];
+                console.log(prevRoute)
+                if (prevRoute.name == 'Signup') {
+                    // navigate to login page
+                    navigation.navigate('Login')
+                } else if (prevRoute.name == 'ForgotPassword') {
+                    // navigate to login page
+                    navigation.navigate('ResetPassword')
+                }
             }
         }).catch((err) => {
             if (err.response) {
                 setError(err.response.data.error)
+            }
+        })
+    }
+
+    const onPressSendCode = () => {
+        let form = {
+            email
+        }
+
+        axios.post(`${baseUrl}/users/send-email`, form).then(async (res) => {
+            setSuccessMsg("Verification code resent.")
+            setError("")
+            setCode('')
+            setCodeArray([])
+            setCursorClass('')
+        }).catch((err) => {
+            if (err.response) {
+                setError(err.response.data.error)
+                setSuccessMsg("")
             }
         })
     }
@@ -116,7 +157,8 @@ const VerificationCode = ({navigation}) => {
                 <Pressable title="Send Code" onPress={onPressVerify} className={'w-1/3 bg-pinkLight rounded-full p-2 my-2 text-center mx-auto text-xl'}>
                     <Text className={'text-center  text-lg font-bold'}>Verify</Text>
                 </Pressable>
-                <Pressable><Text className={'text-center w-3/5 mx-auto pb-4 text-xm text-pinkDark'}>Send code again </Text></Pressable>
+                <Pressable onPress={onPressSendCode}><Text className={'text-center w-3/5 mx-auto pb-4 text-xm text-pinkDark'}>Send code again </Text></Pressable>
+                <Text className="color-green-600 text-center">{successMsg}</Text>
             </View>
         </View>
     )

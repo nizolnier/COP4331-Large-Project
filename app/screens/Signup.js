@@ -7,18 +7,12 @@ import LogoSVG from '../components/LogoSVG';
 import { TextInput } from 'react-native-gesture-handler';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link } from '@react-navigation/native';
+import { Link, useIsFocused } from '@react-navigation/native';
 
 import { baseUrl } from '../constants/url'
 import axios from 'axios'
 
 const bgColor = '#1F1D36'
-
-const createUser = async (form) => {
-    const res = await axios.post(`${baseUrl}/users/signup`, form)
-    console.log(res.data)
-    return res.data.json();
-}
 
 const Signup = ({navigation}) => {
     const [name, onChangeName] = useState('')
@@ -30,6 +24,7 @@ const Signup = ({navigation}) => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
+    const isFocused = useIsFocused()
     
     const [error, setError] = useState('')
     const [errorType, setErrorType] = useState('')
@@ -38,6 +33,25 @@ const Signup = ({navigation}) => {
 
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible)
+    }
+
+    // clear old data
+    useEffect(() => {
+        if (isFocused) resetData()
+    }, [isFocused])
+
+    const resetData = async () => {
+        onChangeName('')
+        onChangeUsername('')
+        onChangeEmail('')
+        onChangePassword('')
+        onChangeConfirmPassword('')
+        try {
+            await AsyncStorage.removeItem("EMAIL")
+        }
+        catch (err) {
+            console.error(err)
+        }
     }
 
     useEffect(() => {
