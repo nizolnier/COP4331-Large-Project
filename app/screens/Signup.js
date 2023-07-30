@@ -182,7 +182,7 @@ const Signup = ({navigation}) => {
                     }
                 </View>
                 <View className={`h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-1 mb-8 pr-8 text-textLight ${errorType === "password" ? 'border border-red-600' : ''}`}>
-                <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
+                    <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
                     <TextInput secureTextEntry={!isPasswordVisible} onChangeText={onChangeConfirmPassword} onBlur={validateFormData} onSubmitEditing={onPressSignup} ref={confirmPasswordRef} value={confirmPassword} placeholder={'Confirm Password'} className={`w-full px-4 pr-18 text-textLight`}/>
                     { !isPasswordVisible ? 
                     <Ionicons name="eye-off-outline" color={'white'} onPress={togglePasswordVisibility}></Ionicons>
