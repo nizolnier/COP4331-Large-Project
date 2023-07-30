@@ -31,6 +31,7 @@ import LogoTitle from './components/LogoTitle'
 
 /* Drawer Customization */
 const Drawer = createDrawerNavigator();
+const bgColor = '#1F1D36'
 
 /* Icons aren't supported in Drawer Screens :( */
 function CustomDrawerContent(props) {
@@ -39,47 +40,56 @@ function CustomDrawerContent(props) {
       <DrawerItemList {...props}/>
       <DrawerItem
         label="Zain"
-        icon={() => <Ionicons name="person-circle" size={72}/>}
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white" name="person-circle" size={72}/>}
         onPress={() => props.navigation.navigate("Home")}
       />
       <DrawerItem
         label="Home"
-        icon={() => <Ionicons name="home-outline" />}
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white"   name="home-outline" />}
         onPress={() => props.navigation.navigate("Home")}
       />
       <DrawerItem
         label="Search"
-        icon={() => <Ionicons name="search-outline" />}
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white"   name="search-outline" />}
         onPress={() => props.navigation.navigate("Search")}
       />
       <DrawerItem
         label="Profile"
+        labelStyle={{color: 'white'}}
         onPress={() => props.navigation.navigate("Profile")}
-        icon={() => <Ionicons name="person-outline" />}
+        icon={() => <Ionicons color="white"   name="person-outline" />}
       />
       <DrawerItem
         label="Watchlist"
-        icon={() => <Feather name="clock" />}
+        labelStyle={{color: 'white'}}
+        icon={() => <Feather color="white" name="clock" />}
         onPress={() => props.navigation.navigate("Watchlist")}
       />
       <DrawerItem
         label="Reviews"
-        icon={() => <Feather name="align-left" />}
+        labelStyle={{color: 'white'}}
+        icon={() => <Feather color="white" name="align-left" />}
         onPress={() => props.navigation.navigate("Reviews")}
       />
       <DrawerItem
         label="Login"
-        icon={() => <Ionicons name="person-outline" />}
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white"   name="person-outline" />}
         onPress={() => props.navigation.navigate("Login")}
       />
       <DrawerItem
         label="Reset Password (temporary)"
-        icon={() => <Ionicons name="lock-closed-outline" />}
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white"   name="lock-closed-outline" />}
         onPress={() => props.navigation.navigate("ResetPassword")}
       />
       <DrawerItem
         label="Verify Code"
-        icon={() => <Ionicons name="checkmark-done-outline" />}
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white"   name="checkmark-done-outline" />}
         onPress={() => props.navigation.navigate("Verify")}
       />
     </DrawerContentScrollView>
@@ -87,104 +97,94 @@ function CustomDrawerContent(props) {
 }
 
 const App = () => {
+
+  const navigationOptions = (title, headerShown) => {
+    return {
+      title: title,
+      headerShown: headerShown,
+      swipeEnabled: headerShown,
+      headerStyle: {
+        backgroundColor: bgColor
+      },
+      headerTintColor: 'white',
+      drawerItemStyle: { display: 'none' }
+    }
+  }
+
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName='Landing' drawerContent={(props) => <CustomDrawerContent {...props}/>}>
+      <Drawer.Navigator 
+      initialRouteName='Landing' 
+      drawerContent={(props) => <CustomDrawerContent {...props}/>}
+      screenOptions={{
+        drawerStyle: {
+          backgroundColor: bgColor
+        },
+      }}>
         <Drawer.Screen
             name="Landing"
             component={Landing}
-            options={{
-              headerShown: false,
-              swipeEnabled: false,
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Landing", false)}
         />
         <Drawer.Screen
             name="Home"
             component={Home}
-            options={{
-              title: "Home",
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Home", true)}
         />
         <Drawer.Screen
             name="Search"
             component={Search}
-            options={{
-              title: "Search",
-              headerTitle: '',
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Search", true)}
         />
         <Drawer.Screen
             name="Profile"
             component={Profile}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Profile", true)}
         />
         <Drawer.Screen
             name="Watchlist"
             component={Watchlist}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Watchlist", true)}
         />
         <Drawer.Screen
             name="Reviews"
             component={Reviews}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Reviews", true)}
         />
         <Drawer.Screen
             name="Signup"
             component={Signup}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Signup", true)}
         />
         <Drawer.Screen
             name="Login"
             component={Login}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Login", true)}
         />
         <Drawer.Screen
             name="Cartoon"
             component={Cartoon}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Cartoon", true)}
         />
         <Drawer.Screen
             name="Verify"
             component={VerificationCode}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Verify", true)}
         />
         <Drawer.Screen
             name="Error"
             component={Error}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Error", true)}
         />
         <Drawer.Screen
             name="ForgotPassword"
             component={ForgotPassword}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Forgot Password", true)}
         />
         <Drawer.Screen
             name="ResetPassword"
             component={ResetPassword}
-            options={{
-              drawerItemStyle: { display: 'none' }
-            }}
+            options={navigationOptions("Reset Password", true)}
         />
       </Drawer.Navigator>
     </NavigationContainer>
