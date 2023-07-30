@@ -28,7 +28,7 @@ const Home = () => {
             </div>
             <Header username={user.username} />
             <div>
-                <Scroller cartoons={sampleCartoons} otherProp="value" heading="Popular"></Scroller>
+                <Scroller cartoons={sampleCartoons} heading="Popular"></Scroller>
             </div>
             <footer className="flex flex-end bg-[#1F1D36]">
                 {isMobile? <NavBar userid={user.userid} screen="home" /> : <></>}
