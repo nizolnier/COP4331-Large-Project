@@ -34,6 +34,7 @@ const Profile = () => {
             
             setProfile(res.data)
         }).catch((err) => {
+            console.log('yeah this shit aint working')
             console.log(err)
         })
     }
@@ -41,7 +42,7 @@ const Profile = () => {
     useEffect(() => {
         loadProfile()
     }, [])
-    
+
 
     return (
         <div className="flex bg-[#1F1D36] overflow-hidden">

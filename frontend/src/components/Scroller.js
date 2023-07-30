@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 
 import useCardResize from '../hooks/useCardResize.js'
 
-const Scroller = ({...props}) => {
+const Scroller = ({profile = null, ...props}) => {
     const [cartoons, setCartoons] = useState(props.cartoons);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentCartoons, setCurrentCartoons] = useState([]);

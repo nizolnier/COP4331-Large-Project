@@ -36,6 +36,7 @@ const Cartoon = () => {
                 setOnWatchlist(true)
             }
         }).catch((err) => {
+            console.log('balls big balls baills abasll big balls')
             console.log(err)
         })
 

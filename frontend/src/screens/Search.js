@@ -2,8 +2,9 @@ import { useRequestData } from '../hooks/useRequestData'
 import { useInView } from 'react-intersection-observer'
 import { useState, useEffect, useContext } from 'react'
 import sampleShows from '../tests/sample_cartoons.json'
-//import SearchBar from '../components/Searchbar'
-import SideBar from '../components/Sidebar'
+import ToggleSBContext from '../context/ToggleSBContext'
+import { useMediaQuery } from 'react-responsive'
+import Sidebar from '../components/Sidebar'
 import NavBar from '../components/NavBar'
 import axios from 'axios'
 import { useProtectedPage } from '../hooks/useProtectedPage'
@@ -12,7 +13,6 @@ import { baseUrl } from '../constants/url'
 
 import useCardResize from '../hooks/useCardResize.js'
 
-import TestContext from '../components/Searchbar.js'
 
 import {
     useInfiniteQuery,
@@ -26,7 +26,7 @@ const Search = () => {
     const queryClient = useQueryClient()
 
     // Search query, update this value with input
-    const [query, setQuery] = useState('show');
+    const [query, setQuery] = useState('');
     const [isLoading, setIsLoading] = useState(false)
     const [resultsFound, setResultsFound] = useState(true)
 
@@ -77,7 +77,7 @@ const Search = () => {
 
 
     const fetchCartoons = async (pageParam) => {
-        const urlEnd = `/api/shows/search?input=${query}&page=${pageParam}&limit=${limit}`
+        const urlEnd = `/shows/search?input=${query}&page=${pageParam}&limit=${limit}`
 
         const res = await axios.get(`${baseUrl}${urlEnd}`);
 
@@ -101,14 +101,14 @@ const Search = () => {
             // May need to be adjusted when API is done
             if (lastPage.result.page < lastPage.result.pages)
             {
-                return lastPage.result.page + 1;
+                return parseInt(lastPage.result.page) + 1;
             }
             return undefined;
         }
     })
 
     useEffect(() => {
-        if (inView && hasNextPage) {
+        if (hasNextPage) {
             fetchNextPage()
         }
     }, [inView, hasNextPage, fetchNextPage])
@@ -118,10 +118,6 @@ const Search = () => {
         results = data.pages.map((page) => {
             if (page) {
                 return page.result.cartoons.map((cartoon, index) => {
-                    if (index == limit - 1)
-                    {
-                        return <Card cartoon={cartoon} key={index} ref={ref} height={'100px'} width={cardWidth}></Card>
-                    }
                     return <Card cartoon={cartoon} key={index} width={cardWidth} height={'200px'}></Card>
                 })
             }
@@ -144,13 +140,21 @@ const Search = () => {
         </div>
     )    
 
+    const user = {
+        username: localStorage.getItem("username"),
+        name: localStorage.getItem("name")
+    }
+
+    const {toggle} = useContext(ToggleSBContext)
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+
     const width = 700                       
     
     return (
         <div className='w-full bg-[#1F1D36] text-white min-h-screen'>
             <div className='flex flex-row h-full'>
 
-                <SideBar/>
+                {toggle || !isMobile ? <Sidebar username={user.username} name={user.name} /> : <></>}
                 <div className='w-1/6'></div>
                 <div className='ml-5 w-5/6 h-full'>
                     <h1 className='py-5'>Search</h1>
@@ -165,7 +169,9 @@ const Search = () => {
 
             </div>
 
-            {width < 700 ? <NavBar/> : <></>}
+            <footer className="flex flex-end bg-[#1F1D36]">
+                {isMobile? <NavBar userid={user.userid} screen="home" /> : <></>}
+            </footer>
         </div>
     )
 }
