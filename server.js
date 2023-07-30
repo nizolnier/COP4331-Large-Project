@@ -4,6 +4,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import setApp from './api.js'
+import path from 'path'
 
 dotenv.config()
 
