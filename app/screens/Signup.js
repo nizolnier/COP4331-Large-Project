@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { View, Text, Pressable, ImageBackground, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient'
 
 import LogoSVG from '../components/LogoSVG';
@@ -77,10 +78,38 @@ const Signup = ({navigation}) => {
     }
 
     const empty = () => {
-        return (name.length > 0 && username.length > 0 && email.length > 0 && password.length > 0 && confirmPassword.length > 0)
+        if (name.length == 0) {
+            setError("Please fill out your name")
+            setErrorType("name")
+            return true;
+        } 
+        else if (username.length == 0) {
+            setError("Please create a username.")
+            setErrorType("username")
+            return true;
+        } 
+        else if (email.length == 0) 
+        {
+            setError("Please provide an email.")
+            setErrorType("email")
+            return true;
+        }
+        else if (password.length == 0) 
+        {
+            setError("Please create a password.")
+            setErrorType("password")
+            return true;
+        }
+        else if (confirmPassword.length == 0) 
+        {
+            setError("Please confirm your password.")
+            setErrorType("confirmPassword")
+            return true;
+        }
+        return false;
     }
 
-    const onPressSignup = () => {
+    const onPressSignup = async () => {
         let form = {
             name,
             username,
@@ -88,7 +117,15 @@ const Signup = ({navigation}) => {
             password
         }
 
-        if (!validateFormData() || !empty()) {
+        if (empty() || !validateFormData()) {
+            return;
+        }
+
+        try {
+            await AsyncStorage.setItem('EMAIL', email);
+        } catch(error) {
+            console.log(error)
+            setError("Couldn't store email.")
             return;
         }
 
@@ -146,7 +183,7 @@ const Signup = ({navigation}) => {
                 </View>
                 <View className={`h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-1 mb-8 pr-8 text-textLight ${errorType === "password" ? 'border border-red-600' : ''}`}>
                 <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
-                    <TextInput secureTextEntry={!isPasswordVisible} onChangeText={onChangeConfirmPassword}  onBlur={validateFormData} ref={confirmPasswordRef} value={confirmPassword} placeholder={'Confirm Password'} className={`w-full px-4 pr-18 text-textLight`}/>
+                    <TextInput secureTextEntry={!isPasswordVisible} onChangeText={onChangeConfirmPassword} onBlur={validateFormData} onSubmitEditing={onPressSignup} ref={confirmPasswordRef} value={confirmPassword} placeholder={'Confirm Password'} className={`w-full px-4 pr-18 text-textLight`}/>
                     { !isPasswordVisible ? 
                     <Ionicons name="eye-off-outline" color={'white'} onPress={togglePasswordVisibility}></Ionicons>
                     :

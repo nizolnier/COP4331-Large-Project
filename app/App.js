@@ -77,6 +77,11 @@ function CustomDrawerContent(props) {
         icon={() => <Ionicons name="lock-closed-outline" />}
         onPress={() => props.navigation.navigate("ResetPassword")}
       />
+      <DrawerItem
+        label="Verify Code"
+        icon={() => <Ionicons name="checkmark-done-outline" />}
+        onPress={() => props.navigation.navigate("Verify")}
+      />
     </DrawerContentScrollView>
   );
 }
