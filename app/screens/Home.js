@@ -6,6 +6,12 @@ import CartoonScroller from '../components/CartoonScroller';
 import ReviewList from '../components/ReviewList';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
+import { baseUrl } from '../constants/url';
+import { useIsFocused } from '@react-navigation/native';
+import { useProtectedPage } from '../hooks/useProtectedPage';
+
 const DATA = [
     {
         "_id": "64a7437b62d4733a9c26c60e",
@@ -195,21 +201,46 @@ const sampleReviews = [
 
 const Home = ({navigation}) => {
     // TESTING PURPOSES ONLY
-    const [user, setUser] = useState({
-        username: "Zain",
-        email: "zain@gmail.com",
-        fav_cartoon: DATA,
-        watch_list: DATA,
-    })
+    const [user, setUser] = useState({})
+    const isFocused = useIsFocused()
 
-    const fetchUser = async (pageParam) => {
-        const urlEnd = `/oneuser/${username}`
+    useProtectedPage();
 
-        const res = await axios.get(`${baseUrl}${urlEnd}`);
+    useEffect(() => {
+        if (isFocused) fetchUsername()
+    }, [isFocused])
 
-        return {
-            result: res.data,
+    const fetchUsername = async () => {
+        // get it from react native's async storage
+        try {
+            const val = await AsyncStorage.getItem('USERNAME');
+            if (val !== null) {
+                fetchUser(username)
+            }
+            else {
+                // set a guest user
+                setUser({
+                    username: "Guest",
+                    watchlist: DATA,
+                    favcartoons: DATA,
+                    twatched: DATA
+                })
+            }
+        } catch(error) {
+            console.log(error)
         }
+    }
+
+    const fetchUser = async (username) => {
+        const urlEnd = `/users/oneuser`
+
+        await axios.get(`${baseUrl}${urlEnd}`, { params: { username: username }}).then((response) => {
+            if (response) {
+                setUser(response.data)
+            }
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     useEffect(() => {
@@ -226,8 +257,9 @@ const Home = ({navigation}) => {
             <ScrollView scrollEnabled={true}>
                 <Text className="text-white font-bold text-lg">Hello, <Text className="text-rose-300">{user.username}</Text>!</Text>
                 <Text className="text-white">Review or track cartoons you've watched...</Text>
-                <CartoonScroller cartoons={DATA} title="Popular Cartoons This Month"/>
-                <CartoonScroller cartoons={DATA} title="My Watchlist"/>
+                <CartoonScroller cartoons={user.favcartoons} title="Favorite Cartoons"/>
+                <CartoonScroller cartoons={user.watchlist} title="My Watchlist"/>
+                <CartoonScroller cartoons={user.twatched} title="To Watch"/>
                 <ReviewList reviews={sampleReviews} title="Recent Reviews"/> 
             </ScrollView>
         </SafeAreaView>
