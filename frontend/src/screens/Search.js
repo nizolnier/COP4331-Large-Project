@@ -75,6 +75,7 @@ const Search = () => {
 
 
 
+    axios.defaults.headers.common['Authorization'] = localStorage.getItem("token")
 
     const fetchCartoons = async (pageParam) => {
         const urlEnd = `/shows/search?input=${query}&page=${pageParam}&limit=${limit}`
