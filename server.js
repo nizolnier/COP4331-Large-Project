@@ -4,6 +4,12 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import setApp from './api.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+
+const __dirname = path.dirname(__filename)
 
 dotenv.config()
 
@@ -45,15 +51,15 @@ const connectDB = async () => {
 connectDB()
 
 if (process.env.PROD) {
-    app.use(express.static('frontend/build'))
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+    app.use(express.static(path.join(__dirname, 'frontend/build')))
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
     })
 }
 
 //listening on port
-app.listen(PORT || 3000, () => {
-    console.log('Server listening on port ' + (PORT || 3000));
+app.listen(PORT, () => {
+    console.log('Server listening on port ' + (PORT));
 })
 
 

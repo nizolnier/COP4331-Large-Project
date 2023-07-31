@@ -37,7 +37,7 @@ const Card = React.forwardRef(({...props}, ref) => {
             <Link 
                 id={cartoon._id} 
                 title={cartoon.title}
-                to={"/cartoons/" + cartoon.id}
+                to={"/cartoons/" + cartoon._id}
                 className={"h-[90%] block"}>
                 <img src={cartoon.picture} className={'h-full rounded-md hover:shadow-lg hover:slay-sm object-cover object-top m-auto'}/>
             </Link>
