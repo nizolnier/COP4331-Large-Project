@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename)
 
 dotenv.config()
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 4000
 const URL = process.env.MONGODB_URI
 
 const app = express()
