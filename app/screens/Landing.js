@@ -1,12 +1,39 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Pressable, ImageBackground, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 
 import LogoSVG from '../components/LogoSVG';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
+import { baseUrl } from '../constants/url';
+import { useIsFocused } from '@react-navigation/native';
+
 const bgColor = '#1F1D36'
 
 const Landing = ({navigation}) => {
+    const isFocused = useIsFocused();
+    const [state, setState] = useState();
+
+    useEffect(() => {
+        if (isFocused) getState();
+    }, [isFocused])
+
+    // If user is logged in, navigate to Home
+    const getState = async () => {
+        try {
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (token !== null) {
+                navigation.navigate('Home')
+            }
+            else {
+                console.log("Not logged in")
+            }
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
     return (
         <View>
             <Image source={require('../assets/landing-mobile.png')} className='h-3/5 w-full bg-gradient-to-b from-bgDark z-1 absolute top-0'/>
