@@ -30,7 +30,7 @@ const Landing = ({navigation}) => {
                 console.log("Not logged in")
             }
         } catch(error) {
-            setError("Error reading token.")
+            console.log(error)
         }
     }
 

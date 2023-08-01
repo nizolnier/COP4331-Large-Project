@@ -47,6 +47,10 @@ const Home = ({navigation}) => {
     const [allCartoons, setAllCartoons] = useState([])
     const [comedyCartoons, setComedyCartoons] = useState([])
     const [dramaCartoons, setDramaCartoons] = useState([])
+    const [recentReviews, setRecentReviews] = useState([])
+    const [reviewDeets, setReviewDeets] = useState([])
+    const imageAspectRatio = '2/3'
+    const [sortType, setSortType] = useState('ascending')
 
     useProtectedPage(navigation);
 
@@ -56,6 +60,7 @@ const Home = ({navigation}) => {
             getAllCartoons() 
             getGenre('Comedy', setComedyCartoons)  
             getGenre('Drama', setDramaCartoons)   
+            getReviews()
         }
     }, [isFocused])
 
@@ -126,6 +131,67 @@ const Home = ({navigation}) => {
         })
     }
 
+
+
+    const getReviewUser = async (review) => {
+        const token = await AsyncStorage.getItem('TOKEN')
+        return axios.get(`${baseUrl}/users/one/${review.userid}`, {headers: {
+            Authorization: token
+        }}).then((res) => {
+            return res.data.username
+        }).catch((err) => {
+            if (err.response) {
+                console.log(err.response)
+            }
+        })
+    }
+
+    const getReviewShow = async (review) => {
+        const token = await AsyncStorage.getItem('TOKEN')
+        return axios.get(`${baseUrl}/shows/one/${review.showid}`, {headers: {
+            Authorization: token
+        }}).then((res) => { 
+            return res.data.showExists
+        }).catch((err) => {
+            if (err.response) {
+                console.log(err.response)
+            }
+        })
+    }
+
+    const getReviews = async () => {
+        const token = await AsyncStorage.getItem('TOKEN')
+        return axios.get(`${baseUrl}/reviews/all/`, {
+            headers: {
+                Authorization: token
+            },
+            params: {
+                sort: sortType,
+                limit: 10
+            }
+        }).then(res => {
+            setRecentReviews(res.data.reviews)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    useEffect(() => {
+        if (recentReviews.length > 0) {
+            getReviewDetails()
+        }
+    }, [recentReviews])
+
+    const getReviewDetails = async () => {
+        let reviews = recentReviews
+        for await (const r of reviews) {
+            r.username = await getReviewUser(r)
+            r.show = await getReviewShow(r)
+        }
+        setReviewDeets(reviews)
+    }
+
     useEffect(() => {
         // Use `setOptions` to update the button that we previously specified
         navigation.setOptions({
@@ -141,12 +207,12 @@ const Home = ({navigation}) => {
                 <Text className="text-white font-bold text-lg">Hello, <Text className="text-rose-300">{user.name}</Text>!</Text>
                 <Text className="text-white">Review or track cartoons you've watched...</Text>
                 <CartoonScroller cartoons={allCartoons} title="Popular Cartoons"/>
-                {user.watchlist.length > 0 ? <CartoonScroller cartoons={user.watchlist} title="My Watchlist"/> : <></>}
+                {user.watchlist && user.watchlist.length > 0 ? <CartoonScroller cartoons={user.watchlist} title="My Watchlist"/> : <></>}
                 <CartoonScroller cartoons={comedyCartoons} title="Browse by Genre: Comedy"/>
                 <CartoonScroller cartoons={dramaCartoons} title="Browse by Genre: Drama"/>
-                {user.favcartoons.length > 0 ? <CartoonScroller cartoons={user.favcartoons} title="Favorite Cartoons"/> :<></> }
-                {user.twatched.length > 0 ? <CartoonScroller cartoons={user.twatched} title="Want To Watch"/> : <></>}
-                <ReviewList reviews={sampleReviews} title="Recent Reviews"/> 
+                {user.favcartoons && user.favcartoons.length > 0 ? <CartoonScroller cartoons={user.favcartoons} title="Favorite Cartoons"/> :<></> }
+                {user.twatched && user.twatched.length > 0 ? <CartoonScroller cartoons={user.twatched} title="Want To Watch"/> : <></>}
+                <ReviewList reviews={reviewDeets} title="Recent Reviews"/> 
             </ScrollView>
         </SafeAreaView>
     )
