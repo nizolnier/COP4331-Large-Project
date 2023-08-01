@@ -75,11 +75,11 @@ const VerificationCode = ({navigation, route}) => {
 
         // send verification request
         axios.post(`${baseUrl}/users/verify`, form).then((response) => {
-            if (response.verified) {
-                AsyncStorage.removeItem('EMAIL');
+            if (response) {
                 setIsLoading(false)
                 if (route.params.from == 'Signup') {
                     // navigate to login page
+                    AsyncStorage.removeItem('EMAIL');
                     navigation.navigate('Login')
                 } else if (route.params.from == 'ForgotPassword') {
                     // navigate to login page

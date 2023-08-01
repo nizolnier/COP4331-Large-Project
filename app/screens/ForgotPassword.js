@@ -7,7 +7,6 @@ import { TextInput } from 'react-native-gesture-handler';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, useIsFocused } from '@react-navigation/native';
-import { onChange } from 'react-native-reanimated';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
@@ -66,8 +65,7 @@ const ForgotPassword = ({navigation}) => {
 
         axios.post(`${baseUrl}/users/send-email`, form).then(async (res) => {
             try {
-                await AsyncStorage.setItem("EMAIL", email)
-
+                AsyncStorage.setItem("EMAIL", email)
                 setIsLoading(false)
                 navigation.navigate('Verify', {from: 'ForgotPassword'})
             }

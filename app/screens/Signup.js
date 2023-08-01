@@ -138,21 +138,20 @@ const Signup = ({navigation}) => {
         
         setIsLoading(true)
 
-        try {
-            AsyncStorage.setItem('EMAIL', email);
-        } catch(error) {
-            console.log(error)
-            setError("Couldn't store email.")
-            return;
-        }
-
         axios.post(`${baseUrl}/users/signup`, form).then((response) => {
 
             if (response) {
                 axios.post(`${baseUrl}/users/send-email`, {email}).then((response) => {
                     setIsLoading(false)
                     if (response) {
-                        navigation.navigate('Verify', {from: 'Signup'})
+                        try {
+                            AsyncStorage.setItem('EMAIL', email);
+                            navigation.navigate('Verify', {from: 'Signup'})
+                        } catch(error) {
+                            console.log(error)
+                            setError("Couldn't store email.")
+                            return;
+                        }
                     }
                 }).catch((err) => {
                     if (err.response) {

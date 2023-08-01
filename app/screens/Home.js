@@ -12,33 +12,6 @@ import { baseUrl } from '../constants/url';
 import { useIsFocused } from '@react-navigation/native';
 import { useProtectedPage } from '../hooks/useProtectedPage';
 
-const sampleReviews = [
-    {
-        "_id": "1",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "Spongebob slayyyyyy",
-        "rating": "4",
-        "fav": "true"
-    }, 
-    {
-        "_id": "2",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "huge slay",
-        "rating": "4",
-        "fav": "true"
-    }, 
-    {
-        "_id": "3",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "huge slay",
-        "rating": "4",
-        "fav": "true"
-    }
-]
-
 const Home = ({navigation}) => {
     // TESTING PURPOSES ONLY
     const [user, setUser] = useState({})
