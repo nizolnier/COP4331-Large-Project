@@ -148,7 +148,6 @@ const Home = () => {
 
     let reviewsRender = null;
     if (reviewDeets) {
-        console.log(reviewDeets)
         reviewsRender = reviewDeets.map((review) => {
             if (review) {
                 return (
