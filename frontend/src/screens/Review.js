@@ -81,6 +81,17 @@ const Review = () => {
             })
         }
 
+        body = {
+            twatched: 1
+        }
+        
+        axios.patch(`${baseUrl}/users/update`, body).then((res) => {
+
+        }).catch((err) => {
+            console.log(err)
+        })
+
+
         goToCartoon(navigate, params.id)
 
 

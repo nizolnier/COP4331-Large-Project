@@ -165,7 +165,7 @@ export default (app, routeBase) => {
                 limit
             } = req.query
 
-            const reviews = await Review.find()
+            let reviews = await Review.find()
 
             if (!reviews || reviews.length == 0) {
                 res.status(404).send({

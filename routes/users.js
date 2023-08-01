@@ -675,4 +675,40 @@ export default (app, routeBase) => {
         }
     })
 
+    app.patch(`${routeBase}/update`, authMiddleware, async (req, res) => {
+        log(routeBase, req)
+
+        const expectedBodyKeys = [
+            "twatched"
+        ]
+
+        const missingBodyKeys = validatedRequestObjectKeys(req.body, expectedBodyKeys)
+
+        if (missingBodyKeys > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const { twatched } = req.body
+
+            try {
+                const tokenData = getTokenData(req.headers.authorization)
+
+                const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
+
+                await user.updateOne({
+                    twatched: user.twatched + 1
+                })
+
+
+            } catch (err) {
+                res.status(400).send({
+                    error: err.message,
+                    created: false
+                })
+            }
+        }
+    })
+
 }
