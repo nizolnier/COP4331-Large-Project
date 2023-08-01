@@ -14,7 +14,7 @@ const Scroller = ({...props}) => {
 
     useEffect(() => {
         updateCartoons()
-    }, [props.cartoons, currentPage])
+    }, [props.cartoons, currentPage, cartoonsPerPage])
 
     const updateCartoons = () => {
         if (props.cartoons != null) {
