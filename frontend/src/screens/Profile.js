@@ -92,11 +92,14 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <h1 className="w-[100] mt-4 -mb-12 pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Your Favorites</h1>
-                {profile?.favorites ? <Scroller className="" cartoons={profile?.favorites} heading="Your Favorites"></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Favorites</div>}
-                <h1 className="w-[100] mt-4 -mb-12 pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Your Watchlist</h1>
-                {profile?.watchlist ? <Scroller className="" cartoons={profile?.watchlist} heading="Your Watchlist"></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Watchlist</div>}
-                <div className="w-[100] h=400 flex my-8 py-20"></div>
+                <div className='justify-center'>
+                    <h1 className="w-[100] mt-4 -mb-12 pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Your Favorites</h1>
+                    {profile?.favorites ? <Scroller className="" cartoons={profile?.favorites} ></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Favorites</div>}
+                    <h1 className="w-[100] mt-4 -mb-12 pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Your Watchlist</h1>
+                    {profile?.watchlist ? <Scroller className="" cartoons={profile?.watchlist} ></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Watchlist</div>}
+                    <div className="w-[100] h=400 flex my-8 py-20"></div>
+
+                </div>
             </div>
         </div>
 
