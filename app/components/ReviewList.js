@@ -3,23 +3,6 @@ import { View, Text, Image, FlatList, Button, ActivityIndicator } from 'react-na
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const sampleCartoon = {
-    "_id": "64a7437b62d4733a9c26c60e",
-    "title": "Spongebob Squarepants",
-    "picture": "https://nick.mtvnimages.com/uri/mgid:arc:content:nick.com:9cd2df6e-63c7-43da-8bde-8d77af9169c7?quality=0.7",
-    "director": "Stephen Hillenburg",
-    "genre": [
-        "Comedy",
-        "Family"
-    ],
-    "year": 1999,
-    "nrating": 0,
-    "trating": 0,
-    "avgrating": 0,
-    "nfavorites": 0,
-    "description": "A square yellow sponge named SpongeBob SquarePants lives in a pineapple with his pet snail, Gary, in the city of Bikini Bottom on the floor of the Pacific Ocean."
-}
-
 import Rating from './Rating.js';
 
 const ReviewCard = (props) => {

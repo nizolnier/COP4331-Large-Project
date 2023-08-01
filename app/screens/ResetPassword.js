@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Pressable, ImageBackground, Image } from 'react-native';
+import { View, Text, Pressable, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 
 import LogoSVG from '../components/LogoSVG';
@@ -21,6 +21,7 @@ const ResetPassword = () => {
     const [error, setError] = useState('')
     const [email, setEmail] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const isFocused = useIsFocused()
 
@@ -94,11 +95,15 @@ const ResetPassword = () => {
             password
         }
 
+        setIsLoading(true)
+
         axios.post(`${baseUrl}/users/password`, form).then((res) => {
             setSuccessMsg('Your password was reset.')
+            setIsLoading(false)
             AsyncStorage.removeItem('EMAIL');
             navigation.navigate('Login')
         }).catch((err) => {
+            setIsLoading(false)
             if (err.response) {
                 setError(err.response.data.error)
             }
@@ -112,6 +117,7 @@ const ResetPassword = () => {
             <View className={'flex flex-column justify-end h-full w-full mx-auto pb-12'}>
                 <Text className={'text-textLight font-bold text-center w-3/5 mx-auto pt-4 text-xl'}>Reset Password</Text>
                 <Text className={'text-textDark text-center w-full mx-auto pb-8 text-md'}>Please type something you'll remember.</Text>
+                { isLoading ? <ActivityIndicator/> : <>
                 <View className={'h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4'}>
                     <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
                     <TextInput secureTextEntry={true} onChangeText={onChangePassword} value={password} placeholder={'New Password'} className={'w-full px-4 pr-12 text-textLight'}/>
@@ -120,6 +126,7 @@ const ResetPassword = () => {
                     <Ionicons name="lock-closed-outline" color={'white'}></Ionicons>
                     <TextInput secureTextEntry={true} onChangeText={onChangeConfirmPassword} value={confirmPassword} placeholder={'Confirm New Password'} className={'w-full px-4 pr-12 text-textLight'}/>
                 </View>
+                </>}
                 <Pressable onPress={onPressReset} className={'w-1/3 bg-pinkLight rounded-full p-2 my-2 text-center mx-auto text-xl'}>
                     <Text className={'text-center  text-lg font-bold'}>Reset</Text>
                 </Pressable>

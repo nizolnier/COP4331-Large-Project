@@ -152,7 +152,7 @@ const Signup = ({navigation}) => {
                 axios.post(`${baseUrl}/users/send-email`, {email}).then((response) => {
                     setIsLoading(false)
                     if (response) {
-                        navigation.navigate('Verify')
+                        navigation.navigate('Verify', {from: 'Signup'})
                     }
                 }).catch((err) => {
                     if (err.response) {
