@@ -1,203 +1,194 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Button, SafeAreaView, ScrollView, Image } from 'react-native';
+import { View, Text, Button, SafeAreaView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import CartoonScroller from '../components/CartoonScroller';
 
-const DATA = [
+import CartoonScroller from '../components/CartoonScroller';
+import ReviewList from '../components/ReviewList';
+import { ScrollView } from 'react-native-gesture-handler';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
+import { baseUrl } from '../constants/url';
+import { useIsFocused } from '@react-navigation/native';
+import { useProtectedPage } from '../hooks/useProtectedPage';
+
+const sampleReviews = [
     {
-        "_id": "64a7437b62d4733a9c26c60e",
-        "title": "Spongebob Squarepants",
-        "picture": "https://nick.mtvnimages.com/uri/mgid:arc:content:nick.com:9cd2df6e-63c7-43da-8bde-8d77af9169c7?quality=0.7",
-        "director": "Stephen Hillenburg",
-        "genre": [
-            "Comedy",
-            "Family"
-        ],
-        "year": 1999,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "A square yellow sponge named SpongeBob SquarePants lives in a pineapple with his pet snail, Gary, in the city of Bikini Bottom on the floor of the Pacific Ocean."
-    },
+        "_id": "1",
+        "cartoon_id": "1",
+        "user_id": "1",
+        "comment": "Spongebob slayyyyyy",
+        "rating": "4",
+        "fav": "true"
+    }, 
     {
-        "_id": "64a744d662d4733a9c26c612",
-        "title": "Bojack Horseman",
-        "picture": "https://m.media-amazon.com/images/M/MV5BYWQwMDNkM2MtODU4OS00OTY3LTgwOTItNjE2Yzc0MzRkMDllXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SY1000_CR0,0,675,1000_AL_.jpg",
-        "director": "Raphael Bob-Waksberg",
-        "genre": [
-            "Drama",
-            "Comedy"
-        ],
-        "year": 2014,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "A humanoid horse, BoJack Horseman -- lost in a sea of self-loathing and booze -- decides it's time for a comeback. Once the star of a '90s sitcom, in which he was the adoptive father of three orphaned kids (two girls and a boy)."
-    },
+        "_id": "2",
+        "cartoon_id": "1",
+        "user_id": "1",
+        "comment": "huge slay",
+        "rating": "4",
+        "fav": "true"
+    }, 
     {
-        "_id": "64a7442062d4733a9c26c60f",
-        "title": "The Simpsons",
-        "picture": "https://m.media-amazon.com/images/M/MV5BYjFkMTlkYWUtZWFhNy00M2FmLThiOTYtYTRiYjVlZWYxNmJkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SY1000_CR0,0,666,1000_AL_.jpg",
-        "director": "Matt Groening",
-        "genre": [
-            "Comedy"
-        ],
-        "year": 1999,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "This long-running animated comedy focuses on the eponymous family in the town of Springfield in an unnamed U.S. state."
-    },
-    {
-        "_id": "64a7445862d4733a9c26c610",
-        "title": "Star vs the Forces of Evil",
-        "picture": "https://m.media-amazon.com/images/M/MV5BYjFkMTlkYWUtZWFhNy00M2FmLThiOTYtYTRiYjVlZWYxNmJkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SY1000_CR0,0,666,1000_AL_.jpg",
-        "director": "Stephen Hillenburg",
-        "genre": [
-            "Action",
-            "Adventure"
-        ],
-        "year": 1999,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "When magical princess Star Butterfly receives a royal magic wand for her 14th birthday, she proves to her parents that she is not ready for the responsibility that comes with it."
-    },
-    {
-        "_id": "64a7449b62d4733a9c26c611",
-        "title": "Gravity Falls",
-        "picture": "https://m.media-amazon.com/images/M/MV5BMTEzNDc3MDQ2NzNeQTJeQWpwZ15BbWU4MDYzMzUwMDIx._V1_SY1000_CR0,0,641,1000_AL_.jpg",
-        "director": "Alex Hirsch",
-        "genre": [
-            "Adventure",
-            "Comedy"
-        ],
-        "year": 2012,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "Twins Dipper and Mabel Pines are sent to spend the summer with their great-uncle, Grunkle Stan, in the mysterious town of Gravity Falls, Ore."
-    }, {
-        "_id": "64a7437b62d4ASfaASc26c60e",
-        "title": "Spongebob Squarepants",
-        "picture": "https://nick.mtvnimages.com/uri/mgid:arc:content:nick.com:9cd2df6e-63c7-43da-8bde-8d77af9169c7?quality=0.7",
-        "director": "Stephen Hillenburg",
-        "genre": [
-            "Comedy",
-            "Family"
-        ],
-        "year": 1999,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "A square yellow sponge named SpongeBob SquarePants lives in a pineapple with his pet snail, Gary, in the city of Bikini Bottom on the floor of the Pacific Ocean."
-    },
-    {
-        "_id": "64ASfASF062d4733a9c26c60f",
-        "title": "The Simpsons",
-        "picture": "https://m.media-amazon.com/images/M/MV5BYjFkMTlkYWUtZWFhNy00M2FmLThiOTYtYTRiYjVlZWYxNmJkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SY1000_CR0,0,666,1000_AL_.jpg",
-        "director": "Matt Groening",
-        "genre": [
-            "Comedy"
-        ],
-        "year": 1999,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "This long-running animated comedy focuses on the eponymous family in the town of Springfield in an unnamed U.S. state."
-    },
-    {
-        "_id": "64a74458ASDASF733a9c26c610",
-        "title": "Star vs the Forces of Evil",
-        "picture": "https://m.media-amazon.com/images/M/MV5BYjFkMTlkYWUtZWFhNy00M2FmLThiOTYtYTRiYjVlZWYxNmJkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SY1000_CR0,0,666,1000_AL_.jpg",
-        "director": "Stephen Hillenburg",
-        "genre": [
-            "Action",
-            "Adventure"
-        ],
-        "year": 1999,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "When magical princess Star Butterfly receives a royal magic wand for her 14th birthday, she proves to her parents that she is not ready for the responsibility that comes with it."
-    },
-    {
-        "_id": "64a7ASfas2d4733a9c26c611",
-        "title": "Gravity Falls",
-        "picture": "https://m.media-amazon.com/images/M/MV5BMTEzNDc3MDQ2NzNeQTJeQWpwZ15BbWU4MDYzMzUwMDIx._V1_SY1000_CR0,0,641,1000_AL_.jpg",
-        "director": "Alex Hirsch",
-        "genre": [
-            "Adventure",
-            "Comedy"
-        ],
-        "year": 2012,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "Twins Dipper and Mabel Pines are sent to spend the summer with their great-uncle, Grunkle Stan, in the mysterious town of Gravity Falls, Ore."
-    },
-    {
-        "_id": "64a744aSDAS2asdASDc26c612",
-        "title": "Bojack Horseman",
-        "picture": "https://m.media-amazon.com/images/M/MV5BYWQwMDNkM2MtODU4OS00OTY3LTgwOTItNjE2Yzc0MzRkMDllXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SY1000_CR0,0,675,1000_AL_.jpg",
-        "director": "Raphael Bob-Waksberg",
-        "genre": [
-            "Drama",
-            "Comedy"
-        ],
-        "year": 2014,
-        "nrating": 0,
-        "trating": 0,
-        "avgrating": 0,
-        "nfavorites": 0,
-        "description": "A humanoid horse, BoJack Horseman -- lost in a sea of self-loathing and booze -- decides it's time for a comeback. Once the star of a '90s sitcom, in which he was the adoptive father of three orphaned kids (two girls and a boy)."
-    },
+        "_id": "3",
+        "cartoon_id": "1",
+        "user_id": "1",
+        "comment": "huge slay",
+        "rating": "4",
+        "fav": "true"
+    }
 ]
 
-const Profile = ({ navigation }) => {
+const Profile = ({navigation}) => {
+    // TESTING PURPOSES ONLY
+    const [user, setUser] = useState({})
+    const [error, setError] = useState('')
+    const isFocused = useIsFocused()
+    const [allCartoons, setAllCartoons] = useState([])
+    const [reviewDeets, setReviewDeets] = useState([])
+    const imageAspectRatio = '2/3'
+    const [sortType, setSortType] = useState('ascending')
+
+    useProtectedPage(navigation);
+
+    useEffect(() => {
+        if (isFocused) {
+            fetchUsername()
+            getAllCartoons()  
+            getReviews()
+        }
+    }, [isFocused])
+
+    const getAllCartoons = async () => {
+        const token = await AsyncStorage.getItem("TOKEN")
+        if (token) {
+            axios.get(`${baseUrl}/shows/all`, {headers: {
+                Authorization: token
+            }}).then(res => {
+                setAllCartoons(res.data)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        }
+    }
+
+    const fetchUsername = async () => {
+        // get it from react native's async storage
+        try {
+            const username = await AsyncStorage.getItem('USERNAME');
+            const token = await AsyncStorage.getItem('TOKEN')
+            if (username !== null) {
+                fetchUser(username, token)
+            }
+            else {
+                // set a guest user
+                setUser({
+                    username: "Guest",
+                    watchlist: DATA,
+                    favcartoons: DATA,
+                    twatched: DATA
+                })
+            }
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    const fetchUser = async (username, token) => {
+        await axios.get(`${baseUrl}/users/oneuser/${username}`, {headers: {
+            Authorization: token
+        }}).then((response) => {
+            setUser(response.data)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+
+
+    const getReviewUser = async (review) => {
+        const token = await AsyncStorage.getItem('TOKEN')
+        return axios.get(`${baseUrl}/users/one/${review.userid}`, {headers: {
+            Authorization: token
+        }}).then((res) => {
+            return res.data.username
+        }).catch((err) => {
+            if (err.response) {
+                console.log(err.response)
+            }
+        })
+    }
+
+    const getReviewShow = async (review) => {
+        const token = await AsyncStorage.getItem('TOKEN')
+        return axios.get(`${baseUrl}/shows/one/${review.showid}`, {headers: {
+            Authorization: token
+        }}).then((res) => { 
+            return res.data.showExists
+        }).catch((err) => {
+            if (err.response) {
+                console.log(err.response)
+            }
+        })
+    }
+
+    const getReviews = async () => {
+        const token = await AsyncStorage.getItem('TOKEN')
+        return axios.get(`${baseUrl}/reviews/all/`, {
+            headers: {
+                Authorization: token
+            },
+            params: {
+                sort: sortType,
+                limit: 10
+            }
+        }).then(res => {
+            setRecentReviews(res.data.reviews)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    const getReviewDetails = async () => {
+        let reviews = recentReviews
+        for await (const r of reviews) {
+            r.username = await getReviewUser(r)
+            r.show = await getReviewShow(r)
+        }
+        setReviewDeets(reviews)
+    }
+
     useEffect(() => {
         // Use `setOptions` to update the button that we previously specified
         navigation.setOptions({
-            icon: () => (
-                <Ionicons name="person-outline" />
+            headerRight: () => (
+                <Ionicons name="search-outline" onPress={() => navigation.navigate('Search')} size={20}/>
             ),
         });
-    }, [navigation])
-
-    const [user, setUser] = useState({
-        username: "zain",
-        email: "zain@gmail.com",
-        fav_cartoon: DATA,
-        watch_list: DATA
-    });
+    }, [navigation]);
 
     return (
         <SafeAreaView className="flex-1 bg-[#1F1D36] p-4">
             <ScrollView scrollEnabled={true}>
-                <Text className="self-center text-white font-bold text-lg">Hello, <Text className="text-rose-300 text-transform: capitalize">{user.username}</Text>!</Text>
-
-                <Image className="self-center w-20 h-20 bg-stone-300 rounded-full" source={{uri: `https://avatars.dicebear.com/api/avataaars/${user?.username}.svg`}} />
-
-                <Text className="self-center text-white">Track your reviews and lists!</Text>
-                <View>
-                    <Text className="basis-1/4 left- top-0 justify-center text-center text-red-300 text-2xl font-bold">{user?.watchlist?.length}</Text>
-                    <Text className="TotalCartoons flex basis-8 items-center justify-center text-center text-white text-xs font-normal">Watchlist Total</Text>
-                    <Text className="Review flex flex-col basis-28 items-center justify-center"></Text>
-                    <Text className=" left-[8px] top-0 justify-center text-center text-fuchsia-800 text-2xl font-bold">{user?.twatched}</Text>
-                    <Text className="Reviews flex basis-8 items-center justify-center text-center text-white text-xs font-normal">Reviews</Text>
+                <Text className="text-white font-bold text-lg">Hello, <Text className="text-rose-300">{user.name}</Text>!</Text>
+                <Text className="text-white">Catch up on your watchlist or see your favorites!</Text>
+                <View className="flex-row items-center justify-center mt-8">
+                    <View className="flex-col items-center justify-center mx-8">
+                        <Text className="TotalCartoons flex items-center justify-center text-center text-white text-xs font-normal">Watchlist Total</Text>
+                        <Text className=" justify-center text-center text-fuchsia-800 text-2xl font-bold">{user?.watchlist?.length}</Text>
+                    </View>
+                    <View className=" flex-col items-center justify-center mx-8">
+                        <Text className="Reviews flex items-center justify-center text-center text-white text-xs font-normal">Reviews</Text>
+                        <Text className=" justify-center text-center text-fuchsia-800 text-2xl font-bold">{user?.twatched}</Text>
+                    </View>
                 </View>
-                <CartoonScroller cartoons={DATA} title="My Favorites" />
-                <CartoonScroller cartoons={DATA} title="My Watchlist" />
-
+                
+                {user.watchlist && user.watchlist.length > 0 ? <CartoonScroller cartoons={user.watchlist} title="My Watchlist"/> : <></>}
+                {user.favcartoons && user.favcartoons.length > 0 ? <CartoonScroller cartoons={user.favcartoons} title="Your Favorite Cartoons"/> :<></> }
+                {user.twatched && user.twatched.length > 0 ? <CartoonScroller cartoons={user.twatched} title="Want To Watch"/> : <></>}
+                <CartoonScroller cartoons={allCartoons} title="Popular Cartoons"/>
             </ScrollView>
         </SafeAreaView>
     )

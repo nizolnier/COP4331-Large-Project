@@ -12,7 +12,7 @@ const CartoonCard = ({navigation, ...props}) => {
 
     return (
         <View className={`mx-2 flex flex-col`}>
-            <Image src={cartoon.picture} className={`rounded-xl h-${props.cardHeight} w-full shrink`} onPress={props.onPress} resizeMode="contain"/>
+            <Image src={cartoon.picture} style={{height:150, width:100}} className={`rounded-xl h-${props.cardHeight} w-full shrink`} onPress={props.onPress} resizeMode="contain"/>
             <CardRating avgRating={cartoon.avgrating} numRatings={cartoon.nrating}/>
         </View>
     )
