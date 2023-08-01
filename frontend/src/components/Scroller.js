@@ -13,7 +13,9 @@ const Scroller = ({...props}) => {
     const { cartoonsPerPage } = useCardResize(5);
 
     useEffect(() => {
-        updateCartoons()
+        if (props.cartoons && props.cartoons.length > 0) {
+            updateCartoons()
+        }
     }, [props.cartoons, currentPage, cartoonsPerPage])
 
     const updateCartoons = () => {
