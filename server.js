@@ -50,13 +50,13 @@ const connectDB = async () => {
 
 connectDB()
 
+setApp(app)
+
 //listening on port
 app.listen(PORT, () => {
     console.log('Server listening on port ' + (PORT));
 })
 
-
-setApp(app)
 
 
 if (process.env.PROD) {
