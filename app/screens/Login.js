@@ -89,10 +89,10 @@ const Login = ({navigation}) => {
                 console.log(response)
                 try {
                     // set token
-                    await AsyncStorage.setItem('TOKEN', response.data.token)
-                    await AsyncStorage.setItem('USERNAME', response.data.username)
-                    await AsyncStorage.setItem('NAME', response.data.name)
-                    navigation.navigate('Verify')
+                    AsyncStorage.setItem('TOKEN', response.data.token)
+                    AsyncStorage.setItem('USERNAME', response.data.username)
+                    AsyncStorage.setItem('NAME', response.data.name)
+                    navigation.navigate('Home')
                 } catch {
                     console.log(error)
                     setError("Couldn't store user token.")

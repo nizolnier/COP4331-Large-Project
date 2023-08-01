@@ -136,7 +136,7 @@ const Signup = ({navigation}) => {
         }
 
         try {
-            await AsyncStorage.setItem('EMAIL', email);
+            AsyncStorage.setItem('EMAIL', email);
         } catch(error) {
             console.log(error)
             setError("Couldn't store email.")

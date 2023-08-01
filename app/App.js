@@ -25,6 +25,7 @@ import Cartoon from './screens/Cartoon.js';
 import Error from './screens/Error.js';
 import ForgotPassword from './screens/ForgotPassword'
 import ResetPassword from './screens/ResetPassword.js';
+import Logout from './screens/Logout.js';
 
 /* Components */
 import LogoTitle from './components/LogoTitle'
@@ -63,12 +64,6 @@ function CustomDrawerContent(props) {
         icon={() => <Ionicons color="white"   name="person-outline" />}
       />
       <DrawerItem
-        label="Watchlist"
-        labelStyle={{color: 'white'}}
-        icon={() => <Feather color="white" name="clock" />}
-        onPress={() => props.navigation.navigate("Watchlist")}
-      />
-      <DrawerItem
         label="Reviews"
         labelStyle={{color: 'white'}}
         icon={() => <Feather color="white" name="align-left" />}
@@ -91,6 +86,12 @@ function CustomDrawerContent(props) {
         labelStyle={{color: 'white'}}
         icon={() => <Ionicons color="white"   name="checkmark-done-outline" />}
         onPress={() => props.navigation.navigate("Verify")}
+      />
+      <DrawerItem
+        label="Log Out"
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white"   name="exit-outline" />}
+        onPress={() => props.navigation.navigate("Logout")}
       />
     </DrawerContentScrollView>
   );
@@ -185,6 +186,11 @@ const App = () => {
             name="ResetPassword"
             component={ResetPassword}
             options={navigationOptions("Reset Password", true)}
+        />
+        <Drawer.Screen
+            name="Logout"
+            component={Logout}
+            options={navigationOptions("Log Out", true)}
         />
       </Drawer.Navigator>
     </NavigationContainer>
