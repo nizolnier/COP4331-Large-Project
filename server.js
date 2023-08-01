@@ -50,13 +50,6 @@ const connectDB = async () => {
 
 connectDB()
 
-if (process.env.PROD) {
-    app.use(express.static(path.join(__dirname, 'frontend/build')))
-    app.get('/*', function (req, res) {
-        res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
-    })
-}
-
 //listening on port
 app.listen(PORT, () => {
     console.log('Server listening on port ' + (PORT));
@@ -64,3 +57,11 @@ app.listen(PORT, () => {
 
 
 setApp(app)
+
+
+if (process.env.PROD) {
+    app.use(express.static(path.join(__dirname, 'frontend/build')))
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+    })
+}

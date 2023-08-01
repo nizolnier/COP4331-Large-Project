@@ -137,6 +137,47 @@ export default (app, routeBase) => {
         }
     })
 
+    app.get(`${routeBase}/one/:id`, authMiddleware, async (req, res) => {
+
+        if (!process.env.PROD) {
+            log(routeBase, req)
+        }
+
+        const expectedParamKeys = [
+            "id"
+        ]
+
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const {
+                id
+            } = req.params
+
+            const userExists = await User.findOne({ _id: id })
+
+            if (!userExists) {
+                res.status(404).send({
+                    error: 'The user does not exist',
+                    found: false
+                })
+            } else {
+                res.status(200).send({
+                    found: true,
+                    username: userExists.username,
+                    name: userExists.name,
+                    favcartoons: userExists.favcartoons,
+                    watchlist: userExists.watchlist,
+                    twatched: userExists.twatched
+                })
+            }
+        }
+    })
 
     app.get(`${routeBase}/oneuser/:username`, authMiddleware, async (req, res) => {
 
@@ -199,7 +240,7 @@ export default (app, routeBase) => {
             const { showid } = req.params
             const tokenData = getTokenData(req.headers.authorization)
 
-            const inWatchlist = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id), "watchlist.showid": new mongoose.Types.ObjectId(showid) })
+            const inWatchlist = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id), "watchlist._id": new mongoose.Types.ObjectId(showid) })
 
             if (!inWatchlist) {
                 res.status(404).send({
@@ -238,7 +279,7 @@ export default (app, routeBase) => {
                 const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
                 const newShow = {
-                    showid: show._id,
+                    _id: show._id,
                     title: show.title,
                     picture: show.picture
                 }
@@ -281,7 +322,7 @@ export default (app, routeBase) => {
                 const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
                 await user.updateOne({
-                    "$pull": { watchlist: { showid: new mongoose.Types.ObjectId(showid) } }
+                    "$pull": { watchlist: { _id: new mongoose.Types.ObjectId(showid) } }
                 })
 
                 res.status(200).send({ message: "Watchlist updated", created: true })
@@ -315,7 +356,7 @@ export default (app, routeBase) => {
             const { showid } = req.params
             const tokenData = getTokenData(req.headers.authorization)
 
-            const inFavcartoons = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id), "favcartoons.showid": new mongoose.Types.ObjectId(showid) })
+            const inFavcartoons = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id), "favcartoons._id": new mongoose.Types.ObjectId(showid) })
 
             if (!inFavcartoons) {
                 res.status(404).send({
@@ -354,7 +395,7 @@ export default (app, routeBase) => {
                 const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
                 const newShow = {
-                    showid: show._id,
+                    _id: show._id,
                     title: show.title,
                     picture: show.picture
                 }
@@ -398,7 +439,7 @@ export default (app, routeBase) => {
                 const user = await User.findOne({ _id: new mongoose.Types.ObjectId(tokenData.id) })
 
                 await user.updateOne({
-                    "$pull": { favcartoons: { showid: new mongoose.Types.ObjectId(showid) } }
+                    "$pull": { favcartoons: { _id: new mongoose.Types.ObjectId(showid) } }
                 })
 
                 res.status(200).send({ message: "Favcartoons updated", created: true })

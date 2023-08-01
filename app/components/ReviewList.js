@@ -40,7 +40,7 @@ const ReviewCard = (props) => {
                 <Text className="text-white font-bold">{cartoon.title}</Text>
                 <View className={"flex flex-row"}>
                     <Text className="text-gray-500 pr-2">Review by <Text className="text-rose-300">{user.username}</Text></Text>
-                    <Rating/>
+                    <Rating rating={review.stars}/>
                 </View>
                 <Text className={`text-white pt-2`}>{review.comment}</Text>
             </View>

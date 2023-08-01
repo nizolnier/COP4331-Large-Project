@@ -6,25 +6,103 @@ import LogoSVG from '../components/LogoSVG';
 import { TextInput } from 'react-native-gesture-handler';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link } from '@react-navigation/native';
+import { Link, useIsFocused } from '@react-navigation/native';
 import { onChange } from 'react-native-reanimated';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
+import { baseUrl } from '../constants/url';
 
 const bgColor = '#1F1D36'
 
 const ResetPassword = () => {
     const [password, onChangePassword] = useState('')
     const [confirmPassword, onChangeConfirmPassword] = useState('')
+    const [error, setError] = useState('')
+    const [email, setEmail] = useState('')
+    const [successMsg, setSuccessMsg] = useState('')
+
+    const isFocused = useIsFocused()
+
+    // get email from react native's async storage
+    const getEmail = async () => {
+        try {
+            const val = await AsyncStorage.getItem('EMAIL');
+            if (val !== null) {
+                setEmail(val)
+            }
+            else {
+                setError("Email is null.")
+            }
+        } catch(error) {
+            setError("Error getting email.")
+        }
+    }
 
     useEffect(() => {
+        if (isFocused) resetData()
+    }, [isFocused])
 
-    }, [password])
+    // clear old data
+    const resetData = () => {
+        onChangePassword('')
+        onChangeConfirmPassword('')
+        setError('')
+        getEmail()
+    }
 
-    useEffect(() => {
-
-    }, [confirmPassword])
+    const validateFormData = () => {
+        // check if password is valid
+        if (password.length > 0 && !password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) {
+            setError("Passwords must have eight characters, at least one letter, and at least one number")
+            setErrorType("password")
+            return false;
+        }
+        // check if they match
+        else if (confirmPassword.length > 0 && password !== confirmPassword) {
+            setError("Passwords do not match")
+            setErrorType("password")
+            return false;
+        }
+        // check emptiness
+        else if (password.length == 0) 
+        {
+            setError("Please create a password.")
+            setErrorType("password")
+            return true;
+        }
+        // check emptiness
+        else if (confirmPassword.length == 0) 
+        {
+            setError("Please confirm your password.")
+            setErrorType("confirmPassword")
+            return true;
+        }
+        else {
+            setError('')
+            return true;
+        }
+    }
 
     const onPressReset = () => {
+        if (!validateFormData()) {
+            return;
+        }
 
+        let form = {
+            email,
+            password
+        }
+
+        axios.post(`${baseUrl}/users/password`, form).then((res) => {
+            setSuccessMsg('Your password was reset.')
+            AsyncStorage.removeItem('EMAIL');
+            navigation.navigate('Login')
+        }).catch((err) => {
+            if (err.response) {
+                setError(err.response.data.error)
+            }
+        })
     }
 
     return (

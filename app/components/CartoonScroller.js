@@ -3,25 +3,11 @@ import { View, Text, Image, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import CardRating from './CardRating';
-
-const Card = ({navigation, ...props}) => {
-    const cartoon = props.cartoon;
-
-    // image aspect ratio is currently 2:3
-    const imageAspectRatio = '2/3';
-
-    return (
-        <View className={`mx-2 flex flex-col`}>
-            <Image src={cartoon.picture} className={`rounded-xl h-full w-full aspect-[${imageAspectRatio}] shrink`} onPress={props.onPress} resizeMode="contain"/>
-            <CardRating avgRating={cartoon.avgrating} numRatings={cartoon.nrating}/>
-        </View>
-    )
-}
+import CartoonCard from './CartoonCard';
 
 const CartoonScroller = (props) => {
     // change this to change card size
-    const cardHeight = 48;
+    const cardHeight = "48";
 
     const [selectedCartoon, setSelectedCartoon] = useState();
 
@@ -31,8 +17,9 @@ const CartoonScroller = (props) => {
 
     const renderItem = ({item}) => {
         return (
-            <Card
+            <CartoonCard
             cartoon={item}
+            cardHeight={cardHeight}
             onPress={() => setSelectedCartoon(item)}
             />
         );

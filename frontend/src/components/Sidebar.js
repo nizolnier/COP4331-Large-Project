@@ -35,7 +35,7 @@ const Sidebar = ({ username, name }) => {
         goToLogin(navigate)
     }
 
-    return (<div className="bg-[#1F1D36] lg:w-1/6 w-[55%] h-screen z-100 p-4 fixed shadow-slay-sm">
+    return (<div className="bg-[#1F1D36] lg:w-1/6 w-[55%] h-screen z-100 p-4 fixed shadow-slay-sm z-10">
         <div className="pt-8 p-6 pl-2">
             <img onClick={click} src={side}/>            
         </div>
