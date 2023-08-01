@@ -141,4 +141,56 @@ export default (app, routeBase) => {
     })
 
 
+    app.get(`${routeBase}/all`, authMiddleware, async (req, res) => {
+
+        if (!process.env.PROD) {
+            log(routeBase, req)
+        }
+
+        const expectedParamKeys = [
+            'sort',
+            'limit'
+        ]
+
+        const missingParameterKeys = validatedRequestObjectKeys(req.query, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const {
+                sort,
+                limit
+            } = req.query
+
+            const reviews = await Review.find()
+
+            if (!reviews || reviews.length == 0) {
+                res.status(404).send({
+                    error: 'There are no reviews',
+                    found: false
+                })
+            } else {
+                if (reviews.length > limit) {
+                    reviews = reviews.splice(0, limit)
+                }
+
+                const sortedReviews = reviews.sort((a, b) => {
+                    if (sort == 'ascending') 
+                        return a.dateWatched - b.dateWatched
+                    else 
+                        return b.dateWatched - a.dateWatched
+                })
+
+                res.status(200).send({
+                    found: true,
+                    reviews: sortedReviews
+                })
+            }
+        }
+    })
+
+
 }
