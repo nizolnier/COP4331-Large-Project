@@ -137,6 +137,47 @@ export default (app, routeBase) => {
         }
     })
 
+    app.get(`${routeBase}/one/:id`, authMiddleware, async (req, res) => {
+
+        if (!process.env.PROD) {
+            log(routeBase, req)
+        }
+
+        const expectedParamKeys = [
+            "id"
+        ]
+
+        const missingParameterKeys = validatedRequestObjectKeys(req.params, expectedParamKeys)
+
+        if (missingParameterKeys.length > 0) {
+            res.status(422).send({
+                error: `There are missing fields: (${missingParameterKeys.join(',')})`,
+                found: false
+            })
+        } else {
+            const {
+                id
+            } = req.params
+
+            const userExists = await User.findOne({ _id: id })
+
+            if (!userExists) {
+                res.status(404).send({
+                    error: 'The user does not exist',
+                    found: false
+                })
+            } else {
+                res.status(200).send({
+                    found: true,
+                    username: userExists.username,
+                    name: userExists.name,
+                    favcartoons: userExists.favcartoons,
+                    watchlist: userExists.watchlist,
+                    twatched: userExists.twatched
+                })
+            }
+        }
+    })
 
     app.get(`${routeBase}/oneuser/:username`, authMiddleware, async (req, res) => {
 
