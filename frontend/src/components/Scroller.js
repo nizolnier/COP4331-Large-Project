@@ -63,6 +63,7 @@ const Scroller = ({...props}) => {
 
     let cartoonRender = currentCartoons.map((cartoon, index) => {
         return <Card 
+            profile={props.prof}
             cartoon={cartoon} 
             key={cartoon.id}
             width={cardWidth}></Card>

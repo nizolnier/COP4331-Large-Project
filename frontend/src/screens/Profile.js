@@ -93,9 +93,9 @@ const Profile = () => {
                 </div>
                 <div className='justify-center'>
                     <h1 className="w-[100] mt-4 -mb-12 pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Your Favorites</h1>
-                    {profile?.favcartoons ? <Scroller className="" cartoons={profile?.favcartoons} ></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Favorites</div>}
+                    {profile?.favcartoons ? <Scroller prof="true" className="" cartoons={profile?.favcartoons} ></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Favorites</div>}
                     <h1 className="w-[100] mt-4 -mb-12 pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Your Watchlist</h1>
-                    {profile?.watchlist ? <Scroller className="" cartoons={profile?.watchlist} ></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Watchlist</div>}
+                    {profile?.watchlist ? <Scroller prof="true" className="" cartoons={profile?.watchlist} ></Scroller> : <div className='flex basis-8 items-center justify-center text-center text-white text-xs font-normal p-10'>No Watchlist</div>}
                     <div className="w-[100] h=400 flex my-8 py-20"></div>
 
                 </div>
