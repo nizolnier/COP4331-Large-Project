@@ -2,6 +2,7 @@ import { useForm } from '../hooks/useForm'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import logo from '../assets/logo.svg'
 import { useMediaQuery } from 'react-responsive'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
@@ -40,13 +41,13 @@ const ResetPassword = () => {
             axios.post(`${baseUrl}/users/password`, body).then((res) => {
                 localStorage.removeItem("email")
                 goToLogin(navigate)
-    
+
             }).catch((err) => {
                 console.log(err)
             })
 
             reset()
-            
+
 
         } else {
             console.log("password doesnt match")
@@ -58,12 +59,13 @@ const ResetPassword = () => {
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
         <div className="w-screen h-[35%]">
         </div>
-        <div className="flex flex-col justify-around items-center h-[65%]">
-            <div className="h-[20%]">
+        <div className="flex flex-col justify-around items-center h-[70%]">
+            <div className="h-[30%] flex justify-around items-center flex-col mb-4">
+                <img src={logo} className="w-[50%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Reset Password</h1>
                 <p className="text-center text-white text-md font-normal">Please enter something you'll remember.</p>
             </div>
-            <form onSubmit={doReset} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%]">
+            <form onSubmit={doReset} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%] mt-10">
                 <div className="relative w-[100%]">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                         <svg className="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 20">

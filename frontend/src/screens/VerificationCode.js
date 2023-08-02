@@ -9,6 +9,7 @@ import VerificationInput from 'react-verification-input'
 import './index.css'
 import { useState } from 'react'
 import Button from '../components/Button.js'
+import logo from '../assets/logo.svg'
 
 
 const VerificationCode = () => {
@@ -50,7 +51,8 @@ const VerificationCode = () => {
         <div className="w-screen h-[35%]">
         </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
-            <div className="h-[20%]">
+            <div className="h-[30%] flex justify-around items-center flex-col mb-10">
+                <img src={logo} className="w-[40%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Please check your email</h1>
                 <p className="text-center text-white text-md font-normal">We've sent you a verification code.</p>
             </div>

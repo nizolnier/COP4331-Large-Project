@@ -9,6 +9,7 @@ import { useMediaQuery } from 'react-responsive';
 import Button from '../components/Button'
 import { useState } from 'react'
 import PasswordIcon from '../components/PasswordIcon'
+import logo from '../assets/logo.svg'
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -35,18 +36,19 @@ const SignUp = () => {
             reset()
             goToVerify(navigate)
 
-        } catch(err){
+        } catch (err) {
             console.log(err)
         }
 
-        
+
     }
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
         <div className="w-screen h-[30%]">
         </div>
-        <div className="flex flex-col justify-between items-center w-screen h-[70%]">
-            <div className="h-[25%]">
+        <div className="flex flex-col justify-between items-center w-screen h-[75%]">
+            <div className="h-[30%] flex justify-around items-center flex-col mb-2">
+                <img src={logo} className="w-[50%] mb-2" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Sign Up</h1>
                 <p className="text-center text-white text-md font-normal">Create an account to continue</p>
             </div>

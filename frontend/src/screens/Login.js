@@ -1,6 +1,7 @@
 import { useForm } from '../hooks/useForm'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
+import logo from '../assets/logo.svg'
 import { goToSignUp, goToHome, goToForgot } from '../router/coordinator'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
@@ -42,7 +43,8 @@ const LogIn = () => {
         <div className="w-screen h-[35%]">
         </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
-            <div className="h-[30%]">
+            <div className="h-[30%] flex justify-around items-center flex-col">
+                <img src={logo} className="w-[50%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Log In</h1>
                 <p className="text-center text-white text-md font-normal">Please sign in to continue</p>
             </div>
