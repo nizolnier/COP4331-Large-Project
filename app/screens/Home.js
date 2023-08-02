@@ -84,17 +84,11 @@ const Home = ({navigation}) => {
         try {
             const username = await AsyncStorage.getItem('USERNAME');
             const token = await AsyncStorage.getItem('TOKEN')
-            if (username !== null) {
+            if (username && token) {
                 fetchUser(username, token)
             }
             else {
-                // set a guest user
-                setUser({
-                    username: "Guest",
-                    watchlist: DATA,
-                    favcartoons: DATA,
-                    twatched: DATA
-                })
+                navigation.navigate("Login")
             }
         } catch(error) {
             console.log(error)
