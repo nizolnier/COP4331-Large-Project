@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable, ImageBackground, Image } from 'react-native';
+import { View, Text, Pressable, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -13,12 +13,13 @@ import { useIsFocused } from '@react-navigation/native';
 
 const bgColor = '#1F1D36'
 
-const VerificationCode = ({navigation}) => {
+const VerificationCode = ({navigation, route}) => {
     const [email, setEmail] = useState('')
     const [error, setError] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
     const [code, setCode] = useState('')
     const [cursorClass, setCursorClass] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const isFocused = useIsFocused()
 
@@ -70,17 +71,17 @@ const VerificationCode = ({navigation}) => {
             code,
             email
         }
+        setIsLoading(true)
 
         // send verification request
         axios.post(`${baseUrl}/users/verify`, form).then((response) => {
-            if (response.verified) {
-                AsyncStorage.removeItem('EMAIL');
-                const prevRoute = navigation.state.routes[navigation.state.routes.length - 2];
-                console.log(prevRoute)
-                if (prevRoute.name == 'Signup') {
+            if (response) {
+                setIsLoading(false)
+                if (route.params.from == 'Signup') {
                     // navigate to login page
+                    AsyncStorage.removeItem('EMAIL');
                     navigation.navigate('Login')
-                } else if (prevRoute.name == 'ForgotPassword') {
+                } else if (route.params.from == 'ForgotPassword') {
                     // navigate to login page
                     navigation.navigate('ResetPassword')
                 }
@@ -89,6 +90,7 @@ const VerificationCode = ({navigation}) => {
             if (err.response) {
                 setError(err.response.data.error)
             }
+            setIsLoading(false)
         })
     }
 
@@ -143,6 +145,7 @@ const VerificationCode = ({navigation}) => {
             <View className={'flex flex-column justify-end h-full w-full mx-auto pb-12'}>
                 <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl font-bold'}>Please check your email</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>We've sent you a verification code at {email}</Text>
+                {isLoading ? <ActivityIndicator/> : 
                 <View className={'h-10 w-2/3 mx-auto mb-12 flex flex-row justify-center'}>
                     <FakeField id={0}/>
                     <FakeField id={1}/>
@@ -150,7 +153,7 @@ const VerificationCode = ({navigation}) => {
                     <FakeField id={3}/>
                     <FakeField id={4}/>
                     <TextInput maxLength={5} keyboardType="numeric" autofocus={true} value={code} selectionColor={'green'} onSubmitEditing={onPressVerify} onChangeText={onChange} className={`px-4 w-full absolute top-5 text-transparent text-xl m-auto pl-7 ${cursorClass}`}/>
-                </View>
+                </View>}
                 <View>
                     <Text className="color-red-600 text-center">{error}</Text>
                 </View>
