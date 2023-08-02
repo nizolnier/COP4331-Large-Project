@@ -48,7 +48,6 @@ const Review = () => {
                 setOnWatchlist(true)
             }
         }).catch((err) => {
-            console.log(err)
         })
 
         if (onWatchlist) {
@@ -82,7 +81,6 @@ const Review = () => {
                 setIsFav(true)
             }
         }).catch((err) => {
-            console.log(err)
         })
 
         if (fav && !isFav) {

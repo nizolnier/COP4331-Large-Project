@@ -36,7 +36,6 @@ const Cartoon = () => {
                 setOnWatchlist(true)
             }
         }).catch((err) => {
-            console.log(err)
         })
 
         await axios.get(`${baseUrl}/shows/one/${params.id}`).then((res) => {
