@@ -188,7 +188,7 @@ export default (app, routeBase) => {
 
                 res.status(200).send({
                     found: true,
-                    reviews: sortedReviews
+                    reviews
                 })
             }
         }
