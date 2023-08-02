@@ -76,6 +76,12 @@ function CustomDrawerContent(props) {
         onPress={() => props.navigation.navigate("Login")}
       />
       <DrawerItem
+        label="Forgot Password"
+        labelStyle={{color: 'white'}}
+        icon={() => <Ionicons color="white"   name="lock-closed-outline" />}
+        onPress={() => props.navigation.navigate("ForgotPassword")}
+      />
+      <DrawerItem
         label="Reset Password (temporary)"
         labelStyle={{color: 'white'}}
         icon={() => <Ionicons color="white"   name="lock-closed-outline" />}

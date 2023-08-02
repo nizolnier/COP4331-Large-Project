@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Button, SafeAreaView } from 'react-native';
+import { View, Text, Button, SafeAreaView, ActivityIndicator } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import CartoonScroller from '../components/CartoonScroller';
@@ -12,33 +12,6 @@ import { baseUrl } from '../constants/url';
 import { useIsFocused } from '@react-navigation/native';
 import { useProtectedPage } from '../hooks/useProtectedPage';
 
-const sampleReviews = [
-    {
-        "_id": "1",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "Spongebob slayyyyyy",
-        "rating": "4",
-        "fav": "true"
-    }, 
-    {
-        "_id": "2",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "huge slay",
-        "rating": "4",
-        "fav": "true"
-    }, 
-    {
-        "_id": "3",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "huge slay",
-        "rating": "4",
-        "fav": "true"
-    }
-]
-
 const Home = ({navigation}) => {
     // TESTING PURPOSES ONLY
     const [user, setUser] = useState({})
@@ -50,6 +23,7 @@ const Home = ({navigation}) => {
     const [familyCartoons, setFamilyCartoons] = useState([])
     const [recentReviews, setRecentReviews] = useState([])
     const [reviewDeets, setReviewDeets] = useState([])
+    const [isLoadingReviews, setIsLoadingReviews] = useState(true)
     const imageAspectRatio = '2/3'
     const [sortType, setSortType] = useState('ascending')
 
@@ -65,6 +39,10 @@ const Home = ({navigation}) => {
             getReviews()
         }
     }, [isFocused])
+
+    useEffect(() => {
+        getReviews()
+    }, [sortType])
 
     const getAllCartoons = async () => {
         const token = await AsyncStorage.getItem("TOKEN")
@@ -162,6 +140,7 @@ const Home = ({navigation}) => {
     }
 
     const getReviews = async () => {
+        setIsLoadingReviews(true)
         const token = await AsyncStorage.getItem('TOKEN')
         return axios.get(`${baseUrl}/reviews/all/`, {
             headers: {
@@ -192,6 +171,7 @@ const Home = ({navigation}) => {
             r.show = await getReviewShow(r)
         }
         setReviewDeets(reviews)
+        setIsLoadingReviews(false)
     }
 
     useEffect(() => {
@@ -212,7 +192,7 @@ const Home = ({navigation}) => {
                 <CartoonScroller cartoons={comedyCartoons} title="Browse by Genre: Comedy"/>
                 <CartoonScroller cartoons={dramaCartoons} title="Browse by Genre: Drama"/>
                 <CartoonScroller cartoons={familyCartoons} title="Browse by Genre: Family"/>
-                <ReviewList reviews={reviewDeets} title="Recent Reviews"/> 
+                <ReviewList reviews={reviewDeets} title="Recent Reviews" setSortType={setSortType} sortType={sortType} isLoadingReviews={isLoadingReviews}/>
             </ScrollView>
         </SafeAreaView>
     )

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Pressable, ImageBackground, Image } from 'react-native';
+import { View, Text, Pressable, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 
 import LogoSVG from '../components/LogoSVG';
@@ -7,7 +7,6 @@ import { TextInput } from 'react-native-gesture-handler';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, useIsFocused } from '@react-navigation/native';
-import { onChange } from 'react-native-reanimated';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
@@ -18,6 +17,7 @@ const bgColor = '#1F1D36'
 const ForgotPassword = ({navigation}) => {
     const [email, onChangeEmail] = useState('')
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const isFocused = useIsFocused()
     
@@ -61,18 +61,21 @@ const ForgotPassword = ({navigation}) => {
         let form = {
             email
         }
+        setIsLoading(true)
 
         axios.post(`${baseUrl}/users/send-email`, form).then(async (res) => {
             try {
-
-                await AsyncStorage.setItem("EMAIL", email)
-                navigation.navigate('Verify')
+                AsyncStorage.setItem("EMAIL", email)
+                setIsLoading(false)
+                navigation.navigate('Verify', {from: 'ForgotPassword'})
             }
             catch {
+                setIsLoading(false)
                 setError("Failed to store email.")
             }
 
         }).catch((err) => {
+            setIsLoading(false)
             if (err.response) {
                 setError(err.response.data.error)
             }
@@ -90,10 +93,11 @@ const ForgotPassword = ({navigation}) => {
                 <View>
                     <Text className="color-red-600 text-center">{error}</Text>
                 </View>
+                { isLoading ? <ActivityIndicator/> : 
                 <View className={`h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 my-4 mb-8 text-textLight ${error != '' ? 'border border-red-600' : ''}`}>
                     <Ionicons name="mail-outline" color={'white'}></Ionicons>
                     <TextInput onChangeText={onChangeEmail} onBlur={validateFormData} onSubmitEditing={onPressSendCode} value={email} placeholder={'Email'} className={'w-full px-4 pr-12 text-textLight'}/>
-                </View>
+                </View>}
                 <Pressable title="Send Code" onPress={onPressSendCode} className={'w-1/3 bg-pinkLight rounded-full p-2 my-2 text-center mx-auto text-xl'}>
                     <Text className={'text-center  text-lg font-bold'}>Send Code</Text>
                 </Pressable>

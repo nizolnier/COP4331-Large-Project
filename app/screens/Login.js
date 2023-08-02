@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable, ImageBackground, Image } from 'react-native';
+import { View, Text, Pressable, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 
 import LogoSVG from '../components/LogoSVG';
@@ -21,6 +21,7 @@ const Login = ({navigation}) => {
     const [errorType, setErrorType] = useState('')
     const [successMsg, setSuccessMsg] = useState('')
     const isFocused = useIsFocused()
+    const [isLoading, setIsLoading] = useState(false)
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -84,6 +85,8 @@ const Login = ({navigation}) => {
             password
         }
 
+        setIsLoading(true)
+
         axios.post(`${baseUrl}/users/login`, form).then(async (response) => {
             if (response) {
                 console.log(response)
@@ -92,9 +95,11 @@ const Login = ({navigation}) => {
                     AsyncStorage.setItem('TOKEN', response.data.token)
                     AsyncStorage.setItem('USERNAME', response.data.username)
                     AsyncStorage.setItem('NAME', response.data.name)
+                    setIsLoading(false)
                     navigation.navigate('Home')
                 } catch {
                     console.log(error)
+                    setIsLoading(false)
                     setError("Couldn't store user token.")
                     return;
                 }
@@ -104,6 +109,7 @@ const Login = ({navigation}) => {
             if (err.response) {
                 setError(err.response.data.error)
             }
+            setIsLoading(false)
         })
     }
 
@@ -118,6 +124,8 @@ const Login = ({navigation}) => {
                 <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl font-bold '}>Login</Text>
                 <Text className="color-green-600 text-center">{successMsg}</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>Please sign in to continue.</Text>
+                {isLoading ? <ActivityIndicator/> : <>
+
                 <View className={`h-10 w-2/3 bg-bgLight rounded-full flex flex-row mx-auto items-center pl-4 ${errorType === "username" ? 'border border-red-600' : ''}`}>
                     <Ionicons name="person" color={'white'}></Ionicons>
                     <TextInput onChangeText={onChangeLogin} onBlur={validateFormData} onSubmitEditing={()=>passwordRef.current.focus()} value={username} placeholder={'Username'} className={'w-full px-4 pr-12 text-textDark'}/>
@@ -137,6 +145,7 @@ const Login = ({navigation}) => {
                     <Text className={'text-center  text-lg font-bold'}>Login</Text>
                 </Pressable>
                 <Text className={'text-center w-3/5 mx-auto pb-4 text-xm text-pinkLight'}>Don't have an account? <Link to={{screen: 'Signup'}}><Text className={'text-pinkDark'}>Sign Up</Text></Link></Text>
+                </>}
             </View>
         </View>
     )

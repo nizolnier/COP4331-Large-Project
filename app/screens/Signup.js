@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { View, Text, Pressable, ImageBackground, Image } from 'react-native';
+import { View, Text, Pressable, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -25,6 +25,7 @@ const Signup = ({navigation}) => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
     const isFocused = useIsFocused()
+    const [isLoading, setIsLoading] = useState(false)
     
     const [error, setError] = useState('')
     const [errorType, setErrorType] = useState('')
@@ -134,26 +135,29 @@ const Signup = ({navigation}) => {
         if (empty() || !validateFormData()) {
             return;
         }
-
-        try {
-            AsyncStorage.setItem('EMAIL', email);
-        } catch(error) {
-            console.log(error)
-            setError("Couldn't store email.")
-            return;
-        }
+        
+        setIsLoading(true)
 
         axios.post(`${baseUrl}/users/signup`, form).then((response) => {
 
             if (response) {
                 axios.post(`${baseUrl}/users/send-email`, {email}).then((response) => {
+                    setIsLoading(false)
                     if (response) {
-                        navigation.navigate('Verify')
+                        try {
+                            AsyncStorage.setItem('EMAIL', email);
+                            navigation.navigate('Verify', {from: 'Signup'})
+                        } catch(error) {
+                            console.log(error)
+                            setError("Couldn't store email.")
+                            return;
+                        }
                     }
                 }).catch((err) => {
                     if (err.response) {
                         setError(err.response.data.error)
                     }
+                    setIsLoading(false)
                 })
             }
 
@@ -161,6 +165,7 @@ const Signup = ({navigation}) => {
             if (err.response) {
                 setError(err.response.data.error)
             }
+            setIsLoading(false)
         })
     }
 
@@ -174,6 +179,8 @@ const Signup = ({navigation}) => {
                 </View>
                 <Text className={'text-textLight text-center w-3/5 mx-auto pt-4 text-xl font-bold'}>Signup</Text>
                 <Text className={'text-textDark text-center w-3/5 mx-auto pb-4 text-md'}>Create an account to continue.</Text>
+                {isLoading ? <ActivityIndicator/> : <>
+
                 <View className={`h-10 w-2/3 bg-bgLight rounded-full flex flex-row pr-8 mx-auto items-center pl-4 my-1 ${errorType === "name" ? 'border border-red-600' : ''}`}>
                     <Ionicons name="person" color={'white'}></Ionicons>
                     <TextInput onChangeText={onChangeName} onBlur={validateFormData} onSubmitEditing={() => usernameRef.current.focus()} value={name} placeholder={'Full Name'} className={'w-full px-4 pr-12 text-textLight'}/>
@@ -204,6 +211,7 @@ const Signup = ({navigation}) => {
                     <Ionicons name="eye-outline" color={'white'} onPress={togglePasswordVisibility}></Ionicons>
                     }
                 </View>
+                </>}
                 <View>
                     <Text className="color-red-600 text-center">{error}</Text>
                 </View>

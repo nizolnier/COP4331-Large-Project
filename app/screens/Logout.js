@@ -5,8 +5,6 @@ const Logout = ({navigation}) => {
 
     useEffect(() => {
         doLogout()
-
-        navigation.navigate("Landing")
     })
 
     const doLogout = async () => {
@@ -18,6 +16,8 @@ const Logout = ({navigation}) => {
         catch (err) {
             console.error(err)
         }
+
+        navigation.navigate("Landing")
     }
 }
 
