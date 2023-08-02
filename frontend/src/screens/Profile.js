@@ -1,5 +1,4 @@
-import pw from '../assets/landing.png'
-import pm from '../assets/bg-mobile.png'
+import pw from '../assets/house.jpeg'
 import Sidebar from '../components/Sidebar'
 import { useContext, useEffect, useState } from 'react'
 import ToggleSBContext from '../context/ToggleSBContext'
@@ -73,14 +72,14 @@ const Profile = () => {
             <div className={`justify-center h-[100%] ${!isMobile ? 'w-5/6 ' : 'w-6/6'}`}>
                 
                 <div className="w-[100] h-[300px] bg-cover z-0"
-                    style={{ backgroundImage: `linear-gradient(180deg, transparent 0%, #1F1D36 97%), url(${isMobile ? pm : pw})` }}>
+                    style={{ backgroundImage: `linear-gradient(180deg, transparent 0%, #1F1D36 97%), url(${pw})` }}>
                 </div>
                 <div className="flex w-[100] items-center justify-center">
                 <img className="w-20 h-20 bg-stone-300 rounded-full" src={`https://avatars.dicebear.com/api/avataaars/${profile?.username}.svg`} />
             
                 </div>
                 <div className="flex flex-col justify-end items-center w-[100] h-[15%] bg-[#1F1D36]">
-                    <h1 className="w-screen pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Hi, {user.name}!</h1>
+                    <h1 className="w-screen pb-8 text-center justify-center text-white text-lg lg:text-3xl font-bold tracking-wide">Hi, {profile?.name}!</h1>
                     <div className="flex flex-row  w-screen h-[15%] items-center justify-center">
                         <div className="TotalFilms flex flex-col basis-28 items-center justify-center">
                             <div className="basis-1/4 left- top-0 justify-center text-center text-red-300 text-2xl font-bold">{profile?.watchlist?.length}</div>

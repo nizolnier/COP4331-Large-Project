@@ -14,7 +14,7 @@ const Review = () => {
     const [rating, setRating] = useState(0)
     const [hover, setHover] = useState(0)
     const [fav, setFav] = useState(0)
-    const [date, setDate] = useState("")
+    const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false)
     const [comment, setComment] = useState("")
     const [cartoon, setCartoon] = useState({})
