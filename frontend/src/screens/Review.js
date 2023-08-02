@@ -18,6 +18,8 @@ const Review = () => {
     const [show, setShow] = useState(false)
     const [comment, setComment] = useState("")
     const [cartoon, setCartoon] = useState({})
+    const [onWatchlist, setOnWatchlist] = useState(false)
+    const [isFav, setIsFav] = useState(false)
 
     axios.defaults.headers.common['Authorization'] = localStorage.getItem("token")
 
@@ -41,11 +43,21 @@ const Review = () => {
             comment: comment
         }
 
-        axios.delete(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
-
+        axios.get(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
+            if (res.data.found) {
+                setOnWatchlist(true)
+            }
         }).catch((err) => {
             console.log(err)
         })
+
+        if (onWatchlist) {
+            axios.delete(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
+
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
 
         axios.post(`${baseUrl}/reviews`, body).then((res) => {
 
@@ -73,7 +85,17 @@ const Review = () => {
 
         }
 
-        if (!fav) {
+        axios.get(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
+            if (res.data.found) {
+                setIsFav(true)
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+
+
+
+        if (!fav && isFav) {
             axios.delete(`${baseUrl}/users/favcartoons/${params.id}`).then((res) => {
 
             }).catch((err) => {
@@ -84,7 +106,7 @@ const Review = () => {
         body = {
             twatched: 1
         }
-        
+
         axios.patch(`${baseUrl}/users/update`, body).then((res) => {
 
         }).catch((err) => {
