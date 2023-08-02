@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { goToHome, goToLogin, goToProfile, goToSearch } from '../router/coordinator'
 
 
-const Sidebar = ({ username, name, userid }) => {
+const Sidebar = ({ username, name }) => {
     const navigate = useNavigate()
     const {toggle, setToggle} = useContext(ToggleSBContext)
 
@@ -28,12 +28,14 @@ const Sidebar = ({ username, name, userid }) => {
     }
 
     const doLogout = () => {
-        //remove token here
+        localStorage.removeItem("token")
+        localStorage.removeItem("username")
+        localStorage.removeItem("name")
 
         goToLogin(navigate)
     }
 
-    return (<div className="bg-[#1F1D36] lg:w-1/6 w-[55%] h-screen z-100 p-4 fixed shadow-slay-sm">
+    return (<div className="bg-[#1F1D36] lg:w-1/6 w-[55%] h-screen z-100 p-4 fixed shadow-slay-sm z-10">
         <div className="pt-8 p-6 pl-2">
             <img onClick={click} src={side}/>            
         </div>
@@ -47,9 +49,9 @@ const Sidebar = ({ username, name, userid }) => {
         <div className="py-4 pt-8">
             <MenuItem rimage={bhome} image={home} title="Home" goto={() => goToHome(navigate)} />
             <MenuItem rimage={bcartoon} image={cartoon} title="Cartoons" goto={() => goToSearch(navigate)} />
-            <MenuItem rimage={breview} image={review} title="Reviews"  goto={() => goToProfile(navigate, userid)} />
-            <MenuItem rimage={bwatchlist} image={watchlist} title="Watchlist" goto={() => goToProfile(navigate, userid)} />
-            <MenuItem rimage={bheart} image={heart} title="Likes" goto={() => goToProfile(navigate, userid)} />
+            <MenuItem rimage={breview} image={review} title="Reviews"  goto={() => goToProfile(navigate, username)} />
+            <MenuItem rimage={bwatchlist} image={watchlist} title="Watchlist" goto={() => goToProfile(navigate, username)} />
+            <MenuItem rimage={bheart} image={heart} title="Likes" goto={() => goToProfile(navigate, username)} />
         </div>
 
  

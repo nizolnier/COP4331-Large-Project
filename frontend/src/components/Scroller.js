@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import useCardResize from '../hooks/useCardResize.js'
 
 const Scroller = ({...props}) => {
-    const [cartoons, setCartoons] = useState(props.cartoons);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentCartoons, setCurrentCartoons] = useState([]);
     const [maxPages, setMaxPages] = useState();
@@ -12,33 +11,28 @@ const Scroller = ({...props}) => {
     const [cardWidth, setCardWidth] = useState('');
 
     const { cartoonsPerPage } = useCardResize(5);
+
     useEffect(() => {
-        // Update current cartoons when number of cartoons per page changes
-        let page = currentPage;
-        let max = Math.ceil((cartoons.length / cartoonsPerPage));
-        // If page expanding causes current page to be greater than the max
-        if (currentPage > max)
-        {
-            page = max;
-            setCurrentPage(page);
+        if (props.cartoons && props.cartoons.length > 0) {
+            updateCartoons()
         }
-        setMaxPages(max);
-
-        updateCartoons()
-
-        // Update card widths
-        setCardWidth(Math.floor(100*(1/cartoonsPerPage)) + '%');
-    }, [cartoonsPerPage])
-
-    useEffect(() => {
-        updateCartoons()
-    }, [currentPage])
+    }, [props.cartoons, currentPage, cartoonsPerPage])
 
     const updateCartoons = () => {
-        // Update current cartoons when page number changes
-        let lastIndex = currentPage * cartoonsPerPage;
-        let firstIndex = lastIndex - cartoonsPerPage;
-        setCurrentCartoons(cartoons.slice(firstIndex, lastIndex));
+        if (props.cartoons != null) {
+            // Update current cartoons when number of cartoons per page changes
+            let max = Math.ceil((props.cartoons.length / cartoonsPerPage));
+            setMaxPages(max);
+
+            // Update card widths
+            setCardWidth(Math.floor(100*(1/cartoonsPerPage)) + '%');
+
+            // Update current props.cartoons when page number changes
+            let lastIndex = Math.min(currentPage * cartoonsPerPage, props.cartoons.length);
+            let firstIndex = Math.max(0, lastIndex - cartoonsPerPage);
+    
+            setCurrentCartoons(props.cartoons.slice(firstIndex, lastIndex));
+        }
     }
 
     const paginateLeft = () => {

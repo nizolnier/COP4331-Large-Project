@@ -10,7 +10,16 @@ test('renders login form', () => {
   expect(element).toBeInTheDocument();
 });
 
-test('redirects on successful login')
+test('redirects on successful login', () => {
+  const mockRedirectUrl = '/cartoons'
+  const { getByText } = render(<LoginPage redirectUrl={mockRedirectUrl} />);
+
+  fireEvent.click(getByText('Login'));
+
+  // Check if the browser's current URL is the expected redirect URL after login
+  expect(window.location.href).toBe(mockRedirectUrl);    fireEvent.click(getByText('Login'));
+
+})
 
 test('errors on invalid username/password')
 

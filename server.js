@@ -1,8 +1,15 @@
-const express = require("express")
-const bodyParser = require('body-parser')
-const cors = require("cors")
-const dotenv = require("dotenv")
-const mongoose = require('mongoose')
+import express from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
+import setApp from './api.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+
+const __dirname = path.dirname(__filename)
 
 dotenv.config()
 
@@ -27,38 +34,34 @@ app.use((req, res, next) => {
     next();
 })
 
-
-
-app.use(express.static('frontend/build'))
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-})
-
-//listening on port
-app.listen(PORT, () => {
-    console.log('Server listening on port ' + PORT);
-})
-
-
-//connect DB
 const connectDB = async () => {
-    try{
+    try {
         const conn = await mongoose.connect(URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
         console.log(`MongoDB connected: ${conn.connection.host}`)
-    }catch(error){
+    } catch (error) {
 
         console.log(error)
         process.exit(1)
     }
 }
 
-connectDB();
+connectDB()
 
-// app.use(express.json())
-// app.use(express.urlencoded({extended: false}))
+setApp(app)
 
-app.use('', require('./backend/routes/userRoutes'))
-app.use('/', require('./backend/routes/showRoutes'))
+//listening on port
+app.listen(PORT, () => {
+    console.log('Server listening on port ' + (PORT));
+})
+
+
+
+if (process.env.PROD) {
+    app.use(express.static(path.join(__dirname, 'frontend/build')))
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+    })
+}

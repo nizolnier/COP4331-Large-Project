@@ -23,23 +23,24 @@ const LogIn = () => {
 
     const doLogIn = (e) => {
         e.preventDefault()
-        console.log('password===>' + form.password)
-        console.log('username===>' + form.username)
 
-        /* axios.post(`${baseUrl}/logIn`, form).then((res) => {
-        
-            
+        axios.post(`${baseUrl}/users/login`, form).then((res) => {
+            localStorage.setItem("token", res.data.token)
+            localStorage.setItem("username", res.data.username)
+            localStorage.setItem("name", res.data.name)
+
             goToHome(navigate)
-          }).catch((err) => {
-            window.alert("Log In error :(")
-          }) */
+
+        }).catch((err) => {
+            console.log(err)
+        })
 
         reset()
     }
 
-    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile? bgm : bgw})` }} >
-    <div className="w-screen h-[35%]">
-    </div>
+    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
+        <div className="w-screen h-[35%]">
+        </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
             <div className="h-[30%]">
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Log In</h1>
@@ -66,7 +67,7 @@ const LogIn = () => {
                         <PasswordIcon isPasswordVisible={isPasswordVisible} />
                     </span>
                 </div>
-                <p onClick={() => goToForgot(navigate)} className="cursor-pointer self-end text-right pr-1 text-red-300 text-[0.6em] font-normal">Forgot email</p>
+                <p onClick={() => goToForgot(navigate)} className="cursor-pointer self-end text-right pr-1 text-red-300 text-[0.6em] font-normal">Forgot password</p>
                 <Button title="Log in" type="submit" />
                 <p className=" cursor-default text-red-300 text-[9px] font-normal">Don't have an account? Please <b onClick={() => goToSignUp(navigate)} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Sign Up</b> first.</p>
             </form>

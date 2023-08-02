@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import Search from '../screens/Search';
 import Router from '../router/Router';
 
-import './sample_shows.json'
+import './sample_cartoons.json'
 import './sample_user.json'
 
 test('renders Search', () => {
