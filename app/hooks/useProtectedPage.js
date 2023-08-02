@@ -20,6 +20,7 @@ export function useProtectedPage({navigation}) {
             }
         } catch(error) {
             setError("Error reading token.")
+            return false;
         }
     }
 
