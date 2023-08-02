@@ -76,14 +76,6 @@ const Review = () => {
             console.log(err)
         })
 
-        if (fav) {
-            axios.patch(`${baseUrl}/users/favcartoons/${params.id}`).then((res) => {
-
-            }).catch((err) => {
-                console.log(err)
-            })
-
-        }
 
         axios.get(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
             if (res.data.found) {
@@ -93,6 +85,14 @@ const Review = () => {
             console.log(err)
         })
 
+        if (fav && !isFav) {
+            axios.patch(`${baseUrl}/users/favcartoons/${params.id}`).then((res) => {
+
+            }).catch((err) => {
+                console.log(err)
+            })
+
+        }
 
 
         if (!fav && isFav) {

@@ -281,7 +281,9 @@ export default (app, routeBase) => {
                 const newShow = {
                     _id: show._id,
                     title: show.title,
-                    picture: show.picture
+                    picture: show.picture,
+                    avgrating: show.avgrating,
+                    nrating: show.nrating
                 }
 
                 await user.updateOne({
@@ -397,7 +399,9 @@ export default (app, routeBase) => {
                 const newShow = {
                     _id: show._id,
                     title: show.title,
-                    picture: show.picture
+                    picture: show.picture,
+                    avgrating: show.avgrating,
+                    nrating: show.nrating
                 }
 
                 await user.updateOne({
