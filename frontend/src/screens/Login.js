@@ -43,7 +43,7 @@ const LogIn = () => {
         <div className="w-screen h-[35%]">
         </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
-            <div className="h-[30%] flex justify-around items-center flex-col">
+            <div className="h-[30%] flex justify-around items-center flex-col mb-4">
                 <img src={logo} className="w-[50%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Log In</h1>
                 <p className="text-center text-white text-md font-normal">Please sign in to continue</p>

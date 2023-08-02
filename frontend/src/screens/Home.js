@@ -191,7 +191,7 @@ const Home = () => {
                 <Header username={user.username} />
                 <div>
                     <Scroller prof="" cartoons={allCartoons} heading="Popular"></Scroller>
-                    <Scroller prof="" cartoons={profile.watchlist} heading="Watchlist"></Scroller>
+                    {profile?.watchlist?.length > 0 ? <Scroller prof="true" cartoons={profile.watchlist} heading="Watchlist"></Scroller> : <></>}
                     <Scroller prof="" cartoons={comedyCartoons} heading="Comedy"></Scroller>
                     <Scroller prof="" cartoons={dramaCartoons} heading="Drama"></Scroller>
                 </div>
