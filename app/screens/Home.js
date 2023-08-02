@@ -20,6 +20,7 @@ const Home = ({navigation}) => {
     const [allCartoons, setAllCartoons] = useState([])
     const [comedyCartoons, setComedyCartoons] = useState([])
     const [dramaCartoons, setDramaCartoons] = useState([])
+    const [familyCartoons, setFamilyCartoons] = useState([])
     const [recentReviews, setRecentReviews] = useState([])
     const [reviewDeets, setReviewDeets] = useState([])
     const [isLoadingReviews, setIsLoadingReviews] = useState(true)
@@ -33,7 +34,8 @@ const Home = ({navigation}) => {
             fetchUsername()
             getAllCartoons() 
             getGenre('Comedy', setComedyCartoons)  
-            getGenre('Drama', setDramaCartoons)   
+            getGenre('Drama', setDramaCartoons)
+            getGenre('Family', setFamilyCartoons)   
             getReviews()
         }
     }, [isFocused])
@@ -185,13 +187,11 @@ const Home = ({navigation}) => {
         <SafeAreaView className="flex-1 bg-[#1F1D36] p-4">
             <ScrollView scrollEnabled={true}>
                 <Text className="text-white font-bold text-lg">Hello, <Text className="text-rose-300">{user.name}</Text>!</Text>
-                <Text className="text-white">Review or track cartoons you've watched...</Text>
+                <Text className="text-white">Browse by genre and see what the community has reviewed!</Text>
                 <CartoonScroller cartoons={allCartoons} title="Popular Cartoons"/>
-                {user.watchlist && user.watchlist.length > 0 ? <CartoonScroller cartoons={user.watchlist} title="My Watchlist"/> : <></>}
                 <CartoonScroller cartoons={comedyCartoons} title="Browse by Genre: Comedy"/>
                 <CartoonScroller cartoons={dramaCartoons} title="Browse by Genre: Drama"/>
-                {user.favcartoons && user.favcartoons.length > 0 ? <CartoonScroller cartoons={user.favcartoons} title="Favorite Cartoons"/> :<></> }
-                {user.twatched && user.twatched.length > 0 ? <CartoonScroller cartoons={user.twatched} title="Want To Watch"/> : <></>}
+                <CartoonScroller cartoons={familyCartoons} title="Browse by Genre: Family"/>
                 <ReviewList reviews={reviewDeets} title="Recent Reviews" setSortType={setSortType} sortType={sortType} isLoadingReviews={isLoadingReviews}/>
             </ScrollView>
         </SafeAreaView>
