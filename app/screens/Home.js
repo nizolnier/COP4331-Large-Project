@@ -172,7 +172,9 @@ const Home = ({navigation}) => {
         // Use `setOptions` to update the button that we previously specified
         navigation.setOptions({
             headerRight: () => (
-                <Ionicons name="search-outline" onPress={() => navigation.navigate('Search')} size={20}/>
+                <View className="pr-4">
+                    <Ionicons name="search-outline" color="white" className="mr-4" onPress={() => navigation.navigate('Search')} size={20}/>
+                </View>
             ),
         });
     }, [navigation]);

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // protecting pages that u need to be logged on to see
 export function useProtectedPage({navigation}) {
@@ -19,7 +20,7 @@ export function useProtectedPage({navigation}) {
                 return false;
             }
         } catch(error) {
-            setError("Error reading token.")
+            console.log(error)
             return false;
         }
     }
