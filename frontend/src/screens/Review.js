@@ -34,7 +34,7 @@ const Review = () => {
         setComment(event.target.value)
     }
 
-    const doReview = () => {
+    const doReview = async () => {
         let body = {
             showid: params.id,
             dateWatched: date,
@@ -43,20 +43,14 @@ const Review = () => {
             comment: comment
         }
 
-        axios.get(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
-            if (res.data.found) {
-                setOnWatchlist(true)
-            }
-        }).catch((err) => {
-        })
-
-        if (onWatchlist) {
+        await axios.get(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
             axios.delete(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
 
             }).catch((err) => {
                 console.log(err)
             })
-        }
+        }).catch((err) => {
+        })
 
         axios.post(`${baseUrl}/reviews`, body).then((res) => {
 
@@ -76,7 +70,7 @@ const Review = () => {
         })
 
 
-        axios.get(`${baseUrl}/users/watchlist/${params.id}`).then((res) => {
+        await axios.get(`${baseUrl}/users/favcartoon/${params.id}`).then((res) => {
             if (res.data.found) {
                 setIsFav(true)
             }
@@ -140,7 +134,7 @@ const Review = () => {
         theme: {
             background: "dark:bg-[#3D3B53] bg-[#3D3B53]",
             icons: "text-white text-xs dark:bg-red-300 bg-red-300 hover:bg-fuchsia-800 dark:hover:bg-fuchsia-800 hover:text-white dark:hover:text-white",
-            input: "lg:w-[200%] w-[100%] border border-stone-600  border-opacity-30 dark:border-opacity-30 dark:border dark:border-stone-600 dark:bg-[#3D3B53] bg-[#3D3B53] text-white text-[9px] dark:text-white dark:text-[9px]",
+            input: "lg:w-[100%] w-[100%] border border-stone-600  border-opacity-30 dark:border-opacity-30 dark:border dark:border-stone-600 dark:bg-[#3D3B53] bg-[#3D3B53] text-white text-[9px] dark:text-white dark:text-[9px]",
             inputIcon: "dark:text-white text-white",
             text: "hover:bg-red-300 dark:hover:bg-red-300",
             disabledText: "bg-[#323044] dark:bg-[#323044] hover:bg-red-300 dark:hover:bg-red-300",
