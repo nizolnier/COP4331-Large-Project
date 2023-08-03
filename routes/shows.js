@@ -38,7 +38,7 @@ export default (app, routeBase) => {
                     nrating: newR,
                     nfavorites: newF,
                     trating: newT,
-                    avgrating: newA,
+                    avgrating: newA.toFixed(1),
                 })
 
                 res.status(200).send({ message: "Show updated", created: true })

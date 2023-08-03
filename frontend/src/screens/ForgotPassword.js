@@ -7,42 +7,80 @@ import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
 import { goToLogin, goToVerify, goToVerifyPassword } from '../router/coordinator'
 import Button from '../components/Button'
+import logo from '../assets/logo.svg'
+import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 
 const ForgotPassword = () => {
     const navigate = useNavigate()
+    const [message, setMessage] = useState("")
     const { form, onChange, reset } = useForm({ email: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+
+    const validateInput = () => {
+        const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+        if (form.email.length > 0 && !pattern.test(form.email)) {
+            toast.warning("Invalid email address", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
+        return true
+    }
 
 
     const doForgot = (e) => {
         e.preventDefault()
-        
-        axios.get(`${baseUrl}/users/oneemail/${form.email}`).then((res) => {     
+
+        if (!validateInput()) {
+            return
+        }
+
+        let message = ""
+        axios.get(`${baseUrl}/users/oneemail/${form.email}`).then((res) => {
         }).catch((err) => {
-            window.alert("Log In error :(")
+            message = "No user found"
         })
 
-        reset()
+        if (message == "No user found") {
+            reset()
+
+            toast.warning("No user found", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+
+            setTimeout(() => { window.location.reload(false) }, 3000)
+        }
 
         axios.post(`${baseUrl}/users/send-email`, { email: form.email }).then((res) => {
             localStorage.setItem("email", form.email)
-            goToVerifyPassword(navigate)
+            reset()
+            toast.success('Success! Check your email', {
+                position: toast.POSITION.TOP_RIGHT
+            })
+
+            setTimeout(() => { goToVerifyPassword(navigate) }, 3000)
 
         }).catch((err) => {
             console.log(err)
         })
-        goToVerify(navigate)
+
+
     }
 
-    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile? bgm : bgw})` }} >
-    <div className="w-screen h-[35%]">
-    </div>
+    return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
+        <div className="w-screen h-[35%]">
+            <ToastContainer />
+        </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
-            <div className="h-[20%]">
+            <div className="h-[30%] flex justify-around items-center flex-col mb-10">
+                <img src={logo} className="w-[40%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Forgot Password?</h1>
-                <p className="text-center text-white text-md font-normal">Don't worry! It happens.<br></br>
-Please enter the email associated with your account.</p>
+                <p className="text-center text-white text-md font-normal">Don't worry! It happens.<br></br>Please enter the email associated with your account
+                </p>
             </div>
             <form onSubmit={doForgot} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%]">
                 <div className="relative w-[100%]">
@@ -54,7 +92,7 @@ Please enter the email associated with your account.</p>
                     </div>
                     <input required placeholder="Enter your email" type="email" onChange={onChange} value={form.email} name="email" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
                 </div>
-                <Button title="Send Code" type="submit"/>
+                <Button title="Send Code" type="submit" />
                 <p className=" cursor-default text-red-300 text-[9px] font-normal">Remember password? <b onClick={() => goToLogin(navigate)} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Login</b>.</p>
             </form>
             <div className="h-[20%]"></div>

@@ -40,7 +40,7 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props}/>
       <DrawerItem
-        label="Zain"
+        label="Navigation"
         labelStyle={{color: 'white'}}
         icon={() => <Ionicons color="white" name="person-circle" size={72}/>}
         onPress={() => props.navigation.navigate("Home")}
@@ -62,36 +62,6 @@ function CustomDrawerContent(props) {
         labelStyle={{color: 'white'}}
         onPress={() => props.navigation.navigate("Profile")}
         icon={() => <Ionicons color="white"   name="person-outline" />}
-      />
-      <DrawerItem
-        label="Reviews"
-        labelStyle={{color: 'white'}}
-        icon={() => <Feather color="white" name="align-left" />}
-        onPress={() => props.navigation.navigate("Reviews")}
-      />
-      <DrawerItem
-        label="Login"
-        labelStyle={{color: 'white'}}
-        icon={() => <Ionicons color="white"   name="person-outline" />}
-        onPress={() => props.navigation.navigate("Login")}
-      />
-      <DrawerItem
-        label="Forgot Password"
-        labelStyle={{color: 'white'}}
-        icon={() => <Ionicons color="white"   name="lock-closed-outline" />}
-        onPress={() => props.navigation.navigate("ForgotPassword")}
-      />
-      <DrawerItem
-        label="Reset Password (temporary)"
-        labelStyle={{color: 'white'}}
-        icon={() => <Ionicons color="white"   name="lock-closed-outline" />}
-        onPress={() => props.navigation.navigate("ResetPassword")}
-      />
-      <DrawerItem
-        label="Verify Code"
-        labelStyle={{color: 'white'}}
-        icon={() => <Ionicons color="white"   name="checkmark-done-outline" />}
-        onPress={() => props.navigation.navigate("Verify")}
       />
       <DrawerItem
         label="Log Out"

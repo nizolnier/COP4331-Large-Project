@@ -1,6 +1,7 @@
 import { useForm } from '../hooks/useForm'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
+import logo from '../assets/logo.svg'
 import { goToSignUp, goToHome, goToForgot } from '../router/coordinator'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
@@ -9,6 +10,8 @@ import { useMediaQuery } from 'react-responsive'
 import Button from '../components/Button'
 import PasswordIcon from '../components/PasswordIcon'
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 
 const LogIn = () => {
@@ -21,6 +24,7 @@ const LogIn = () => {
         setIsPasswordVisible(!isPasswordVisible)
     }
 
+
     const doLogIn = (e) => {
         e.preventDefault()
 
@@ -32,17 +36,23 @@ const LogIn = () => {
             goToHome(navigate)
 
         }).catch((err) => {
-            console.log(err)
+            toast.warning("No user found", {
+                position: toast.POSITION.TOP_RIGHT
+            })
         })
 
         reset()
+
+
     }
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
         <div className="w-screen h-[35%]">
+            <ToastContainer />
         </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
-            <div className="h-[30%]">
+            <div className="h-[30%] flex justify-around items-center flex-col mb-4">
+                <img src={logo} className="w-[50%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Log In</h1>
                 <p className="text-center text-white text-md font-normal">Please sign in to continue</p>
             </div>
