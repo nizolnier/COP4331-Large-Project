@@ -11,6 +11,7 @@ import Rating from '../components/Rating.js';
 import Svg, { Path } from 'react-native-svg';
 
 
+
 const Reviews = ({ navigation, route, ...props }) => {
     useProtectedPage(navigation)
     const cartoonId = route.params.cartoon
@@ -20,9 +21,10 @@ const Reviews = ({ navigation, route, ...props }) => {
     const [comment, setComment] = useState("")
     const [rating, setRating] = useState(0)
     const [fav, setFav] = useState(0)
-    
+
 
     const isFocused = useIsFocused()
+    
 
 
 
@@ -77,6 +79,7 @@ const Reviews = ({ navigation, route, ...props }) => {
             }
         }).catch((err) => {
             console.log(err)
+            console.log("load cartoon")
         })
 
 
@@ -98,16 +101,16 @@ const Reviews = ({ navigation, route, ...props }) => {
         const token = await AsyncStorage.getItem('TOKEN')
         console.log("Add")
         await axios.patch(`${baseUrl}/users/watchlist/${cartoonId}`
-        , {
-            headers: {
-                Authorization: token
-            }
-        }).then((res) => {
-            setOnWatchlist(true)
-        }).catch((err) => {
-            console.log(err)
-            
-        })
+            , {
+                headers: {
+                    Authorization: token
+                }
+            }).then((res) => {
+                setOnWatchlist(true)
+            }).catch((err) => {
+                console.log(err)
+                console.log("add w")
+            })
 
     }
 
@@ -123,6 +126,7 @@ const Reviews = ({ navigation, route, ...props }) => {
                 setOnWatchlist(false)
             }).catch((err) => {
                 console.log(err)
+                console.log("remove w")
             })
     }
 
@@ -158,6 +162,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
         }).catch((err) => {
             console.log(err)
+            console.log("review post")
         })
 
         body = {
@@ -173,6 +178,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
         }).catch((err) => {
             console.log(err)
+            console.log("show update")
         })
 
         if (fav) {
@@ -184,6 +190,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
             }).catch((err) => {
                 console.log(err)
+                console.log("if fav")
             })
 
         }
@@ -197,6 +204,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
             }).catch((err) => {
                 console.log(err)
+                console.log("fav")
             })
         }
 
@@ -212,6 +220,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
         }).catch((err) => {
             console.log(err)
+            console.log("body")
         })
 
         goHome()
@@ -222,7 +231,8 @@ const Reviews = ({ navigation, route, ...props }) => {
     }
 
     const makeDate = () => {
-        const today = new Date();
+        const today = new Date(Date.now());
+        console.log(today)
 
         return today
     }
@@ -243,22 +253,24 @@ const Reviews = ({ navigation, route, ...props }) => {
                             <Image src={cartoon?.picture} style={{ height: 150, width: 100 }} className={`rounded-xl w-full shrink`} />
                             <View className="flex flex-row my-2 items-center justify-between">
                                 <View className="flex flex-row justify-between items-left">
-                                    <Ionicons name="star" color="pink" size={20}></Ionicons>
+                                    <Ionicons name="star" color="gold" size={20}></Ionicons>
                                     <Text className="text-white items-center justify-center text-center text-opacity-50 text-sm font-normal mx-2">{cartoon?.nrating}</Text>
                                 </View>
                                 <View className="flex flex-row justify-center items-center">
-                                    <Ionicons name="heart" color="pink" size={20}></Ionicons>
+                                    <Ionicons name="heart" color="red" size={20}></Ionicons>
                                     <Text className="text-white text-center text-opacity-50 text-sm font-normal mx-2">{cartoon?.nfavorites}</Text>
                                 </View>
 
                             </View>
                         </View>
                         <View className="flex flex-col justify-center items-center mx-4">
-                            <View className="flex flex-row w-1/2 justify-center items-center mb-8">
-                                <Ionicons name="star" color="pink" size={30}></Ionicons>
-                                <Text className="text-white lg:text-[4em] text-3xl font-normal ml-4">{cartoon?.avgrating}</Text>
+
+                            <View className="flex flex-col w-1/2 justify-between items-center mb-8">
+                                <Text className="text-white lg:text-[4em] text-3xl font-normal">{cartoon?.avgrating}</Text>
+                                <Rating rating={cartoon.avgrating}></Rating>
                             </View>
-                            <TouchableOpacity onPress={onWatchlist? removeWatchlist : addWatchlist}>
+
+                            <TouchableOpacity onPress={onWatchlist ? removeWatchlist : addWatchlist}>
                                 <View className="flex flex-row items-center h-[40px] w-[150px] justify-center rounded-[7px] bg-pink-200">
                                     <Ionicons name="star" color="black" size={18}></Ionicons>
                                     <Text className="text-black ml-2 font-semibold">{onWatchlist ? "Remove Watchlist" : "Add to Watchlist"}</Text>
@@ -266,42 +278,45 @@ const Reviews = ({ navigation, route, ...props }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View className="flex flex-col mx-4">
+                    <View className="flex flex-col mx-4 w-[90%]">
                         <View className="lg:text-base text-[0.6em] font-normal flex justify-between">
-                            <Text className="text-white">Directed by <Text className="text-white font-bold">{cartoon?.director}</Text></Text>
-                            <Text className="text-white">{cartoon?.year}</Text>
+                            <Text className="text-white mb-2">Directed by <Text className="text-white font-bold">{cartoon?.director}</Text></Text>
+                            <Text className="text-white mb-2">{cartoon?.year}</Text>
                         </View>
                         <Text className="text-justify text-white text-xs font-normal">{cartoon?.description}</Text>
                         <View className="flex flex-row justify-center mt-8 mb-8 items-center">
-                            <TouchableOpacity onPress={() => setFav(!fav)} className="flex flex-row">
-                                <View className="flex flex-row items-center h-[40px] w-[100px] justify-center rounded-[7px] bg-pink-200">
-                                    <Ionicons name={`${fav ? "heart" : "heart-outline"}`} color="black" size={18}></Ionicons>
-                                    <Text className="text-black ml-2 font-semibold">Favorite</Text>
-                                </View>
-                            </TouchableOpacity>
+
                         </View>
                         <TouchableOpacity >
                             <View className="items-center mb-4">
-                            <View className="flex flex-row">
-                                {[...Array(5)].map((star, index) => {
-                                    index += 1;
-                                    return <Svg key={index} onPress={() => setRating(index)}
-                                         className={`w-6 h-6 ${index <= rating ? "text-yellow-300" : "text-[#3D3B53]"}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                        <Path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                    </Svg>
-                                })}
-                            </View>
+                                <View className="flex flex-row">
+                                    {[...Array(5)].map((star, index) => {
+                                        index += 1;
+                                        return <Svg key={index} onPress={() => setRating(index)}
+                                            className={`w-6 h-6 ${index <= rating ? "text-yellow-300" : "text-[#3D3B53]"}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <Path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </Svg>
+                                    })}
+                                </View>
                             </View>
                         </TouchableOpacity>
-                        
-                        <View className="text-white">
-                            <TextInput onChange={onChange} value={comment} placeholder="Write down your review..." className="placeholder:text-white text-white block p-2.5 lg:w-1/2 w-[100%] h-[40%] text-sm rounded-lg bg-[#75719f] border-opacity-30 border border-stone-600 focus:ring-pink-200 focus:border-pink-200"></TextInput>
-                            <TouchableHighlight onPress={doReview} className="mt-4 items-center">
-                                <View className="flex flex-row bg-pink-200 h-[40px] w-[200px] items-center justify-center rounded-[7px]">
-                                    <Ionicons name="newspaper" color="black" size={18}></Ionicons>
-                                    <Text className="text-black ml-2 font-semibold">Publish</Text>
-                                </View>
-                            </TouchableHighlight>
+
+                        <View className="text-white items-center">
+                            <TextInput onChange={onChange} multiline={true} value={comment} placeholder="Write down your review..." className="placeholder:text-white text-white block p-2.5 lg:w-1/2 w-[90%] h-[40%] text-sm rounded-lg bg-[#75719f] border-opacity-30 border border-stone-600 focus:ring-pink-200 focus:border-pink-200"></TextInput>
+                            <View className="flex flex-row">
+                                <TouchableOpacity onPress={() => setFav(!fav)} className="flex flex-row mx-4 mt-4">
+                                    <View className="flex flex-row items-center h-[40px] w-[40px] justify-center rounded-[7px] bg-pink-200">
+                                        <Ionicons name={`${fav ? "heart" : "heart-outline"}`} color="black" size={18}></Ionicons>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableHighlight onPress={doReview} className="mt-4 items-center">
+                                    <View className="flex flex-row bg-pink-200 h-[40px] w-[100px] items-center justify-center rounded-[7px]">
+                                        <Ionicons name="newspaper" color="black" size={18}></Ionicons>
+                                        <Text className="text-black ml-2 font-semibold">Publish</Text>
+                                    </View>
+                                </TouchableHighlight>
+
+                            </View>
                         </View>
                         <View>
 
