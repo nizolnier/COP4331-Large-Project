@@ -8,6 +8,11 @@ import Search from '../screens/Search'
 import Profile from '../screens/Profile'
 import Landing from '../screens/Landing'
 import Error from '../screens/Error'
+import Review from '../screens/Review'
+import ForgotPassword from '../screens/ForgotPassword'
+import VerificationCode from '../screens/VerificationCode'
+import ResetPassword from '../screens/ResetPassword'
+import AboutUs from '../screens/AboutUs'
 
 const Router = () => {
     return (
@@ -19,8 +24,15 @@ const Router = () => {
                 <Route exact path="/cartoons" element={<Home />}></Route>
                 <Route exact path="/home" element={<Home />}></Route>
                 <Route exact path="/cartoons/:id" element={<Cartoon />}></Route>
-                <Route exact path="/user/:id" element={<Profile />}></Route>
-                <Route path="/cartoons/search" element={<Search />}></Route>
+                <Route exact path="/user/:username" element={<Profile />}></Route>
+                <Route exact path="/cartoons/search" element={<Search />}></Route>
+                <Route exact path="/cartoons/:id/review" element={<Review />}></Route>
+                <Route exact path="/cartoons/search" element={<Search />}></Route>
+                <Route exact path="/forgot-password" element={<ForgotPassword />}></Route>
+                <Route exact path="/verification-code" element={<VerificationCode />}></Route>
+                <Route exact path="/verification-code-password" element={<VerificationCode />}></Route>
+                <Route exact path="/reset-password" element={<ResetPassword />}></Route>
+                <Route exact path="/about-us" element={<AboutUs />}></Route>
                 <Route path="*" element={<Error />}></Route>
             </Routes>
         </BrowserRouter>

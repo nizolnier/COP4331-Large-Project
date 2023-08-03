@@ -16,3 +16,36 @@ export const goToHome = (nav) => {
 export const goToCartoon = (nav, id) => {
     nav(`/cartoons/${id}`)
 }
+
+export const goToReview = (nav, id) => {
+    nav(`/cartoons/${id}/review`)
+}
+
+export const goToProfile = (nav, username) => {
+    nav(`/user/${username}`)
+}
+
+export const goToForgot = (nav) => {
+    nav("/forgot-password")
+}
+
+export const goToAbout = (nav) => {
+    nav("/about-us")
+}
+
+export const goToLanding = (nav) => {
+    nav("/")
+}
+
+export const goToVerifyPassword = (nav) => {
+    nav("/verification-code-password")
+}
+
+export const goToVerify = (nav) => {
+    nav("/verification-code")
+}
+
+export const goToReset = (nav) => {
+    nav("/reset-password")
+}
+
