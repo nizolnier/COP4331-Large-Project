@@ -24,14 +24,15 @@ const Reviews = ({ navigation, route, ...props }) => {
 
 
     const isFocused = useIsFocused()
-    
-
 
 
     useEffect(() => {
         if (isFocused) {
             fetchUsername()
             loadCartoon()
+            setComment(useState(""))
+            setRating(useState(0))
+            
         }
 
     }, [isFocused])
