@@ -232,9 +232,9 @@ const Reviews = ({ navigation, route, ...props }) => {
 
     const makeDate = () => {
         const today = new Date(Date.now());
-        console.log(today)
+        
 
-        return today
+        return today.toUTCString()
     }
 
 
