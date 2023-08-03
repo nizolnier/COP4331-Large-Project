@@ -10,30 +10,44 @@ import './index.css'
 import { useState } from 'react'
 import Button from '../components/Button.js'
 import logo from '../assets/logo.svg'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 
 const VerificationCode = () => {
     const navigate = useNavigate()
-    const [message, setMessage] = useState("")
     const [code, setCode] = useState()
     const email = localStorage.getItem('email')
 
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
-
-    const doVerify = (e) => {
-        if (code.length != 5)
+    const validateInput = () => {
+        if (code == undefined || code.length != 5)
         {
-            setMessage("Invalid number of digits.")
-            return
+            toast.warning("Invalid number of digits", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
         }
 
         if (!code.match(/[0-9]{5}/)) {
-            setMessage("Invalid format.")
+            toast.warning("Invalid format", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
+        return true
+    }
+
+
+    const doVerify = (e) => {
+        e.preventDefault()
+
+        if(!validateInput()) {
             return
         }
 
-        e.preventDefault()
         const body = {
             code,
             email
@@ -54,7 +68,7 @@ const VerificationCode = () => {
     }
 
     const sendCode = () => {
-        axios.post(`${baseUrl}/users/send-email`, { email: form.email }).then((res) => {
+        axios.post(`${baseUrl}/users/send-email`, { email }).then((res) => {
         }).catch((err) => {
             console.log(err)
         })
@@ -62,6 +76,7 @@ const VerificationCode = () => {
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
         <div className="w-screen h-[35%]">
+            <ToastContainer />
         </div>
         <div className="flex flex-col justify-around items-center h-[65%]">
             <div className="h-[30%] flex justify-around items-center flex-col mb-10">

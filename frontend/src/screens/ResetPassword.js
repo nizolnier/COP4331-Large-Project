@@ -10,10 +10,11 @@ import { goToLogin } from "../router/coordinator"
 import Button from '../components/Button'
 import PasswordIcon from '../components/PasswordIcon'
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 const ResetPassword = () => {
     const navigate = useNavigate()
-    const [message, setMessage] = useState("")
     const { form, onChange, reset } = useForm({ password1: "", password2: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
     const [isPassword1Visible, setIsPassword1Visible] = useState(false)
@@ -31,22 +32,30 @@ const ResetPassword = () => {
     const validateInput = () => {
         const pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
         if (form.password1.length > 0 && !pattern.test(form.password1)) {
-            setMessage("Passwords must have 8 characters, at least 1 letter and 1 number")
+            toast.warning("Passwords must have 8 characters, at least 1 letter and 1 number", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             return false
         }
 
         if (form.password2.length > 0 && !pattern.test(form.password2)) {
-            setMessage("Passwords must have 8 characters, at least 1 letter and 1 number")
+            toast.warning("Passwords must have 8 characters, at least 1 letter and 1 number", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             return false
         }
 
         if (form.password1.length == 0) {
-            setMessage("Please create a new password")
+            toast.warning("Please create a new password", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             return false
         }
 
         if (form.password2.length == 0) {
-            setMessage("Please confirm your password")
+            toast.warning("Please confirm your password", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             return false
         }
 
@@ -55,7 +64,7 @@ const ResetPassword = () => {
 
 
     const doReset = (e) => {
-        if(!validateInput) {
+        if(!validateInput()) {
             return
         }
         if (form.password1 == form.password2) {
@@ -79,7 +88,9 @@ const ResetPassword = () => {
 
         }
         else {
-            setMessage("Passwords don't match")
+            toast.warning("Passwords don't match", {
+                position: toast.POSITION.TOP_RIGHT
+            })
         }
 
 
@@ -87,6 +98,7 @@ const ResetPassword = () => {
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
         <div className="w-screen h-[35%]">
+            <ToastContainer />
         </div>
         <div className="flex flex-col justify-around items-center h-[70%]">
             <div className="h-[30%] flex justify-around items-center flex-col mb-4">

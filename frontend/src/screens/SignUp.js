@@ -10,10 +10,11 @@ import Button from '../components/Button'
 import { useState } from 'react'
 import PasswordIcon from '../components/PasswordIcon'
 import logo from '../assets/logo.svg'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 const SignUp = () => {
     const navigate = useNavigate()
-    const [message, setMessage] = useState("")
     const { form, onChange, reset } = useForm({ email: "", password: "", name: "", username: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -25,80 +26,70 @@ const SignUp = () => {
     const validateInput = () => {
         let pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
         if (form.password.length > 0 && !pattern.test(form.password)) {
-            setMessage("Passwords must have 8 characters, at least 1 letter and 1 number")
-
+            toast.warning("Passwords must have 8 characters, at least 1 capital letter and 1 number", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             return false
         }
         pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
         if (form.email.length > 0 && !pattern.test(form.email)) {
-            setMessage("Invalid email address")
+            toast.warning("Invalid email address", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             return false
         }
         pattern = /^[A-Za-z]+$/
         if (form.name.length > 0 && !pattern.test(form.name)) {
-            setMessage("Invalid name")
-
-            return false
+            toast.warning("Invalid name", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return
         }
         pattern = /^[A-Za-z0-9_.]+$/
         if (form.username.length > 0 && !pattern.test(form.username)) {
-            setMessage("Username must use only letters, numbers, underscores, or periods")
+            toast.warning("Username must use only letters, numbers, underscores, or periods", {
+                position: toast.POSITION.TOP_RIGHT
+            })
             return false
         }
 
         return true
     }
 
-    const empty = () => {
-        if (form.name.length == 0) {
-            setMessage("Please fill out your name")
-            return true
-        } 
-        else if (form.username.length == 0) {
-            setMessage("Please create a username.")
-            return true
-        } 
-        else if (form.email.length == 0) 
-        {
-            setMessage("Please provide an email.")
-            return true
-        }
-        else if (form.password.length == 0) 
-        {
-            setMessage("Please create a password.")
-            return true
-        }
-
-        return false
-    }
-
     const doSignUp = (e) => {
-        if(empty || !validateInput) {
-            return
-        }        
-
         e.preventDefault()
 
-
+        if (!validateInput()) {
+            return
+        }
         try {
-            let response = axios.post(`${baseUrl}/users/signup`, form)
 
-            console.log(response.status)
+            axios.post(`${baseUrl}/users/signup`, form)
 
-            let res2 = axios.post(`${baseUrl}/users/send-email`, { email: form.email })
-            console.log(res2)
+            axios.post(`${baseUrl}/users/send-email`, { email: form.email })
+
+
+            toast.success('Success! Check your email', {
+                position: toast.POSITION.TOP_RIGHT
+            })
+
             localStorage.setItem("email", form.email)
+
             reset()
-            goToVerify(navigate)
+
+            setTimeout(() => { goToVerify(navigate) }, 3000)
+
 
         } catch (err) {
             console.log(err)
         }
 
+
     }
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
         <div className="w-screen h-[30%]">
+            <ToastContainer />
         </div>
         <div className="flex flex-col justify-between items-center w-screen h-[75%]">
             <div className="h-[30%] flex justify-around items-center flex-col mb-2">
