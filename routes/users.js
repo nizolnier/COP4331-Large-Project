@@ -542,12 +542,9 @@ export default (app, routeBase) => {
                         error: e.message,
                     })
                 }
-
-
                 res.status(400).send({
                     error: e.message,
                 })
-                console.log(e.message)
             }
 
 
@@ -596,9 +593,10 @@ export default (app, routeBase) => {
                 }
 
                 if (code != verificationExists.code) {
+                    await verification.deleteMany({ email })
                     res.status(401).send({
                         error:
-                            "Invalid verification code",
+                            "Invalid verification code, please try again later",
                         email: email,
                     })
 

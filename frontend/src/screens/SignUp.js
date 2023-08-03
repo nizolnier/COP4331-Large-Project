@@ -130,7 +130,7 @@ const SignUp = () => {
                         </svg>
                     </div>
 
-                    <input onBlur={validateInput} required placeholder="Enter a password" type={isPasswordVisible ? "text" : "password"} value={form.password} onChange={onChange} name="password" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
+                    <input required placeholder="Enter a password" type={isPasswordVisible ? "text" : "password"} value={form.password} onChange={onChange} name="password" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
 
                     <span onClick={togglePasswordVisibility} className="cursor-pointer absolute z-10 inset-y-0 right-0 flex items-center pr-3.5 pl-3.5">
                         <PasswordIcon isPasswordVisible={isPasswordVisible} />

@@ -69,6 +69,9 @@ const VerificationCode = () => {
 
     const sendCode = () => {
         axios.post(`${baseUrl}/users/send-email`, { email }).then((res) => {
+            toast.success('Success! Check your email', {
+                position: toast.POSITION.TOP_RIGHT
+            })
         }).catch((err) => {
             console.log(err)
         })
