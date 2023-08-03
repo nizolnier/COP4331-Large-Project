@@ -39,7 +39,7 @@ const Sidebar = ({ username, name }) => {
         <div className="pt-8 p-6 pl-2">
             <img onClick={click} src={side}/>            
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center cursor-default">
             <img className="w-12 h-12 bg-stone-300 rounded-full" src={`https://avatars.dicebear.com/api/avataaars/${username}.svg`} />
             <div className="flex flex-col ml-5">
                 <h1 className="text-red-300 text-xl font-bold">{name}</h1>

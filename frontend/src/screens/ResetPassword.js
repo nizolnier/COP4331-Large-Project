@@ -2,6 +2,7 @@ import { useForm } from '../hooks/useForm'
 import { baseUrl } from '../constants/url.js'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import logo from '../assets/logo.svg'
 import { useMediaQuery } from 'react-responsive'
 import bgw from '../assets/bg-test.png'
 import bgm from '../assets/bg-mobile.png'
@@ -9,6 +10,8 @@ import { goToLogin } from "../router/coordinator"
 import Button from '../components/Button'
 import PasswordIcon from '../components/PasswordIcon'
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 const ResetPassword = () => {
     const navigate = useNavigate()
@@ -26,44 +29,82 @@ const ResetPassword = () => {
         setIsPassword2Visible(!isPassword2Visible)
     }
 
+    const validateInput = () => {
+        const pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+        if (form.password1.length > 0 && !pattern.test(form.password1)) {
+            toast.warning("Passwords must have 8 characters, at least 1 letter and 1 number", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
+        if (form.password2.length > 0 && !pattern.test(form.password2)) {
+            toast.warning("Passwords must have 8 characters, at least 1 letter and 1 number", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
+        if (form.password1.length == 0) {
+            toast.warning("Please create a new password", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
+        if (form.password2.length == 0) {
+            toast.warning("Please confirm your password", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
+        if(form.password1 != form.password2) {
+            toast.warning("Passwords don't match", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
+        return true
+    }
+
 
     const doReset = (e) => {
         e.preventDefault()
-
-        if (form.password1 == form.password2) {
-
-            const body = {
-                email,
-                password: form.password1
-            }
-
-            axios.post(`${baseUrl}/users/password`, body).then((res) => {
-                localStorage.removeItem("email")
-                goToLogin(navigate)
-    
-            }).catch((err) => {
-                console.log(err)
-            })
-
-            reset()
-            
-
-        } else {
-            console.log("password doesnt match")
+        if (!validateInput()) {
+            return
         }
 
+
+        const body = {
+            email,
+            password: form.password1
+        }
+
+        axios.post(`${baseUrl}/users/password`, body).then((res) => {
+            localStorage.removeItem("email")
+            goToLogin(navigate)
+
+        }).catch((err) => {
+            console.log(err)
+        })
+
+        reset()
 
     }
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
         <div className="w-screen h-[35%]">
+            <ToastContainer />
         </div>
-        <div className="flex flex-col justify-around items-center h-[65%]">
-            <div className="h-[20%]">
+        <div className="flex flex-col justify-around items-center h-[70%]">
+            <div className="h-[30%] flex justify-around items-center flex-col mb-4">
+                <img src={logo} className="w-[50%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Reset Password</h1>
-                <p className="text-center text-white text-md font-normal">Please enter something you'll remember.</p>
+                <p className="text-center text-white text-md font-normal">Please enter something you'll remember</p>
             </div>
-            <form onSubmit={doReset} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%]">
+            <form onSubmit={doReset} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%] mt-10">
                 <div className="relative w-[100%]">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                         <svg className="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 20">

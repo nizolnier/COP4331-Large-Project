@@ -165,7 +165,15 @@ export default (app, routeBase) => {
                 limit
             } = req.query
 
-            let reviews = await Review.find()
+            let reviews
+
+            if(sort == 'ascending') {
+                reviews = await Review.find().sort({ dateWatched: -1 }).limit(limit)
+            } else {
+                reviews = await Review.find().sort({ dateWatched: 1 }).limit(limit)
+            }
+
+            
 
             if (!reviews || reviews.length == 0) {
                 res.status(404).send({
@@ -177,16 +185,10 @@ export default (app, routeBase) => {
                     reviews = reviews.splice(0, limit)
                 }
 
-                const sortedReviews = reviews.sort((a, b) => {
-                    if (sort == 'ascending') 
-                        return a.dateWatched - b.dateWatched
-                    else 
-                        return b.dateWatched - a.dateWatched
-                })
 
                 res.status(200).send({
                     found: true,
-                    reviews: sortedReviews
+                    reviews
                 })
             }
         }

@@ -190,10 +190,10 @@ const Home = () => {
             <div className={`justify-center h-[100%] ${!isMobile ? 'w-5/6 ' : 'w-screen'} bg-[#1F1D36] min-h-screen text-white`} >
                 <Header username={user.username} />
                 <div>
-                    <Scroller cartoons={allCartoons} heading="Popular"></Scroller>
-                    <Scroller cartoons={profile.watchlist} heading="Watchlist"></Scroller>
-                    <Scroller cartoons={comedyCartoons} heading="Comedy"></Scroller>
-                    <Scroller cartoons={dramaCartoons} heading="Drama"></Scroller>
+                    <Scroller prof="" cartoons={allCartoons} heading="Popular"></Scroller>
+                    {profile?.watchlist?.length > 0 ? <Scroller prof="true" cartoons={profile.watchlist} heading="Watchlist"></Scroller> : <></>}
+                    <Scroller prof="" cartoons={comedyCartoons} heading="Comedy"></Scroller>
+                    <Scroller prof="" cartoons={dramaCartoons} heading="Drama"></Scroller>
                 </div>
                 <div className="flex flex-col mx-4 mr-8">
                     <div>
