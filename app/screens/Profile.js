@@ -12,40 +12,15 @@ import { baseUrl } from '../constants/url';
 import { useIsFocused } from '@react-navigation/native';
 import { useProtectedPage } from '../hooks/useProtectedPage';
 
-const sampleReviews = [
-    {
-        "_id": "1",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "Spongebob slayyyyyy",
-        "rating": "4",
-        "fav": "true"
-    }, 
-    {
-        "_id": "2",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "huge slay",
-        "rating": "4",
-        "fav": "true"
-    }, 
-    {
-        "_id": "3",
-        "cartoon_id": "1",
-        "user_id": "1",
-        "comment": "huge slay",
-        "rating": "4",
-        "fav": "true"
-    }
-]
-
 const Profile = ({navigation}) => {
     // TESTING PURPOSES ONLY
     const [user, setUser] = useState({})
     const [error, setError] = useState('')
     const isFocused = useIsFocused()
     const [allCartoons, setAllCartoons] = useState([])
+    const [recentReviews, setRecentReviews] = useState([])
     const [reviewDeets, setReviewDeets] = useState([])
+    const [isLoadingReviews, setIsLoadingReviews] = useState(true)
     const imageAspectRatio = '2/3'
     const [sortType, setSortType] = useState('ascending')
 
@@ -58,6 +33,10 @@ const Profile = ({navigation}) => {
             getReviews()
         }
     }, [isFocused])
+
+    useEffect(() => {
+        getReviews()
+    }, [sortType])
 
     const getAllCartoons = async () => {
         const token = await AsyncStorage.getItem("TOKEN")
@@ -78,17 +57,11 @@ const Profile = ({navigation}) => {
         try {
             const username = await AsyncStorage.getItem('USERNAME');
             const token = await AsyncStorage.getItem('TOKEN')
-            if (username !== null) {
+            if (username && token) {
                 fetchUser(username, token)
             }
             else {
-                // set a guest user
-                setUser({
-                    username: "Guest",
-                    watchlist: DATA,
-                    favcartoons: DATA,
-                    twatched: DATA
-                })
+                navigation.navigate("Login")
             }
         } catch(error) {
             console.log(error)
@@ -107,7 +80,7 @@ const Profile = ({navigation}) => {
 
 
 
-    const getReviewUser = async (review) => {
+     const getReviewUser = async (review) => {
         const token = await AsyncStorage.getItem('TOKEN')
         return axios.get(`${baseUrl}/users/one/${review.userid}`, {headers: {
             Authorization: token
@@ -134,6 +107,7 @@ const Profile = ({navigation}) => {
     }
 
     const getReviews = async () => {
+        setIsLoadingReviews(true)
         const token = await AsyncStorage.getItem('TOKEN')
         return axios.get(`${baseUrl}/reviews/all/`, {
             headers: {
@@ -149,15 +123,6 @@ const Profile = ({navigation}) => {
         .catch(err => {
             console.log(err)
         })
-    }
-
-    const getReviewDetails = async () => {
-        let reviews = recentReviews
-        for await (const r of reviews) {
-            r.username = await getReviewUser(r)
-            r.show = await getReviewShow(r)
-        }
-        setReviewDeets(reviews)
     }
 
     useEffect(() => {
