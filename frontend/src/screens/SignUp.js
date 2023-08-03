@@ -38,7 +38,7 @@ const SignUp = () => {
             })
             return false
         }
-        if (!form.email.endsWith('@outlook.com') || !form.email.endsWith('@gmail.com') || !form.email.endsWith('@ucf.edu') || !form.email.endsWith('@proton.me') || !form.email.endsWith('@sharklasers.com')) {
+        if (!/@outlook.com\s*$/.test(form.email) && !/@gmail.com\s*$/.test(form.email) && !!/@ucf.edu\s*$/.test(form.email) && !/@proton.me\s*$/.test(form.email) && !/@sharklazers.com\s*$/.test(form.email)) {
             toast.warning("Invalid email domain", {
                 position: toast.POSITION.TOP_RIGHT
             })
