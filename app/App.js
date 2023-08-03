@@ -63,13 +63,6 @@ function CustomDrawerContent(props) {
         onPress={() => props.navigation.navigate("Profile")}
         icon={() => <Ionicons color="white"   name="person-outline" />}
       />
-      
-      <DrawerItem
-        label="Login"
-        labelStyle={{color: 'white'}}
-        icon={() => <Ionicons color="white"   name="person-outline" />}
-        onPress={() => props.navigation.navigate("Login")}
-      />
       <DrawerItem
         label="Log Out"
         labelStyle={{color: 'white'}}
