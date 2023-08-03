@@ -25,13 +25,15 @@ const Reviews = ({ navigation, route, ...props }) => {
 
     const isFocused = useIsFocused()
 
+    axios.defaults.headers.common['Authorization'] = AsyncStorage.getItem("token")
+
 
     useEffect(() => {
         if (isFocused) {
             fetchUsername()
             loadCartoon()
-            setComment(useState(""))
-            setRating(useState(0))
+            setComment("")
+            setRating(0)
             
         }
 
@@ -70,6 +72,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
     const loadCartoon = async () => {
         const token = await AsyncStorage.getItem('TOKEN')
+        axios.defaults.headers.common['Authorization'] = token
         await axios.get(`${baseUrl}/users/watchlist/${cartoonId}`, {
             headers: {
                 Authorization: token
@@ -100,6 +103,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
     const addWatchlist = async () => {
         const token = await AsyncStorage.getItem('TOKEN')
+        axios.defaults.headers.common['Authorization'] = token
         console.log("Add")
         await axios.patch(`${baseUrl}/users/watchlist/${cartoonId}`
             , {
@@ -108,6 +112,7 @@ const Reviews = ({ navigation, route, ...props }) => {
                 }
             }).then((res) => {
                 setOnWatchlist(true)
+                console.log("here")
             }).catch((err) => {
                 console.log(err)
                 console.log("add w")
@@ -137,6 +142,7 @@ const Reviews = ({ navigation, route, ...props }) => {
 
     const doReview = async () => {
         const token = await AsyncStorage.getItem('TOKEN')
+        axios.defaults.headers.common['Authorization'] = token
         let body = {
             showid: cartoonId,
             dateWatched: makeDate(),
@@ -235,7 +241,7 @@ const Reviews = ({ navigation, route, ...props }) => {
         const today = new Date(Date.now());
         
 
-        return today.toUTCString()
+        return today
     }
 
 
