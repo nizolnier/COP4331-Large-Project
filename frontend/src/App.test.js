@@ -1,8 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { queryByText, render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders howdy', () => {
+test('renders', () => {
   render(<App />);
-  const linkElement = screen.getByText(/howdy partners!/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText("Get started")).toBeTruthy();
 });
