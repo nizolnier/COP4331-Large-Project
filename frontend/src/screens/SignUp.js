@@ -38,6 +38,13 @@ const SignUp = () => {
             })
             return false
         }
+        if (!form.email.endsWith('@outlook.com') || !form.email.endsWith('@gmail.com') || !form.email.endsWith('@ucf.edu') || !form.email.endsWith('@proton.me') || !form.email.endsWith('@sharklasers.com')) {
+            toast.warning("Invalid email domain", {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return false
+        }
+
         pattern = /^[A-Za-z]+$/
         if (form.name.length > 0 && !pattern.test(form.name)) {
             toast.warning("Invalid name", {
