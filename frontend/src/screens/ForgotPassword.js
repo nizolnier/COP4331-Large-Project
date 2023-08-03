@@ -8,15 +8,28 @@ import bgm from '../assets/bg-mobile.png'
 import { goToLogin, goToVerify, goToVerifyPassword } from '../router/coordinator'
 import Button from '../components/Button'
 import logo from '../assets/logo.svg'
+import { useState } from 'react'
 
 
 const ForgotPassword = () => {
     const navigate = useNavigate()
+    const [message, setMessage] = useState("")
     const { form, onChange, reset } = useForm({ email: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
+    const validateInput = () => {
+        const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+        if (form.email.length > 0 && !pattern.test(form.email)) {
+            setMessage("Invalid email address")
+            return false;
+        }
+    }
+
 
     const doForgot = (e) => {
+        if(!validateInput) {
+            return
+        }
         e.preventDefault()
 
         axios.get(`${baseUrl}/users/oneemail/${form.email}`).then((res) => {
@@ -43,8 +56,8 @@ const ForgotPassword = () => {
             <div className="h-[30%] flex justify-around items-center flex-col mb-10">
                 <img src={logo} className="w-[40%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Forgot Password?</h1>
-                <p className="text-center text-white text-md font-normal">Don't worry! It happens.<br></br>
-                    Please enter the email associated with your account.</p>
+                <p className="text-center text-white text-md font-normal">Don't worry! It happens.<br></br>Please enter the email associated with your account
+                    </p>
             </div>
             <form onSubmit={doForgot} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%]">
                 <div className="relative w-[100%]">
@@ -54,7 +67,7 @@ const ForgotPassword = () => {
                             <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
                         </svg>
                     </div>
-                    <input required placeholder="Enter your email" type="email" onChange={onChange} value={form.email} name="email" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
+                    <input onBlur={validateInput} required placeholder="Enter your email" type="email" onChange={onChange} value={form.email} name="email" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
                 </div>
                 <Button title="Send Code" type="submit" />
                 <p className=" cursor-default text-red-300 text-[9px] font-normal">Remember password? <b onClick={() => goToLogin(navigate)} className="cursor-pointer text-fuchsia-800 text-[9px] font-bold">Login</b>.</p>

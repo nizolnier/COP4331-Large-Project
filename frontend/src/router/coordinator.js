@@ -29,6 +29,14 @@ export const goToForgot = (nav) => {
     nav("/forgot-password")
 }
 
+export const goToAbout = (nav) => {
+    nav("/about-us")
+}
+
+export const goToLanding = (nav) => {
+    nav("/")
+}
+
 export const goToVerifyPassword = (nav) => {
     nav("/verification-code-password")
 }

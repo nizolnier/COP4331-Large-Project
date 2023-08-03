@@ -13,6 +13,7 @@ import { useState } from 'react'
 
 const ResetPassword = () => {
     const navigate = useNavigate()
+    const [message, setMessage] = useState("")
     const { form, onChange, reset } = useForm({ password1: "", password2: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
     const [isPassword1Visible, setIsPassword1Visible] = useState(false)
@@ -27,11 +28,38 @@ const ResetPassword = () => {
         setIsPassword2Visible(!isPassword2Visible)
     }
 
+    const validateInput = () => {
+        const pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+        if (form.password1.length > 0 && !pattern.test(form.password1)) {
+            setMessage("Passwords must have 8 characters, at least 1 letter and 1 number")
+            return false
+        }
+
+        if (form.password2.length > 0 && !pattern.test(form.password2)) {
+            setMessage("Passwords must have 8 characters, at least 1 letter and 1 number")
+            return false
+        }
+
+        if (form.password1.length == 0) {
+            setMessage("Please create a new password")
+            return false
+        }
+
+        if (form.password2.length == 0) {
+            setMessage("Please confirm your password")
+            return false
+        }
+
+        return true
+    }
+
 
     const doReset = (e) => {
-        e.preventDefault()
-
+        if(!validateInput) {
+            return
+        }
         if (form.password1 == form.password2) {
+            e.preventDefault()
 
             const body = {
                 email,
@@ -49,8 +77,9 @@ const ResetPassword = () => {
             reset()
 
 
-        } else {
-            console.log("password doesnt match")
+        }
+        else {
+            setMessage("Passwords don't match")
         }
 
 
@@ -63,7 +92,7 @@ const ResetPassword = () => {
             <div className="h-[30%] flex justify-around items-center flex-col mb-4">
                 <img src={logo} className="w-[50%] mb-4" />
                 <h1 className="text-center text-white text-4xl font-bold pb-2">Reset Password</h1>
-                <p className="text-center text-white text-md font-normal">Please enter something you'll remember.</p>
+                <p className="text-center text-white text-md font-normal">Please enter something you'll remember</p>
             </div>
             <form onSubmit={doReset} className="flex flex-col justify-around items-center w-4/5 lg:w-1/4 h-[40%] mt-10">
                 <div className="relative w-[100%]">
@@ -73,7 +102,7 @@ const ResetPassword = () => {
                         </svg>
                     </div>
 
-                    <input required placeholder="Enter a new password" type={isPassword1Visible ? "text" : "password"} value={form.password1} onChange={onChange} name="password1" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
+                    <input onBlur={validateInput} required placeholder="Enter a new password" type={isPassword1Visible ? "text" : "password"} value={form.password1} onChange={onChange} name="password1" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
 
                     <span onClick={togglePassword1Visibility} className="cursor-pointer absolute z-10 inset-y-0 right-0 flex items-center pr-3.5 pl-3.5">
                         <PasswordIcon isPasswordVisible={isPassword1Visible} />
@@ -88,7 +117,7 @@ const ResetPassword = () => {
 
                     <input required placeholder="Confirm new password" type={isPassword2Visible ? "text" : "password"} value={form.password2} onChange={onChange} name="password2" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
 
-                    <span onClick={togglePassword2Visibility} className="cursor-pointer absolute z-10 inset-y-0 right-0 flex items-center pr-3.5 pl-3.5">
+                    <span onBlur={validateInput} onClick={togglePassword2Visibility} className="cursor-pointer absolute z-10 inset-y-0 right-0 flex items-center pr-3.5 pl-3.5">
                         <PasswordIcon isPasswordVisible={isPassword2Visible} />
                     </span>
                 </div>

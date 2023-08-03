@@ -13,6 +13,7 @@ import logo from '../assets/logo.svg'
 
 const SignUp = () => {
     const navigate = useNavigate()
+    const [message, setMessage] = useState("")
     const { form, onChange, reset } = useForm({ email: "", password: "", name: "", username: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -21,9 +22,63 @@ const SignUp = () => {
         setIsPasswordVisible(!isPasswordVisible)
     }
 
+    const validateInput = () => {
+        let pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+        if (form.password.length > 0 && !pattern.test(form.password)) {
+            setMessage("Passwords must have 8 characters, at least 1 letter and 1 number")
+
+            return false
+        }
+        pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+        if (form.email.length > 0 && !pattern.test(form.email)) {
+            setMessage("Invalid email address")
+            return false
+        }
+        pattern = /^[A-Za-z]+$/
+        if (form.name.length > 0 && !pattern.test(form.name)) {
+            setMessage("Invalid name")
+
+            return false
+        }
+        pattern = /^[A-Za-z0-9_.]+$/
+        if (form.username.length > 0 && !pattern.test(form.username)) {
+            setMessage("Username must use only letters, numbers, underscores, or periods")
+            return false
+        }
+
+        return true
+    }
+
+    const empty = () => {
+        if (form.name.length == 0) {
+            setMessage("Please fill out your name")
+            return true
+        } 
+        else if (form.username.length == 0) {
+            setMessage("Please create a username.")
+            return true
+        } 
+        else if (form.email.length == 0) 
+        {
+            setMessage("Please provide an email.")
+            return true
+        }
+        else if (form.password.length == 0) 
+        {
+            setMessage("Please create a password.")
+            return true
+        }
+
+        return false
+    }
+
     const doSignUp = (e) => {
+        if(empty || !validateInput) {
+            return
+        }        
+
         e.preventDefault()
-        console.log(`${baseUrl}/users/signup`)
+
 
         try {
             let response = axios.post(`${baseUrl}/users/signup`, form)
@@ -39,7 +94,6 @@ const SignUp = () => {
         } catch (err) {
             console.log(err)
         }
-
 
     }
 
@@ -85,7 +139,7 @@ const SignUp = () => {
                         </svg>
                     </div>
 
-                    <input required placeholder="Enter a password" type={isPasswordVisible ? "text" : "password"} value={form.password} onChange={onChange} name="password" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
+                    <input onBlur={validateInput} required placeholder="Enter a password" type={isPasswordVisible ? "text" : "password"} value={form.password} onChange={onChange} name="password" className="z-0 bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
 
                     <span onClick={togglePasswordVisibility} className="cursor-pointer absolute z-10 inset-y-0 right-0 flex items-center pr-3.5 pl-3.5">
                         <PasswordIcon isPasswordVisible={isPasswordVisible} />

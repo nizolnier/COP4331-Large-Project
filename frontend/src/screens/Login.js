@@ -14,6 +14,7 @@ import { useState } from 'react'
 
 const LogIn = () => {
     const navigate = useNavigate()
+    const [message, setMessage] = useState("")
     const { form, onChange, reset } = useForm({ username: "", password: "" })
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -22,7 +23,21 @@ const LogIn = () => {
         setIsPasswordVisible(!isPasswordVisible)
     }
 
+    const validateInput = () => {
+        let pattern = /^[A-Za-z0-9_.]+$/
+        if (form.username.length > 0 && !pattern.test(form.username)) {
+            setMessage("Invalid username")
+            return false
+        }
+
+        return true
+    }
+
     const doLogIn = (e) => {
+        if(!validateInput) {
+            return
+        }
+        
         e.preventDefault()
 
         axios.post(`${baseUrl}/users/login`, form).then((res) => {
@@ -37,6 +52,7 @@ const LogIn = () => {
         })
 
         reset()
+
     }
 
     return (<div className="text-white flex flex-col w-screen h-screen bg-[#1F1D36] bg-cover" style={{ backgroundImage: `url(${isMobile ? bgm : bgw})` }} >
@@ -55,7 +71,7 @@ const LogIn = () => {
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                         </svg>
                     </div>
-                    <input required placeholder="Enter username" value={form.username} onChange={onChange} name="username" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
+                    <input onBlur={validateInput} required placeholder="Enter username" value={form.username} onChange={onChange} name="username" className="bg-stone-300 bg-opacity-30 border border-stone-300 border-opacity-30 text-white text-opacity-50 text-sm rounded-[30px] focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" />
                 </div>
                 <div className="relative w-[100%]">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">

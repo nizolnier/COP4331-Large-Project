@@ -14,6 +14,7 @@ import logo from '../assets/logo.svg'
 
 const VerificationCode = () => {
     const navigate = useNavigate()
+    const [message, setMessage] = useState("")
     const [code, setCode] = useState()
     const email = localStorage.getItem('email')
 
@@ -21,11 +22,23 @@ const VerificationCode = () => {
 
 
     const doVerify = (e) => {
+        if (code.length != 5)
+        {
+            setMessage("Invalid number of digits.")
+            return
+        }
+
+        if (!code.match(/[0-9]{5}/)) {
+            setMessage("Invalid format.")
+            return
+        }
+
         e.preventDefault()
         const body = {
             code,
             email
         }
+        
 
         axios.post(`${baseUrl}/users/verify`, body).then((res) => {
             if(window.location.pathname === "/verification-code-password") {
