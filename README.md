@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://www.betweenshows.co/"><img src="./frontend/src/assets/logo.svg" alt="logo" width="500"></a>
+  <a href="http://www.betweenshows.co/"><img src="./frontend/src/assets/logo.svg" alt="logo" width="200"></a>
   <br>
 </h1>
 
